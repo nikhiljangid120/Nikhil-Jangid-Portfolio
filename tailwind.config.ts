@@ -160,6 +160,30 @@ export default {
 						filter: 'brightness(1.2)',
 						transform: 'scale(1.05)'
 					}
+				},
+				'text-shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0'
+					},
+					'100%': {
+						backgroundPosition: '200% 0'
+					}
+				},
+				'rotate-slow': {
+					'0%': {
+						transform: 'rotate(0deg)'
+					},
+					'100%': {
+						transform: 'rotate(360deg)'
+					}
+				},
+				'meteor': {
+					'0%': { transform: 'rotate(215deg) translateX(0)', opacity: '1' },
+					'70%': { opacity: '1' },
+					'100%': {
+						transform: 'rotate(215deg) translateX(-500px)',
+						opacity: '0'
+					}
 				}
 			},
 			animation: {
@@ -170,12 +194,25 @@ export default {
 				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s ease-in-out infinite',
 				'particles': 'particles 6s ease-in-out infinite',
-				'pulse-glow': 'pulse-glow 3s ease-in-out infinite'
+				'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+				'text-shimmer': 'text-shimmer 3s infinite',
+				'rotate-slow': 'rotate-slow 10s linear infinite',
+				'meteor': 'meteor 5s linear infinite',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'hero-pattern': 'linear-gradient(to bottom, #0A0E17, #1A1A1A)',
-			}
+				'text-gradient': 'linear-gradient(to right, #005A66, #2E1760, #D94F30)',
+				'shimmer-gradient': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%)',
+			},
+			transitionProperty: {
+				'width': 'width',
+				'spacing': 'margin, padding',
+			},
+			transitionTimingFunction: {
+				'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+				'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
