@@ -20,11 +20,11 @@ const CustomCursor = () => {
       const isInteractive = 
         target.tagName.toLowerCase() === 'button' || 
         target.tagName.toLowerCase() === 'a' ||
-        target.closest('button') || 
-        target.closest('a') ||
+        !!target.closest('button') || 
+        !!target.closest('a') ||
         target.classList.contains('interactive');
       
-      setIsHovering(isInteractive);
+      setIsHovering(!!isInteractive);
     };
 
     window.addEventListener('mousemove', updateMousePosition);
