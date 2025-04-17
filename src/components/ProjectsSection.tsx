@@ -1,3 +1,4 @@
+
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, Code, X, Play, Maximize2, Award, Eye, Sparkles, ArrowRight } from 'lucide-react';
@@ -712,3 +713,22 @@ const ProjectsSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+            >
+              {/* Modal content would go here */}
+              <motion.button
+                className="absolute top-4 right-4 text-white hover:text-lime transition-colors"
+                onClick={() => setSelectedProject(null)}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <X size={24} />
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </section>
+  );
+};
+
+export default ProjectsSection;
