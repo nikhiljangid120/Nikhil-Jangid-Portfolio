@@ -13,10 +13,22 @@ const CustomCursor = () => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  // Apply spring physics for natural, smooth movement with reduced lag
-  const springConfig = { damping: 25, stiffness: 700, mass: 0.5 };
+  // Apply spring physics for natural, smooth movement with less lag
+  const springConfig = { damping: 28, stiffness: 800, mass: 0.4 };
   const springX = useSpring(cursorX, springConfig);
   const springY = useSpring(cursorY, springConfig);
+
+  // Throttle function to limit cursor updates
+  const throttle = (callback: Function, delay = 5) => {
+    let lastCallTime = 0;
+    return (...args: any[]) => {
+      const now = Date.now();
+      if (now - lastCallTime >= delay) {
+        lastCallTime = now;
+        callback(...args);
+      }
+    };
+  };
 
   useEffect(() => {
     // Check if device is mobile
@@ -30,16 +42,16 @@ const CustomCursor = () => {
     // Only set up cursor events if not on mobile
     if (isMobile) return;
 
-    const updateMousePosition = (e: MouseEvent) => {
-      // Update motion values directly instead of state for better performance
+    // Performance optimized cursor movement with throttling
+    const updateMousePosition = throttle((e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-    };
+    });
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
-    // Performance optimization: Use event delegation instead of adding listeners to all elements
+    // Use event delegation for better performance
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       
@@ -93,7 +105,8 @@ const CustomCursor = () => {
           x: springX, 
           y: springY,
           translateX: "-50%",
-          translateY: "-50%"
+          translateY: "-50%",
+          willChange: "transform" // Performance optimization
         }}
         animate={cursorVariant}
         variants={{
@@ -119,7 +132,8 @@ const CustomCursor = () => {
             x: springX, 
             y: springY,
             translateX: "-50%",
-            translateY: "20px"
+            translateY: "20px",
+            willChange: "transform" // Performance optimization
           }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

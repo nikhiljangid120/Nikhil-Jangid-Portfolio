@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -22,7 +23,7 @@ const Index = () => {
       scale: 1,
       transition: { 
         duration: 0.8,
-        ease: [0.6, 0.05, 0.01, 0.9], // Fixed cubic-bezier values
+        ease: [0.6, 0.05, 0.01, 0.9],
       }
     },
     exit: { 
@@ -30,7 +31,7 @@ const Index = () => {
       scale: 0.8,
       transition: { 
         duration: 0.5,
-        ease: [0.6, 0.05, 0.01, 0.9], // Fixed cubic-bezier values
+        ease: [0.6, 0.05, 0.01, 0.9],
       }
     }
   };
