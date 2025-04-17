@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, OrbitControls, ContactShadows, Environment } from '@react-three/drei';
-import { Group, MathUtils } from 'three';
+import { Group, MathUtils, Color } from 'three';
 
 function Model({ hover, emotion = 'idle' }: { hover: boolean; emotion: string }) {
   const group = useRef<Group>(null);
@@ -41,49 +41,49 @@ function Model({ hover, emotion = 'idle' }: { hover: boolean; emotion: string })
       {/* Body */}
       <mesh position={[0, 0, 0]} castShadow>
         <boxGeometry args={[1, 1.5, 0.5]} />
-        <meshStandardMaterial color="#0c4a6e" />
+        <meshStandardMaterial color={new Color("#0c4a6e")} />
       </mesh>
       
       {/* Head */}
       <mesh position={[0, 1.1, 0]} castShadow>
         <boxGeometry args={[0.7, 0.7, 0.7]} />
-        <meshStandardMaterial color="#fbbf24" />
+        <meshStandardMaterial color={new Color("#fbbf24")} />
       </mesh>
       
       {/* Eyes */}
       <mesh position={[0.15, 1.2, 0.36]} castShadow>
         <sphereGeometry args={[0.08, 16, 16]} />
-        <meshStandardMaterial color="#0f172a" />
+        <meshStandardMaterial color={new Color("#0f172a")} />
       </mesh>
       <mesh position={[-0.15, 1.2, 0.36]} castShadow>
         <sphereGeometry args={[0.08, 16, 16]} />
-        <meshStandardMaterial color="#0f172a" />
+        <meshStandardMaterial color={new Color("#0f172a")} />
       </mesh>
       
       {/* Smile */}
       <mesh position={[0, 1, 0.36]} castShadow rotation={[0, 0, 0]}>
         <torusGeometry args={[0.2, 0.05, 16, 16, Math.PI]} />
-        <meshStandardMaterial color="#0f172a" />
+        <meshStandardMaterial color={new Color("#0f172a")} />
       </mesh>
       
       {/* Arms */}
       <mesh position={[0.75, 0.2, 0]} castShadow rotation={[0, 0, emotion === 'wave' ? Math.sin(Date.now() * 0.01) * 0.5 : 0]}>
         <boxGeometry args={[0.25, 1, 0.25]} />
-        <meshStandardMaterial color="#0c4a6e" />
+        <meshStandardMaterial color={new Color("#0c4a6e")} />
       </mesh>
       <mesh position={[-0.75, 0.2, 0]} castShadow rotation={[0, 0, emotion === 'thinking' ? -0.5 : 0]}>
         <boxGeometry args={[0.25, 1, 0.25]} />
-        <meshStandardMaterial color="#0c4a6e" />
+        <meshStandardMaterial color={new Color("#0c4a6e")} />
       </mesh>
       
       {/* Legs */}
       <mesh position={[0.3, -1.1, 0]} castShadow>
         <boxGeometry args={[0.3, 0.8, 0.3]} />
-        <meshStandardMaterial color="#0c4a6e" />
+        <meshStandardMaterial color={new Color("#0c4a6e")} />
       </mesh>
       <mesh position={[-0.3, -1.1, 0]} castShadow>
         <boxGeometry args={[0.3, 0.8, 0.3]} />
-        <meshStandardMaterial color="#0c4a6e" />
+        <meshStandardMaterial color={new Color("#0c4a6e")} />
       </mesh>
     </group>
   );
