@@ -1,7 +1,5 @@
-
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CustomCursor from './CustomCursor';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Loader } from 'lucide-react';

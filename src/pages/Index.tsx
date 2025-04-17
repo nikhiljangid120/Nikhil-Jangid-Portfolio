@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -8,7 +7,7 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
-import CustomCursor from "@/components/CustomCursor";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -187,15 +186,16 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Layout>
-            <CustomCursor />
-            <HeroSection />
-            <AboutSection />
-            <SkillsSection />
-            <ProjectsSection />
-            <TimelineSection />
-            <ContactSection />
-          </Layout>
+          <TooltipProvider>
+            <Layout>
+              <HeroSection />
+              <AboutSection />
+              <SkillsSection />
+              <ProjectsSection />
+              <TimelineSection />
+              <ContactSection />
+            </Layout>
+          </TooltipProvider>
         </motion.div>
       )}
     </AnimatePresence>
