@@ -101,7 +101,6 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <AnimatePresence mode="wait">
       <div className="min-h-screen flex flex-col overflow-hidden">
-        <CustomCursor />
         <Navbar />
         <motion.main
           className="flex-grow"

@@ -1,35 +1,63 @@
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [cursorText, setCursorText] = useState('');
   const [cursorVariant, setCursorVariant] = useState('default');
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Use motion values for smoother cursor performance
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  
+  // Apply spring physics for natural, smooth movement with reduced lag
+  const springConfig = { damping: 25, stiffness: 700, mass: 0.5 };
+  const springX = useSpring(cursorX, springConfig);
+  const springY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // Only set up cursor events if not on mobile
+    if (isMobile) return;
+
     const updateMousePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      // Update motion values directly instead of state for better performance
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
-    // Track interactive elements
+    // Performance optimization: Use event delegation instead of adding listeners to all elements
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isButton = target.tagName.toLowerCase() === 'button' || !!target.closest('button');
-      const isLink = target.tagName.toLowerCase() === 'a' || !!target.closest('a');
-      const isInteractive = isButton || isLink || target.classList.contains('interactive');
+      
+      // Check if element or its parents have interactive class
+      const isInteractive = 
+        target.classList.contains('interactive') || 
+        !!target.closest('.interactive') ||
+        target.tagName.toLowerCase() === 'button' || 
+        !!target.closest('button') ||
+        target.tagName.toLowerCase() === 'a' || 
+        !!target.closest('a');
       
       if (isInteractive) {
         setIsHovering(true);
         setCursorVariant('hover');
-        
-        // Set cursor text based on element data attribute
-        const textContent = target.getAttribute('data-cursor-text') || '';
+        // Set cursor text from data attribute
+        const element = target.classList.contains('interactive') ? target : target.closest('.interactive');
+        const textContent = element?.getAttribute('data-cursor-text') || '';
         setCursorText(textContent);
       } else {
         setIsHovering(false);
@@ -38,59 +66,60 @@ const CustomCursor = () => {
       }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', updateMousePosition, { passive: true });
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
     
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('mouseover', handleMouseOver);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', updateMousePosition);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile, cursorX, cursorY]);
 
-  // Hide on mobile
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+  // Don't render cursor on mobile devices
+  if (isMobile) {
     return null;
   }
 
   return (
     <>
       <motion.div 
-        className="custom-cursor"
+        className="fixed w-6 h-6 rounded-full pointer-events-none z-50 mix-blend-difference"
+        style={{ 
+          x: springX, 
+          y: springY,
+          translateX: "-50%",
+          translateY: "-50%"
+        }}
         animate={cursorVariant}
         variants={{
           default: {
-            x: position.x,
-            y: position.y,
-            scale: isClicking ? 0.75 : 1,
+            scale: isClicking ? 0.7 : 1,
             backgroundColor: 'rgba(204, 255, 0, 0.7)',
-            mixBlendMode: 'lighten'
           },
           hover: {
-            x: position.x,
-            y: position.y,
             scale: 2.5,
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            mixBlendMode: 'difference'
           }
         }}
         transition={{
-          type: 'spring',
-          damping: 30,
-          stiffness: 200,
-          mass: 0.4
+          type: 'tween',
+          ease: 'backOut',
+          duration: 0.15
         }}
       />
       {cursorText && (
         <motion.div
-          className="absolute text-xs font-medium pointer-events-none z-50 text-white mix-blend-difference"
-          style={{
-            left: `${position.x}px`,
-            top: `${position.y + 24}px`,
-            transform: 'translate(-50%, 0)'
+          className="fixed text-xs font-medium pointer-events-none z-50 text-white mix-blend-difference"
+          style={{ 
+            x: springX, 
+            y: springY,
+            translateX: "-50%",
+            translateY: "20px"
           }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

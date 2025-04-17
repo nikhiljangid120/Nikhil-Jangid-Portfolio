@@ -8,6 +8,7 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
+import CustomCursor from "@/components/CustomCursor";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -187,6 +188,7 @@ const Index = () => {
           transition={{ duration: 0.5 }}
         >
           <Layout>
+            <CustomCursor />
             <HeroSection />
             <AboutSection />
             <SkillsSection />
