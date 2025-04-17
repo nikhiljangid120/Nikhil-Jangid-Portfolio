@@ -14,11 +14,11 @@ const CustomCursor = () => {
   const cursorY = useMotionValue(-100);
   
   // Apply spring physics for natural, smooth movement with less lag
-  const springConfig = { damping: 28, stiffness: 800, mass: 0.4 };
+  const springConfig = { damping: 25, stiffness: 700, mass: 0.25 };
   const springX = useSpring(cursorX, springConfig);
   const springY = useSpring(cursorY, springConfig);
 
-  // Throttle function to limit cursor updates
+  // Throttle function to limit cursor updates for better performance
   const throttle = (callback: Function, delay = 5) => {
     let lastCallTime = 0;
     return (...args: any[]) => {
@@ -56,20 +56,12 @@ const CustomCursor = () => {
       const target = e.target as HTMLElement;
       
       // Check if element or its parents have interactive class
-      const isInteractive = 
-        target.classList.contains('interactive') || 
-        !!target.closest('.interactive') ||
-        target.tagName.toLowerCase() === 'button' || 
-        !!target.closest('button') ||
-        target.tagName.toLowerCase() === 'a' || 
-        !!target.closest('a');
+      const isInteractive = target.closest('.interactive');
       
       if (isInteractive) {
         setIsHovering(true);
         setCursorVariant('hover');
-        // Set cursor text from data attribute
-        const element = target.classList.contains('interactive') ? target : target.closest('.interactive');
-        const textContent = element?.getAttribute('data-cursor-text') || '';
+        const textContent = isInteractive.getAttribute('data-cursor-text') || '';
         setCursorText(textContent);
       } else {
         setIsHovering(false);
@@ -93,52 +85,53 @@ const CustomCursor = () => {
   }, [isMobile, cursorX, cursorY]);
 
   // Don't render cursor on mobile devices
-  if (isMobile) {
-    return null;
-  }
+  if (isMobile) return null;
 
   return (
     <>
       <motion.div 
         className="fixed w-6 h-6 rounded-full pointer-events-none z-50 mix-blend-difference"
         style={{ 
-          x: springX, 
+          x: springX,
           y: springY,
           translateX: "-50%",
           translateY: "-50%",
-          willChange: "transform" // Performance optimization
+          willChange: "transform"
         }}
         animate={cursorVariant}
         variants={{
           default: {
-            scale: isClicking ? 0.7 : 1,
+            scale: isClicking ? 0.8 : 1,
             backgroundColor: 'rgba(204, 255, 0, 0.7)',
+            transition: {
+              duration: 0.15,
+              ease: [0.23, 1, 0.32, 1]
+            }
           },
           hover: {
-            scale: 2.5,
+            scale: 2,
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            transition: {
+              duration: 0.15,
+              ease: [0.23, 1, 0.32, 1]
+            }
           }
-        }}
-        transition={{
-          type: 'tween',
-          ease: 'backOut',
-          duration: 0.15
         }}
       />
       {cursorText && (
         <motion.div
-          className="fixed text-xs font-medium pointer-events-none z-50 text-white mix-blend-difference"
+          className="fixed text-xs font-medium pointer-events-none z-50 text-black mix-blend-difference"
           style={{ 
-            x: springX, 
+            x: springX,
             y: springY,
             translateX: "-50%",
             translateY: "20px",
-            willChange: "transform" // Performance optimization
+            willChange: "transform"
           }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
         >
           {cursorText}
         </motion.div>
