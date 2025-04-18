@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -73,6 +72,8 @@ export default {
 				inkyblack: '#0A0E17',
 			},
 			fontFamily: {
+				outfit: ['Outfit', 'sans-serif'],
+				jakarta: ['Plus Jakarta Sans', 'sans-serif'],
 				spaceGrotesk: ['Space Grotesk', 'sans-serif'],
 				inter: ['Inter', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],

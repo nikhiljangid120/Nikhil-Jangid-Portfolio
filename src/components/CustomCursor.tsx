@@ -14,8 +14,8 @@ const CustomCursor = () => {
   // Store the last known good position to prevent jumps
   const lastPositionRef = useRef({ x: 0, y: 0 });
   
-  // Throttle cursor updates for better performance
-  const throttleAmount = 5; // ms between updates
+  // Reduce throttle time for more responsive cursor
+  const throttleAmount = 3; // Reduced from 5ms to 3ms
   
   useEffect(() => {
     // Check if device is mobile
@@ -34,8 +34,6 @@ const CustomCursor = () => {
       if (now - lastUpdateTimeRef.current < throttleAmount) return;
       
       lastUpdateTimeRef.current = now;
-      
-      // Store last known good position
       lastPositionRef.current = { x: clientX, y: clientY };
       setPosition({ x: clientX, y: clientY });
     };
@@ -45,17 +43,20 @@ const CustomCursor = () => {
     };
 
     const handleMouseLeave = () => {
-      setPosition({ x: -100, y: -100 }); // Move cursor offscreen when leaving window
+      setPosition({ x: -100, y: -100 });
     };
 
     const handleInteractiveElements = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      
-      // Check if we're hovering any interactive element
       const interactiveElement = target.closest('.interactive');
       
       if (interactiveElement) {
-        updateCursorPosition(e.clientX, e.clientY);
+        const rect = interactiveElement.getBoundingClientRect();
+        // Center the cursor on the interactive element
+        updateCursorPosition(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2
+        );
         setIsHovering(true);
         const text = interactiveElement.getAttribute('data-cursor-text') || '';
         setCursorText(text);
@@ -65,12 +66,10 @@ const CustomCursor = () => {
       }
     };
 
-    // Add event listeners with passive flag for better performance
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseover', handleInteractiveElements, { passive: true });
     
-    // Clean up event listeners on unmount
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
@@ -83,7 +82,6 @@ const CustomCursor = () => {
     };
   }, [isMobile]);
 
-  // Don't render cursor on mobile
   if (isMobile) return null;
 
   return (
@@ -103,9 +101,9 @@ const CustomCursor = () => {
         }}
         transition={{
           type: "spring",
-          damping: 20,
-          stiffness: 300,
-          duration: 0.15,
+          damping: 25, // Increased from 20 for faster response
+          stiffness: 400, // Increased from 300 for faster response
+          duration: 0.1, // Reduced from 0.15 for faster response
         }}
         style={{
           translateX: "-50%",
@@ -125,9 +123,9 @@ const CustomCursor = () => {
         }}
         transition={{
           type: "spring",
-          damping: 20,
-          stiffness: 400,
-          duration: 0.1,
+          damping: 25,
+          stiffness: 500, // Increased for snappier response
+          duration: 0.08, // Reduced for faster response
         }}
         style={{
           translateX: "-50%",
@@ -135,10 +133,10 @@ const CustomCursor = () => {
         }}
       />
       
-      {/* Text that appears when hovering over interactive elements */}
+      {/* Cursor text */}
       {cursorText && (
         <motion.div
-          className="fixed text-xs font-medium pointer-events-none z-[100] text-lime"
+          className="fixed text-xs font-outfit font-medium pointer-events-none z-[100] text-lime"
           animate={{
             x: position.x,
             y: position.y + 40,
@@ -149,8 +147,8 @@ const CustomCursor = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{
             type: "spring",
-            damping: 15,
-            stiffness: 200,
+            damping: 20,
+            stiffness: 300,
           }}
           style={{
             translateX: "-50%",
