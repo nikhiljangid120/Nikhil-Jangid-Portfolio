@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -49,6 +48,7 @@
     scroll-behavior: smooth;
     /* Hide the default cursor to prevent double cursor */
     cursor: none;
+    font-family: 'Manrope', sans-serif;
   }
   
   /* But show default cursor on mobile */
@@ -59,12 +59,13 @@
   }
   
   body {
-    @apply bg-gradient-to-b from-inkyblack to-charcoal text-foreground font-inter;
-    overflow-x: hidden;
+    @apply bg-gradient-to-b from-inkyblack to-charcoal text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-spaceGrotesk font-bold;
+    @apply font-spaceGrotesk font-bold tracking-tight;
   }
   
   code {
@@ -275,6 +276,68 @@
     @apply left-[-2px] text-orange/70 clip-path-inset;
     animation: glitch-anim2 2s infinite linear alternate-reverse;
   }
+  
+  /* Enhanced achievement badge styles */
+  .achievement-badge {
+    @apply px-4 py-2 rounded-full border flex items-center gap-2 transition-all duration-500;
+  }
+  
+  .achievement-badge:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 0 25px var(--glow-color);
+  }
+  
+  /* Enhanced badge variants */
+  .badge-leetcode {
+    @apply bg-gradient-to-r from-lime/10 to-lime/20 border-lime/20;
+    --glow-color: rgba(204, 255, 0, 0.3);
+  }
+  
+  .badge-codechef {
+    @apply bg-gradient-to-r from-gold/10 to-gold/20 border-gold/20;
+    --glow-color: rgba(255, 177, 0, 0.3);
+  }
+  
+  .badge-hackerearth {
+    @apply bg-gradient-to-r from-purple/10 to-purple/20 border-purple/20;
+    --glow-color: rgba(46, 23, 96, 0.3);
+  }
+  
+  /* Enhanced project card hover effect */
+  .project-card {
+    @apply transition-all duration-500 border border-white/5 hover:border-lime/20 relative overflow-hidden;
+  }
+  
+  .project-card:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 
+      0 10px 25px -5px rgba(204, 255, 0, 0.1),
+      0 0 50px -12px rgba(204, 255, 0, 0.25);
+  }
+  
+  .project-card:hover::before {
+    @apply opacity-100;
+  }
+  
+  .project-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+    background: radial-gradient(
+      800px circle at var(--mouse-x) var(--mouse-y),
+      rgba(204, 255, 0, 0.06),
+      transparent 40%
+    );
+  }
+  
+  /* Enhanced section styles */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative overflow-hidden;
+  }
+  
+  /* Enhanced text gradient effect */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-teal via-lime to-purple animate-text-shimmer bg-[size:200%];
+  }
 }
 
 @layer utilities {
@@ -375,4 +438,19 @@
   h3, .h3 {
     @apply text-xl;
   }
+}
+
+@keyframes shimmer {
+  0% { backgroundPosition: '200% center' }
+  100% { backgroundPosition: '-200% center' }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0) }
+  50% { transform: translateY(-15px) rotate(2deg) }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1, transform: scale(1) }
+  50% { opacity: 0.5, transform: scale(0.7) }
 }

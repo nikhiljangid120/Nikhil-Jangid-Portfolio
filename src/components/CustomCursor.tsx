@@ -1,23 +1,22 @@
+
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 const CustomCursor = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorText, setCursorText] = useState('');
-  const [position, setPosition] = useState({ x: -100, y: -100 }); // Start offscreen
+  const [position, setPosition] = useState({ x: -100, y: -100 });
   const cursorRef = useRef<HTMLDivElement>(null);
   const lastUpdateTimeRef = useRef<number>(0);
   const requestRef = useRef<number>();
-  
-  // Store the last known good position to prevent jumps
   const lastPositionRef = useRef({ x: 0, y: 0 });
   
-  // Reduce throttle time for more responsive cursor
-  const throttleAmount = 3; // Reduced from 5ms to 3ms
+  // Reduced throttle time for more responsive cursor
+  const throttleAmount = 2; // Reduced from 3ms to 2ms for faster response
   
   useEffect(() => {
-    // Check if device is mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -25,7 +24,6 @@ const CustomCursor = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    // Don't setup cursor events on mobile
     if (isMobile) return;
 
     const updateCursorPosition = (clientX: number, clientY: number) => {
@@ -51,7 +49,6 @@ const CustomCursor = () => {
       
       if (interactiveElement) {
         const rect = interactiveElement.getBoundingClientRect();
-        // Center the cursor on the interactive element
         updateCursorPosition(
           rect.left + rect.width / 2,
           rect.top + rect.height / 2
@@ -84,33 +81,48 @@ const CustomCursor = () => {
   if (isMobile) return null;
 
   return (
-    <>
-      {/* Main cursor */}
+    <AnimatePresence>
+      {/* Enhanced main cursor */}
       <motion.div 
         ref={cursorRef}
         className="fixed pointer-events-none z-[100]"
         animate={{
           x: position.x,
           y: position.y,
-          width: isHovering ? '60px' : '24px',
-          height: isHovering ? '60px' : '24px',
-          backgroundColor: isHovering ? 'rgba(204, 255, 0, 0.2)' : 'rgba(204, 255, 0, 0.5)',
-          boxShadow: isHovering ? '0 0 15px rgba(204, 255, 0, 0.5)' : '0 0 5px rgba(204, 255, 0, 0.3)',
+          width: isHovering ? '64px' : '28px',
+          height: isHovering ? '64px' : '28px',
+          backgroundColor: isHovering ? 'rgba(204, 255, 0, 0.15)' : 'rgba(204, 255, 0, 0.4)',
+          boxShadow: isHovering 
+            ? '0 0 20px rgba(204, 255, 0, 0.4), inset 0 0 10px rgba(204, 255, 0, 0.2)' 
+            : '0 0 8px rgba(204, 255, 0, 0.2)',
           borderRadius: '50%',
+          scale: isHovering ? 1.2 : 1,
         }}
         transition={{
           type: "spring",
-          damping: 25, // Increased from 20 for faster response
-          stiffness: 400, // Increased from 300 for faster response
-          duration: 0.1, // Reduced from 0.15 for faster response
+          damping: 30,
+          stiffness: 450,
+          mass: 0.8,
+          duration: 0.08,
         }}
         style={{
           translateX: "-50%",
           translateY: "-50%",
         }}
-      />
+      >
+        {isHovering && (
+          <motion.div
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+          >
+            <Sparkles className="w-full h-full p-4 text-lime/50" />
+          </motion.div>
+        )}
+      </motion.div>
       
-      {/* Inner dot cursor */}
+      {/* Enhanced inner dot cursor */}
       <motion.div 
         className="fixed pointer-events-none z-[100] bg-lime rounded-full"
         animate={{
@@ -119,12 +131,14 @@ const CustomCursor = () => {
           width: isHovering ? '8px' : '6px',
           height: isHovering ? '8px' : '6px',
           opacity: position.x < 0 ? 0 : 1,
+          scale: isHovering ? 1.5 : 1,
         }}
         transition={{
           type: "spring",
-          damping: 25,
-          stiffness: 500, // Increased for snappier response
-          duration: 0.08, // Reduced for faster response
+          damping: 30,
+          stiffness: 450,
+          mass: 0.8,
+          duration: 0.08,
         }}
         style={{
           translateX: "-50%",
@@ -132,10 +146,10 @@ const CustomCursor = () => {
         }}
       />
       
-      {/* Cursor text */}
+      {/* Enhanced cursor text */}
       {cursorText && (
         <motion.div
-          className="fixed text-xs font-outfit font-medium pointer-events-none z-[100] text-lime"
+          className="fixed text-xs font-spaceGrotesk font-medium pointer-events-none z-[100] text-lime"
           animate={{
             x: position.x,
             y: position.y + 40,
@@ -146,8 +160,8 @@ const CustomCursor = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{
             type: "spring",
-            damping: 20,
-            stiffness: 300,
+            damping: 25,
+            stiffness: 350,
           }}
           style={{
             translateX: "-50%",
@@ -156,7 +170,7 @@ const CustomCursor = () => {
           {cursorText}
         </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 
