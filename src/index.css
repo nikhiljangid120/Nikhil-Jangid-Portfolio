@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -46,6 +47,15 @@
   
   html {
     scroll-behavior: smooth;
+    /* Hide the default cursor to prevent double cursor */
+    cursor: none;
+  }
+  
+  /* But show default cursor on mobile */
+  @media (max-width: 768px) {
+    html {
+      cursor: auto;
+    }
   }
   
   body {
@@ -78,6 +88,13 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-lime/50;
   }
+  
+  /* Ensure buttons and links show cursor on mobile */
+  @media (max-width: 768px) {
+    a, button, [role="button"], .interactive {
+      cursor: pointer !important;
+    }
+  }
 }
 
 @layer components {
@@ -85,12 +102,46 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-teal via-purple to-orange;
   }
   
-  .custom-cursor {
-    @apply fixed w-6 h-6 rounded-full bg-lime opacity-70 mix-blend-lighten pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2;
+  /* Enhanced badge hover effect */
+  .achievement-badge {
+    @apply px-3 py-1.5 rounded-full border flex items-center gap-2 transition-all duration-300;
+  }
+  
+  .achievement-badge:hover {
+    @apply transform -translate-y-1 shadow-lg;
+    box-shadow: 0 0 15px var(--glow-color, rgba(204, 255, 0, 0.5));
+  }
+  
+  /* LeetCode badge */
+  .badge-leetcode {
+    @apply bg-gradient-to-r from-lime/10 to-lime/20 border-lime/20;
+    --glow-color: rgba(204, 255, 0, 0.5);
+  }
+  
+  /* CodeChef badge */
+  .badge-codechef {
+    @apply bg-gradient-to-r from-gold/10 to-gold/20 border-gold/20;
+    --glow-color: rgba(255, 177, 0, 0.5);
+  }
+  
+  /* HackerEarth badge */
+  .badge-hackerearth {
+    @apply bg-gradient-to-r from-purple/10 to-purple/20 border-purple/20;
+    --glow-color: rgba(46, 23, 96, 0.5);
+  }
+  
+  /* Enhanced project card hover effect */
+  .project-card {
+    @apply transition-all duration-300 border border-white/5 hover:border-lime/20;
+  }
+  
+  .project-card:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 10px 25px -5px rgba(204, 255, 0, 0.15);
   }
   
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20;
   }
   
   .nav-link {
@@ -141,12 +192,31 @@
     @apply transition-transform duration-100 ease-out;
   }
   
-  /* Grid background pattern for hero section */
+  /* Updated grid background pattern for hero section */
   .bg-grid-pattern {
-    background-size: 40px 40px;
+    background-size: 30px 30px;
     background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+  
+  /* Animated background gradient for hero section */
+  .animated-gradient-bg {
+    background: linear-gradient(-45deg, #005A66, #2E1760, #D94F30, #FFB100, #CCFF00);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
   
   /* 3D Perspective and Transformations */
@@ -165,6 +235,12 @@
   /* Interactive Element Styles */
   .interactive {
     @apply cursor-none;
+  }
+  
+  @media (max-width: 768px) {
+    .interactive {
+      cursor: pointer !important;
+    }
   }
   
   /* Cinematic Transitions */
@@ -219,6 +295,7 @@
   }
 }
 
+/* Animation keyframes */
 @keyframes glitch-anim {
   0% {
     clip-path: inset(80% 0 0 0);
@@ -278,5 +355,24 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 768px) {
+  .section-container {
+    @apply py-12;
+  }
+  
+  h1, .h1 {
+    @apply text-3xl;
+  }
+  
+  h2, .h2 {
+    @apply text-2xl;
+  }
+  
+  h3, .h3 {
+    @apply text-xl;
   }
 }
