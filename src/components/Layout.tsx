@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Loader } from 'lucide-react';
+import CustomCursor from './CustomCursor';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,10 +15,16 @@ const Layout = ({ children }: LayoutProps) => {
   
   useEffect(() => {
     // Hide default cursor for desktop users
-    const isMobile = window.innerWidth < 768;
-    if (!isMobile) {
-      document.body.style.cursor = 'none';
-    }
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      document.body.style.cursor = isMobile ? 'auto' : 'none';
+    };
+    
+    // Initial check
+    handleResize();
+    
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
     
     // Simulate loading time for smooth page transition
     const timer = setTimeout(() => {
@@ -25,6 +33,7 @@ const Layout = ({ children }: LayoutProps) => {
     
     return () => {
       document.body.style.cursor = 'auto';
+      window.removeEventListener('resize', handleResize);
       clearTimeout(timer);
     };
   }, []);
@@ -40,7 +49,7 @@ const Layout = ({ children }: LayoutProps) => {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: [0.6, 0.05, 0.01, 0.9], // Fixed cubic-bezier values
+        ease: [0.6, 0.05, 0.01, 0.9],
         staggerChildren: 0.1
       }
     },
@@ -100,6 +109,7 @@ const Layout = ({ children }: LayoutProps) => {
     <AnimatePresence mode="wait">
       <div className="min-h-screen flex flex-col overflow-hidden">
         <Navbar />
+        <CustomCursor />
         <motion.main
           className="flex-grow"
           initial="initial"

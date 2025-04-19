@@ -9,11 +9,27 @@ const CustomCursor = () => {
   const [hidden, setHidden] = useState(false);
   const [text, setText] = useState('');
   const [isGameElement, setIsGameElement] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Default to true to prevent flicker on load
   
   useEffect(() => {
-    const isMobile = window.innerWidth <= 768;
+    // Check if mobile
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Reset cursor on mobile
+      if (mobile) {
+        document.body.style.cursor = 'auto';
+      } else {
+        document.body.style.cursor = 'none';
+      }
+    };
     
-    if (isMobile) return; // Don't run cursor effects on mobile
+    // Check initially and on resize
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // Don't run cursor effects on mobile
+    if (isMobile) return;
     
     // Add event listener for cursor movement
     const addEventListeners = () => {
@@ -44,13 +60,10 @@ const CustomCursor = () => {
       
       setIsGameElement(!!isGameEl);
       
-      if (hoveredEl?.closest('a, button, [role="button"], .interactive')) {
-        setLinkHovered(true);
-        setText(cursorTextAttr || '');
-      } else {
-        setLinkHovered(false);
-        setText('');
-      }
+      // Check for interactive elements
+      const isInteractive = hoveredEl?.closest('a, button, [role="button"], .interactive, .nav-link, .project-card, .achievement-badge');
+      setLinkHovered(!!isInteractive);
+      setText(cursorTextAttr || '');
     };
     
     // Mouse states
@@ -60,11 +73,15 @@ const CustomCursor = () => {
     const onMouseEnter = () => setHidden(false);
     
     addEventListeners();
-    return () => removeEventListeners();
-  }, []);
+    
+    return () => {
+      removeEventListeners();
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, [isMobile]);
   
   // Don't render on mobile devices
-  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+  if (isMobile) {
     return null;
   }
   
@@ -75,7 +92,7 @@ const CustomCursor = () => {
           {/* Main cursor */}
           <motion.div
             key="cursor-main"
-            className="cursor-trail mix-blend-difference bg-white fixed top-0 left-0 pointer-events-none z-50"
+            className="cursor-trail mix-blend-difference bg-white fixed top-0 left-0 pointer-events-none z-[1000]"
             animate={{
               x: position.x,
               y: position.y,
@@ -102,7 +119,7 @@ const CustomCursor = () => {
           {/* Cursor dot for precise pointing */}
           <motion.div
             key="cursor-dot"
-            className="cursor-dot bg-white fixed top-0 left-0 pointer-events-none z-50"
+            className="cursor-dot bg-white fixed top-0 left-0 pointer-events-none z-[1000]"
             animate={{
               x: position.x,
               y: position.y,
@@ -122,7 +139,7 @@ const CustomCursor = () => {
           {text && (
             <motion.div
               key="cursor-text"
-              className="fixed top-0 left-0 text-black font-medium text-xs pointer-events-none z-50 flex items-center justify-center"
+              className="fixed top-0 left-0 text-black font-medium text-xs pointer-events-none z-[1000] flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{
                 opacity: 1,
@@ -149,7 +166,7 @@ const CustomCursor = () => {
           {isGameElement && (
             <motion.div
               key="cursor-game"
-              className="fixed top-0 left-0 pointer-events-none z-50"
+              className="fixed top-0 left-0 pointer-events-none z-[1000]"
               initial={{ opacity: 0, scale: 0 }}
               animate={{
                 opacity: 1,

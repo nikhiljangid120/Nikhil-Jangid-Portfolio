@@ -19,6 +19,23 @@ const Navbar = () => {
     { id: 'contact', label: 'Contact' }
   ];
 
+  // Scroll to section function with offset
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const navbarHeight = document.querySelector('header')?.offsetHeight || 0;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      setIsOpen(false);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -67,16 +84,16 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
-              <motion.a
+              <motion.button
                 key={item.id}
-                href={`#${item.id}`}
+                onClick={() => scrollToSection(item.id)}
                 className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 {item.label}
-              </motion.a>
+              </motion.button>
             ))}
           </nav>
 
@@ -104,17 +121,16 @@ const Navbar = () => {
           >
             <nav className="flex flex-col py-4 px-4">
               {navItems.map((item, index) => (
-                <motion.a
+                <motion.button
                   key={item.id}
-                  href={`#${item.id}`}
-                  className={`nav-link py-3 ${activeSection === item.id ? 'active' : ''}`}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`nav-link py-3 text-left ${activeSection === item.id ? 'active' : ''}`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
-                  onClick={() => setIsOpen(false)}
                 >
                   {item.label}
-                </motion.a>
+                </motion.button>
               ))}
             </nav>
           </motion.div>
