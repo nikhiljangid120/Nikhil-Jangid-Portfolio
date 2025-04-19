@@ -19,10 +19,10 @@ This is a modern and powerful web application built using the latest web technol
 To run this project on your local machine, follow the steps below:
 
 ### 1. Clone the Repository
-git clone <YOUR_GIT_REPO_URL>
+git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
 
 ### 2. Navigate into the Project Directory
-cd <your-project-folder>
+cd *Nikhil Portfolio*
 
 ### 3. Install Dependencies
 Make sure you have Node.js and npm installed.
