@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { Github, Linkedin, Code, ExternalLink } from 'lucide-react';
 import * as THREE from 'three';
-import ParticleField from './ParticleField'; // Assuming this component is optimized
-import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card'; // Assuming './ui/hover-card' exists
+import ParticleField from './ParticleField';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 
 // Define TypeScript interfaces
 interface MousePosition {
@@ -11,55 +11,24 @@ interface MousePosition {
   y: number;
 }
 
-// Simple Particle component for Name Hover
-const HoverParticle = ({ delay }: { delay: number }) => (
-  <motion.div
-    className="absolute w-1 h-1 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
-    style={{
-      originX: 0.5,
-      originY: 0.5,
-      willChange: 'transform, opacity', // Optimization hint
-    }}
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{
-      opacity: [0, 1, 1, 0],
-      scale: [0, 1, 0.8, 0],
-      x: (Math.random() - 0.5) * 60, // Spread out
-      y: (Math.random() - 0.5) * 60,
-    }}
-    transition={{
-      duration: 0.6 + Math.random() * 0.4,
-      ease: 'easeOut',
-      delay: delay,
-      opacity: { times: [0, 0.2, 0.8, 1], duration: 0.8 + Math.random() * 0.4 },
-    }}
-  />
-);
-
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const nameWrapperRef = useRef<HTMLDivElement>(null); // Ref for name wrapper
-
+  const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [isRevealed, setIsRevealed] = useState(false);
   const [mousePos, setMousePos] = useState<MousePosition>({ x: 0, y: 0 });
-  const [webGLMousePos, setWebGLMousePos] = useState({ x: 0, y: 0 }); // For WebGL interaction
   const [cursorSize, setCursorSize] = useState(20);
-  const [cursorVariant, setCursorVariant] = useState<'default' | 'interactive'>('default');
   const [isMounted, setIsMounted] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const [isHoveringName, setIsHoveringName] = useState(false); // State for name hover
 
   // Parallax effect on scroll
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 100]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
-  const bgParallax = useTransform(scrollY, [0, 600], [0, -40]);
+  const y = useTransform(scrollY, [0, 500], [0, 70]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const bgParallax = useTransform(scrollY, [0, 500], [0, -30]);
 
-  // Smooth cursor size/style with spring physics
-  const springCursorSize = useSpring(cursorVariant === 'interactive' ? 35 : 20, { stiffness: 600, damping: 30 });
-  const springCursorOpacity = useSpring(cursorVariant === 'interactive' ? 0.3 : 0.2, { stiffness: 400, damping: 30 });
-  const springCursorScale = useSpring(1, { stiffness: 600, damping: 30 });
+  // Smooth cursor size with spring physics
+  const springCursorSize = useSpring(cursorSize, { stiffness: 700, damping: 45 });
 
   // Text animation characters
   const titleChars = "Hi, I'm".split('');
@@ -68,711 +37,731 @@ const HeroSection = () => {
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false);
 
-  // Intersection Observer for lazy loading + Initial Mount/Mobile Check
+  // Intersection Observer for lazy loading
   useEffect(() => {
-    setIsMounted(true);
-    const checkMobileOnMount = () => setIsMobile(window.innerWidth < 768);
-    checkMobileOnMount();
-
     const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.05 }
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
     );
-    const currentRef = containerRef.current;
-    if (currentRef) observer.observe(currentRef);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => {
-      if (currentRef) observer.unobserve(currentRef);
+      if (containerRef.current) observer.unobserve(containerRef.current);
     };
   }, []);
 
-
-  // WebGL Nebula with Mouse Interaction
+  // WebGL Nebula and 3D Masking Effect
   useEffect(() => {
+    setIsMounted(true);
     if (isMobile || !canvasRef.current || !isInView) return;
 
-    let rafId: number;
-    const canvas = canvasRef.current;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    // Consider turning off antialias if performance is critical on some devices
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    // Cap pixel ratio for performance boost on high-res screens
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(1); // Optimize for performance
 
-    const particleCount = 120; // Keeping the reduced count
+    // Nebula particle system
+    const particleCount = 300;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
-    const initialPositions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
-
-    const colorChoices = [new THREE.Color('#CCFF00'), new THREE.Color('#00C4B4'), new THREE.Color('#8B00FF')];
-
     for (let i = 0; i < particleCount; i++) {
-      const i3 = i * 3;
-      positions[i3] = initialPositions[i3] = (Math.random() - 0.5) * 6;
-      positions[i3 + 1] = initialPositions[i3 + 1] = (Math.random() - 0.5) * 6;
-      positions[i3 + 2] = initialPositions[i3 + 2] = (Math.random() - 0.5) * 6;
-
-      const color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
-
-      velocities[i3] = 0; velocities[i3 + 1] = 0; velocities[i3 + 2] = 0;
+      positions[i * 3] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 4;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4;
+      const color = new THREE.Color(
+        Math.random() > 0.5 ? '#CCFF00' : Math.random() > 0.5 ? '#00C4B4' : '#8B00FF'
+      );
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    geometry.attributes.position.needsUpdate = true;
 
     const material = new THREE.PointsMaterial({
-      size: 0.015,
+      size: 0.007,
       vertexColors: true,
       transparent: true,
       opacity: 0.85,
       sizeAttenuation: true,
-      depthWrite: false,
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
-    camera.position.z = 2.5;
 
-    const mouseVector = new THREE.Vector3();
-    const interactionRadius = 0.5;
-    const pushForce = 0.03;
-    const returnForce = 0.01;
-    const damping = 0.92;
+    // Procedural circuit texture for masking
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, 256, 256);
+    ctx.strokeStyle = '#CCFF00';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 10; i++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * 256, Math.random() * 256);
+      ctx.lineTo(Math.random() * 256, Math.random() * 256);
+      ctx.stroke();
+    }
+    const texture = new THREE.CanvasTexture(canvas);
 
-    let lastFrame = performance.now();
+    // 3D masking planes for each character
+    const planes: THREE.Mesh[] = [];
+    textRefs.current.forEach((ref, index) => {
+      if (!ref) return;
+      const { left, top, width, height } = ref.getBoundingClientRect();
+      const planeGeometry = new THREE.PlaneGeometry(width / 100, height / 100);
+      const planeMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0,
+        alphaTest: 0.5,
+      });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.position.set(
+        (left + width / 2 - window.innerWidth / 2) / 100,
+        -(top + height / 2 - window.innerHeight / 2) / 100,
+        0
+      );
+      planes[index] = plane;
+      scene.add(plane);
+    });
+
+    camera.position.z = 2;
+
+    // Optimized animation loop
+    let lastFrame = 0;
+    let rafId: number;
     const animate = (time: number) => {
-      const delta = Math.min(time - lastFrame, 33) / 1000;
+      const delta = Math.min(time - lastFrame, 33);
       lastFrame = time;
-
-      particles.rotation.y += 0.0003 * (delta * 60);
-      particles.rotation.x += 0.00008 * (delta * 60);
-
-       mouseVector.set(
-        (webGLMousePos.x / window.innerWidth) * 2 - 1,
-        -(webGLMousePos.y / window.innerHeight) * 2 + 1,
-         0.5
-       );
-       mouseVector.unproject(camera);
-       const dir = mouseVector.sub(camera.position).normalize();
-       const distance = -camera.position.z / dir.z;
-       const mouseWorldPos = camera.position.clone().add(dir.multiplyScalar(distance));
-
-      const currentPositions = particles.geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        const dx = currentPositions[i3] - mouseWorldPos.x;
-        const dy = currentPositions[i3 + 1] - mouseWorldPos.y;
-        const distSq = dx * dx + dy * dy;
-
-        let forceX = 0;
-        let forceY = 0;
-
-        if (distSq < interactionRadius * interactionRadius) {
-          const dist = Math.sqrt(distSq);
-          const force = (pushForce * (interactionRadius - dist)) / interactionRadius;
-          forceX = (dx / dist) * force;
-          forceY = (dy / dist) * force;
-        }
-
-        forceX += (initialPositions[i3] - currentPositions[i3]) * returnForce;
-        forceY += (initialPositions[i3 + 1] - currentPositions[i3 + 1]) * returnForce;
-
-        velocities[i3] += forceX;
-        velocities[i3 + 1] += forceY;
-        velocities[i3] *= damping;
-        velocities[i3 + 1] *= damping;
-        currentPositions[i3] += velocities[i3];
-        currentPositions[i3 + 1] += velocities[i3 + 1];
-      }
-      particles.geometry.attributes.position.needsUpdate = true;
-
+      particles.rotation.y += 0.0006 * (delta / 16);
+      particles.rotation.x += 0.00015 * (delta / 16);
       renderer.render(scene, camera);
       rafId = requestAnimationFrame(animate);
     };
-
     if (isInView) rafId = requestAnimationFrame(animate);
 
+    // Mouse interaction for 3D tilt
+    const handleMouseMove = (e: MouseEvent) => {
+      const { left, top } = containerRef.current!.getBoundingClientRect();
+      const x = (e.clientX - left) / window.innerWidth;
+      const y = (e.clientY - top) / window.innerHeight;
+      planes.forEach(plane => {
+        plane.rotation.x = (y - 0.5) * 0.5;
+        plane.rotation.y = (x - 0.5) * -0.5;
+      });
+    };
+    if (!isMobile) window.addEventListener('mousemove', handleMouseMove);
+
+    // Debounced resize
     let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        renderer.setSize(width, height);
-        camera.aspect = width / height;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
+        planes.forEach((plane, index) => {
+          const ref = textRefs.current[index];
+          if (!ref) return;
+          const { left, top, width, height } = ref.getBoundingClientRect();
+          plane.position.set(
+            (left + width / 2 - window.innerWidth / 2) / 100,
+            -(top + height / 2 - window.innerHeight / 2) / 100,
+            0
+          );
+          plane.geometry = new THREE.PlaneGeometry(width / 100, height / 100);
+        });
       }, 150);
     };
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(rafId);
-      // Attempt to dispose of resources safely
-      geometry?.dispose();
-      material?.dispose();
-      renderer?.dispose();
-      scene?.remove(particles);
+      renderer.dispose();
     };
-  }, [isMobile, isInView, webGLMousePos]);
+  }, [isMobile, isInView]);
 
-  // Mouse and interaction handling (Throttled)
+  // Mouse and interaction handling
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    // Check mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    // Throttled mouse move handler
     let lastMove = 0;
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastMove < 16) return; // Throttle ~60fps
+      if (now - lastMove < 16) return; // Throttle to 60fps
       lastMove = now;
 
       if (!containerRef.current || isMobile) return;
 
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const relX = x / rect.width - 0.5;
-      const relY = y / rect.height - 0.5;
+      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - left) / width - 0.5;
+      const y = (e.clientY - top) / height - 0.5;
 
-      setMousePos({ x: x, y: y });
-      setWebGLMousePos({ x: e.clientX, y: e.clientY });
+      setMousePos({ x: e.clientX - left, y: e.clientY - top });
 
-      const targetElement = e.target as Element;
-      const isInteractive = targetElement?.closest('.interactive');
-      setCursorVariant(isInteractive ? 'interactive' : 'default');
-      springCursorScale.set(isInteractive ? 1.1 : 1);
-
-      const elements = containerRef.current.querySelectorAll<HTMLElement>('.magnetic-element');
-      elements.forEach(el => {
-        const strength = parseFloat(el.dataset.strength || '10');
-        el.style.transform = `translate3d(${relX * strength}px, ${relY * strength}px, 0)`;
-        el.style.transition = 'transform 0.1s ease-out';
+      const elements = containerRef.current.querySelectorAll('.magnetic-element');
+      elements.forEach(element => {
+        const el = element as HTMLElement;
+        const strength = parseFloat(el.dataset.strength || '8');
+        el.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
       });
-    };
 
-    const handleMouseLeave = () => {
-        if (!containerRef.current || isMobile) return;
-        const elements = containerRef.current.querySelectorAll<HTMLElement>('.magnetic-element');
-        elements.forEach(el => {
-             el.style.transform = `translate3d(0px, 0px, 0px)`;
-             el.style.transition = 'transform 0.3s ease-out';
-        });
-        setCursorVariant('default');
-        springCursorScale.set(1);
+      // Adjust cursor size
+      const isHoveringInteractive = containerRef.current.querySelector(':hover.interactive');
+      setCursorSize(isHoveringInteractive ? 25 : 20);
     };
 
     const element = containerRef.current;
     if (element && !isMobile) {
-      element.addEventListener('mousemove', handleMouseMove, { passive: true });
-      element.addEventListener('mouseleave', handleMouseLeave);
+      element.addEventListener('mousemove', handleMouseMove);
     }
 
-    const timer = setTimeout(() => setIsRevealed(true), 300);
+    // Trigger text reveal
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 700);
 
     return () => {
       if (element && !isMobile) {
         element.removeEventListener('mousemove', handleMouseMove);
-        element.removeEventListener('mouseleave', handleMouseLeave);
       }
       window.removeEventListener('resize', checkMobile);
       clearTimeout(timer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile, springCursorScale]);
-
-  // Name hover handlers
-  const handleNameEnter = useCallback(() => setIsHoveringName(true), []);
-  const handleNameLeave = useCallback(() => setIsHoveringName(false), []);
-
-  // Memoize badge class generation
-  const getBadgeClasses = useCallback((color: string) => {
-    switch (color) {
-        case 'lime': return { border: 'border-lime/25', text: 'text-lime', bg: 'bg-lime' };
-        case 'gold': return { border: 'border-yellow-400/25', text: 'text-yellow-400', bg: 'bg-yellow-400' };
-        case 'cyan': return { border: 'border-cyan-400/25', text: 'text-cyan-400', bg: 'bg-cyan-400' };
-        default: return { border: 'border-gray-500/25', text: 'text-gray-300', bg: 'bg-gray-500' };
-    }
-  }, []);
-
+  }, [isMobile]);
 
   return (
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-inkyblack text-white isolate"
-      style={{ cursor: isMobile ? 'auto' : 'none' }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-inkyblack"
     >
-      {/* Staged Background Fade-in */}
-      <AnimatePresence>
-       {isMounted && isInView && (
-         <>
-            {/* WebGL Nebula Background */}
-            {!isMobile && (
-                <motion.canvas
-                ref={canvasRef}
-                className="absolute inset-0 pointer-events-none"
-                style={{ zIndex: 1, willChange: 'opacity' }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.8 }}
-                transition={{ duration: 1.5, delay: 0.1, ease: 'easeOut' }}
-                />
-            )}
+      {/* WebGL Nebula Background */}
+      {isMounted && !isMobile && isInView && (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1 }}
+        />
+      )}
 
-            {/* Fallback CSS Background for Mobile */}
-            {isMobile && (
-                <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-purple/15 via-teal/15 to-lime/15"
-                style={{ zIndex: 1, willChange: 'opacity, transform' }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6, scale: [1, 1.01, 1] }}
-                transition={{
-                    opacity: { duration: 1.5, delay: 0.1, ease: 'easeOut' },
-                    scale: { duration: 8, repeat: Infinity, repeatType: 'reverse' }
-                }}
-                />
-            )}
+      {/* Fallback CSS Background for Mobile */}
+      {isMounted && isMobile && (
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-purple/10 via-teal/10 to-lime/10 opacity-45"
+          animate={{ scale: [1, 1.005, 1], opacity: [0.45, 0.65, 0.45] }}
+          transition={{ duration: 7, repeat: Infinity, repeatType: 'reverse' }}
+          style={{ zIndex: 1 }}
+        />
+      )}
 
-            {/* Dynamic Background Layers Wrapper */}
-             <motion.div
-                className="absolute inset-0 overflow-hidden"
-                style={{ y: bgParallax, zIndex: 2, willChange: 'transform' }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.0, delay: 0.3, ease: 'easeOut' }}
-             >
-                {/* Mouse-Interactive Glow Pulse */}
-                {!isMobile && (
-                <motion.div
-                    className="absolute w-[150px] h-[150px] rounded-full bg-gradient-radial from-lime/10 via-teal/5 to-transparent blur-2xl pointer-events-none"
-                    style={{
-                    x: mousePos.x - 75,
-                    y: mousePos.y - 75,
-                    willChange: 'transform'
-                    }}
-                    animate={{ scale: [1, 1.15, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-                />
-                )}
-
-                {/* Ambient Light Pulses */}
-                {!isMobile && (
-                <div className="absolute inset-0">
-                    {Array.from({ length: 2 }).map((_, index) => (
-                    <motion.div
-                        key={`pulse-${index}`}
-                        className="absolute w-[100px] h-[100px] rounded-full bg-gradient-to-br from-lime/5 to-purple/5 blur-xl"
-                        style={{
-                         top: `${15 + index * 40}%`,
-                         left: `${10 + index * 60}%`,
-                         willChange: 'opacity, transform'
-                        }}
-                        animate={{
-                        opacity: [0.05, 0.15, 0.05],
-                        scale: [0.9, 1.1, 0.9],
-                        x: [0, 8, -8, 0],
-                        }}
-                        transition={{
-                        duration: 7 + index * 3,
-                        repeat: Infinity,
-                        repeatType: 'reverse',
-                        delay: index * 0.7,
-                        }}
-                    />
-                    ))}
-                </div>
-                )}
-
-                {/* Minimal Starfield REMOVED FOR PERFORMANCE */}
-                {/*
-                {!isMobile && (
-                    <div className="absolute inset-0 pointer-events-none">
-                        {Array.from({ length: 35 }).map((_, index) => (
-                        <motion.div
-                            key={`star-${index}`}
-                            className="absolute w-[1.5px] h-[1.5px] rounded-full bg-white/50"
-                            style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            willChange: 'opacity, transform'
-                            }}
-                            animate={{ opacity: [0.2, 0.7, 0.2], scale: [0.5, 1, 0.5] }}
-                            transition={{
-                            duration: 1.8 + Math.random() * 1.5,
-                            repeat: Infinity,
-                            repeatType: 'reverse',
-                            delay: Math.random() * 3,
-                            }}
-                        />
-                        ))}
-                    </div>
-                )}
-                 */}
-
-
-                {/* Optimized Particle Field */}
-                <ParticleField
-                particleCount={isMobile ? 10 : 35} // Slightly increased count to compensate for stars
-                colors={['#CCFF00', '#00C4B4', '#8B00FF']}
-                minSize={0.15}
-                maxSize={0.7}
-                speed={0.15}
-                swarmFactor={0.04}
-                className="opacity-25 pointer-events-none" // Slightly increased opacity
-                style={{ zIndex: 3, willChange: 'transform' }}
-                />
-
-                {/* Holographic Grid Overlay */}
-                 <motion.div
-                    className="absolute inset-0 bg-grid-pattern mix-blend-soft-light"
-                    style={{
-                         zIndex: 4,
-                        '--grid-color-1': '#CCFF00',
-                        '--grid-color-2': '#00C4B4',
-                        willChange: 'opacity, background-position'
-                    }}
-                    animate={{
-                         opacity: [0.08, 0.18, 0.08],
-                         backgroundPosition: ['0% 0%', '100% 100%'],
-                         '--grid-color-1': ['#CCFF00', '#8B00FF', '#CCFF00'],
-                         '--grid-color-2': ['#00C4B4', '#CCFF00', '#00C4B4'],
-                    } as any}
-                    transition={{
-                        opacity: { duration: 5, repeat: Infinity, repeatType: 'reverse' },
-                        backgroundPosition: { duration: 20, repeat: Infinity, repeatType: 'loop', ease: 'linear' },
-                         default: { duration: 10, repeat: Infinity, repeatType: 'reverse' }
-                    }}
-                >
-                    {/* Add dynamic grid color via style */}
-                     <style>{`
-                        .bg-grid-pattern {
-                         background-image: linear-gradient(to right, var(--grid-color-1, #CCFF00) 1px, transparent 1px),
-                                           linear-gradient(to bottom, var(--grid-color-2, #00C4B4) 1px, transparent 1px);
-                         background-size: 35px 35px;
-                         opacity: 0.1; /* Base opacity set via class */
-                         }
-                    `}</style>
-                </motion.div>
-            </motion.div>
-          </>
+      {/* Dynamic Background Layers */}
+      <motion.div
+        className="absolute inset-0 overflow-hidden"
+        style={{ y: bgParallax, zIndex: 2 }}
+      >
+        {/* Mouse-Interactive Glow Pulse */}
+        {isMounted && !isMobile && isInView && (
+          <motion.div
+            className="absolute w-[100px] h-[100px] rounded-full bg-gradient-to-r from-lime/20 to-teal/20 blur-lg pointer-events-auto"
+            style={{ x: mousePos.x - 50, y: mousePos.y - 50 }}
+            animate={{
+              scale: [1, 1.08, 1],
+              opacity: [0.2, 0.35, 0.2],
+              rotate: [0, 6, -6, 0],
+            }}
+            transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse' }}
+          />
         )}
-      </AnimatePresence>
+
+        {/* Ambient Light Pulses */}
+        {isMounted && !isMobile && isInView && (
+          <motion.div className="absolute inset-0">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <motion.div
+                key={`pulse-${index}`}
+                className="absolute w-[70px] h-[70px] rounded-full bg-gradient-to-r from-lime/08 to-transparent blur-md"
+                style={{ top: `${10 + index * 20}%`, left: `${5 + index * 15}%` }}
+                animate={{
+                  opacity: [0.08, 0.2, 0.08],
+                  scale: [0.8, 1, 0.8],
+                  x: [0, 10, -10, 0],
+                }}
+                transition={{
+                  duration: 5 + index * 1.5,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  delay: index * 0.3,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+
+        {/* Minimal Starfield */}
+        {isMounted && !isMobile && isInView && (
+          <motion.div className="absolute inset-0">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <motion.div
+                key={`star-${index}`}
+                className="absolute w-[1px] h-[1px] rounded-full bg-white/25"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{ opacity: [0.15, 0.5, 0.15], scale: [0.5, 0.8, 0.5] }}
+                transition={{
+                  duration: 1.2 + Math.random() * 0.3,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  delay: index * 0.1,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+
+        {/* Nano-Particle Trails */}
+        {isMounted && !isMobile && isInView && (
+          <motion.div className="absolute inset-0">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <motion.div
+                key={`nano-particle-${index}`}
+                className="absolute w-[1.5px] h-[1.5px] rounded-full bg-gradient-to-r from-lime/35 to-teal/35"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  x: [
+                    0,
+                    Math.random() * 10 - 5 + (mousePos.x - window.innerWidth / 2) * 0.01,
+                    0,
+                  ],
+                  y: [
+                    0,
+                    Math.random() * 10 - 5 + (mousePos.y - window.innerHeight / 2) * 0.01,
+                    0,
+                  ],
+                  scale: [0.5, 0.9, 0.5],
+                  opacity: [0.25, 0.45, 0.25],
+                }}
+                transition={{
+                  duration: 0.7 + Math.random() * 0.6,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  delay: index * 0.07,
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+
+        {/* Optimized Particle Field */}
+        {isMounted && isInView && (
+          <ParticleField
+            particleCount={isMobile ? 15 : 60}
+            colors={['#CCFF00', '#00C4B4', '#8B00FF', '#FFB100', '#D94F30']}
+            minSize={0.1}
+            maxSize={0.5}
+            speed={0.3}
+            swarmFactor={0.07}
+            className="opacity-20"
+            animate={{
+              x: [0, 10, -10, 0],
+              y: [0, -10, 10, 0],
+              opacity: [0.2, 0.3, 0.2],
+            }}
+            transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+            style={{ zIndex: 3 }}
+          />
+        )}
+
+        {/* Holographic Grid Overlay */}
+        {isMounted && isInView && (
+          <motion.div
+            className="absolute inset-0 bg-grid-pattern opacity-15"
+            animate={{ opacity: [0.15, 0.25, 0.15], scale: [1, 1.005, 1] }}
+            transition={{ duration: 4, repeat: Infinity, repeatType: 'reverse' }}
+            style={{ zIndex: 4 }}
+          >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-lime/08 to-transparent blur-sm"
+              animate={{ x: ['-100%', '100%'], opacity: [0, 0.15, 0] }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                repeatType: 'loop',
+                ease: 'linear',
+              }}
+            />
+          </motion.div>
+        )}
+      </motion.div>
 
       {/* Custom Cursor */}
-      {!isMobile && isMounted && (
+      {isMounted && !isMobile && (
         <motion.div
-          className="absolute top-0 left-0 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
+          className="absolute rounded-full bg-gradient-to-r from-lime/25 to-teal/25 blur-sm pointer-events-none"
           style={{
             width: springCursorSize,
             height: springCursorSize,
-            x: mousePos.x,
-            y: mousePos.y,
-            translateX: '-50%',
-            translateY: '-50%',
-            opacity: springCursorOpacity,
-            scale: springCursorScale,
+            x: mousePos.x - springCursorSize.get() / 2,
+            y: mousePos.y - springCursorSize.get() / 2,
             zIndex: 1000,
-            willChange: 'width, height, transform, opacity'
           }}
-          transition={{ type: 'spring', stiffness: 600, damping: 30 }}
-        >
-           {/* Cursor Ring Effect */}
-           <motion.div
-            className="absolute inset-[-3px] rounded-full border-2 border-lime/50"
-            style={{ willChange: 'transform, opacity' }}
-            animate={{
-                scale: cursorVariant === 'interactive' ? 1.3 : 0,
-                opacity: cursorVariant === 'interactive' ? [0, 0.8, 0] : 0
-            }}
-            transition={{
-                duration: 0.4,
-                ease: 'circOut',
-                opacity: { duration: 0.4, ease: 'linear'}
-            }}
-           />
-        </motion.div>
+          animate={{ scale: [1, 1.06, 1], opacity: [0.25, 0.45, 0.25] }}
+          transition={{ duration: 0.7, repeat: Infinity, repeatType: 'reverse' }}
+        />
       )}
 
-      {/* Main Content */}
-      <motion.div
-        style={{ y, opacity, zIndex: 10, willChange: 'transform, opacity' }}
-        className="section-container relative px-4 text-center md:text-left flex flex-col items-center md:items-start"
-      >
-        {/* Title: "Hi, I'm" */}
-        <motion.div className="mb-1 overflow-hidden">
-          <div className="flex justify-center md:justify-start">
-            {titleChars.map((char, index) => (
-              <motion.span
-                key={`title-${index}`}
-                className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-300 inline-block mr-[1px]"
-                style={{ willChange: 'transform, opacity' }}
-                initial={{ y: '100%', opacity: 0 }}
-                animate={isRevealed ? { y: '0%', opacity: 1 } : { y: '100%', opacity: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 + index * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
+      <motion.div style={{ y, opacity, zIndex: 10 }} className="section-container relative">
+        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+          <motion.div className="relative mb-8 overflow-hidden">
+            <div className="flex justify-center md:justify-start mb-2">
+              {titleChars.map((char, index) => (
+                <motion.span
+                  key={`title-${index}`}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white inline-block relative"
+                  initial={{ y: 70, opacity: 0 }}
+                  animate={isRevealed ? { y: 0, opacity: 1 } : { y: 70, opacity: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.1 + index * 0.03,
+                    ease: [0.215, 0.61, 0.355, 1],
+                  }}
+                  whileHover={{
+                    y: -3,
+                    rotate: [0, 1.5, -1.5, 0],
+                    scale: 1.02,
+                    transition: { duration: 0.15 },
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                  <motion.span
+                    className="absolute -inset-1 bg-gradient-to-r from-lime/10 to-teal/10 blur-sm rounded -z-10"
+                    animate={{ opacity: [0, 0.15, 0] }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                      delay: index * 0.07,
+                    }}
+                  />
+                </motion.span>
+              ))}
+            </div>
 
-        {/* Name: "Nikhil Jangid" with Enhanced Hover */}
-        <motion.div
-          ref={nameWrapperRef}
-          className="relative mb-6 group interactive"
-          whileHover="hover"
-          onMouseEnter={handleNameEnter}
-          onMouseLeave={handleNameLeave}
-          style={{ cursor: 'pointer' }}
-        >
-          {/* Background Glow on Hover */}
-          <motion.div
-            className="absolute -inset-x-3 -inset-y-1.5 bg-gradient-to-r from-lime/10 via-purple/10 to-teal/10 opacity-0 group-hover:opacity-100 blur-xl rounded-lg transition-opacity duration-300 -z-10"
-            variants={{ hover: { opacity: 1, scale: 1.08 } }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          />
-          {/* Name Particle Emitter */}
-          <AnimatePresence>
-            {isHoveringName && (
+            <div className="flex justify-center md:justify-start flex-wrap relative">
+              {nameChars.map((char, index) => (
+                <motion.span
+                  key={`name-${index}`}
+                  ref={el => (textRefs.current[index] = el)}
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white inline-block relative"
+                  style={{ textShadow: '0 0 6px rgba(204, 255, 0, 0.5)' }}
+                  initial={{ y: 70, opacity: 0, scale: 0.96 }}
+                  animate={
+                    isRevealed
+                      ? { y: 0, opacity: 1, scale: 1 }
+                      : { y: 70, opacity: 0, scale: 0.96 }
+                  }
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.3 + index * 0.04,
+                    ease: [0.215, 0.61, 0.355, 1],
+                  }}
+                  whileHover={{
+                    y: -3,
+                    scale: 1.02,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  <span className="relative">
+                    {char === ' ' ? '\u00A0' : char}
+                    {/* Neon Circuit Pulse */}
+                    <motion.span
+                      className="absolute -inset-1 bg-gradient-to-r from-lime/25 via-purple/25 to-teal/25 blur-md rounded -z-10"
+                      animate={{ opacity: [0.15, 0.5, 0.15], scale: [1, 1.03, 1] }}
+                      transition={{
+                        duration: 0.9,
+                        repeat: Infinity,
+                        repeatType: 'reverse',
+                        delay: index * 0.07,
+                      }}
+                    />
+                    {/* Holographic Shine */}
+                    <motion.span
+                      className="absolute inset-0 bg-gradient-to-r from-lime/15 via-white/15 to-teal/15 -z-10"
+                      animate={{ x: ['-100%', '100%'], opacity: [0, 0.25, 0] }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        repeatType: 'loop',
+                        ease: 'linear',
+                        delay: index * 0.1,
+                      }}
+                    />
+                    {/* Particle Burst on Hover */}
+                    <motion.span
+                      className="absolute w-1 h-1 bg-lime/30 rounded-full -z-10"
+                      initial={{ x: 0, y: 0, opacity: 0 }}
+                      whileHover={{
+                        x: [0, 6, 12],
+                        y: [0, -6, -12],
+                        opacity: [0, 0.3, 0],
+                      }}
+                      transition={{ duration: 0.3, ease: 'easeOut' }}
+                    />
+                  </span>
+                </motion.span>
+              ))}
               <motion.div
-                className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10"
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
+                className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-teal via-lime to-purple origin-left rounded-full"
+                initial={{ scaleX: 0 }}
+                animate={isRevealed ? { scaleX: 1 } : { scaleX: 0 }}
+                transition={{ duration: 0.7, delay: 1, ease: 'easeInOut' }}
+                animate={{ opacity: [0.5, 0.9, 0.5], scale: [1, 1.01, 1] }}
+                transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse' }}
               >
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <HoverParticle key={i} delay={i * 0.02} />
+                {/* Segmented Energy Flow */}
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <motion.div
+                    key={`segment-${index}`}
+                    className="absolute w-[25%] h-full bg-white/25"
+                    style={{ left: `${index * 25}%` }}
+                    animate={{ opacity: [0.25, 0.7, 0.25], x: [0, 8, 0] }}
+                    transition={{
+                      duration: 0.7,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                      delay: index * 0.08,
+                    }}
+                  />
                 ))}
               </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="flex justify-center md:justify-start flex-wrap">
-            {nameChars.map((char, index) => (
-              <motion.span
-                key={`name-${index}`}
-                className={`text-4xl md:text-6xl lg:text-7xl font-bold inline-block relative mr-[1px] transition-colors duration-300 ease-out ${
-                  isHoveringName ? 'text-transparent' : 'text-white'
-                }`}
-                style={{
-                  willChange: 'transform, opacity, color', // Added color to will-change
-                  backgroundImage: isHoveringName
-                    ? 'linear-gradient(90deg, #CCFF00, #00C4B4, #8B00FF, #CCFF00)'
-                    : 'none',
-                  backgroundSize: '250% auto',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  animation: isHoveringName ? 'gradient-shine 3s linear infinite' : 'none',
-                }}
-                initial={{ y: '100%', opacity: 0 }}
-                animate={isRevealed ? { y: '0%', opacity: 1 } : { y: '100%', opacity: 0 }}
-                transition={{ duration: 0.8, delay: 0.7 + index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                variants={{
-                  hover: {
-                    y: (Math.random() - 0.5) * 5,
-                    rotate: (Math.random() - 0.5) * 4,
-                    transition: { duration: 0.2, delay: index * 0.015, type: 'spring', stiffness: 300, damping: 8 }
-                  }
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </motion.span>
-            ))}
-          </div>
-          {/* Animated Underline */}
-          <motion.div
-            className="absolute -bottom-2.5 left-0 w-full h-[3px] bg-gradient-to-r from-teal via-lime to-purple rounded-full origin-left"
-            style={{ willChange: 'transform, opacity' }}
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={isRevealed ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <motion.div
-              className="absolute inset-0 bg-white/40"
-              animate={{ opacity: [0, 0.6, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, repeatType: 'reverse', delay: 1.8 }}
-            />
+            </div>
           </motion.div>
-        </motion.div>
 
-        {/* Subtitle */}
-        <motion.h2
-          className="text-xl md:text-2xl mb-8 text-gray-300 max-w-xl bg-black/30 backdrop-blur-sm p-4 rounded-lg shadow-md"
-          style={{ willChange: 'transform, opacity' }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.7, delay: 1.5 }}
-        >
-          <span className="text-lime font-semibold">Full-stack developer</span> & <span className="text-teal font-semibold">problem solver</span> crafting immersive digital experiences from <span className="font-medium text-gray-100">Jaipur</span>. {/* Added location subtly */}
-        </motion.h2>
-
-        {/* Action Buttons */}
-        <motion.div
-          className="flex flex-wrap gap-4 mb-10 justify-center md:justify-start"
-          initial="hidden"
-          animate={isRevealed ? "visible" : "hidden"}
-          variants={{
-            visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 1.5, staggerChildren: 0.1 } },
-            hidden: { opacity: 0, y: 20 }
-          }}
-        >
-          <motion.a
-            href="#contact"
-            className="relative px-7 py-3.5 bg-gradient-to-r from-lime to-teal text-inkyblack font-bold rounded-lg overflow-hidden group interactive shadow-lg shadow-lime/25 hover:shadow-xl hover:shadow-lime/35"
-             style={{ willChange: 'transform, box-shadow' }}
-            variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
-            whileHover={{ scale: 1.06, y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+          <motion.h2
+            className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl bg-inkyblack/30 backdrop-blur-sm p-4 rounded-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.6, delay: 1.3 }}
+            animate={{ y: [0, -1, 0], opacity: [1, 0.9, 1] }}
+            transition={{ duration: 3.5, repeat: Infinity, repeatType: 'reverse' }}
           >
-            <span className="relative z-10">Get in touch</span>
-            <motion.span
-              className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 group-hover:opacity-100"
-              animate={{ x: ['-110%', '110%'] }}
-              transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
-            />
-          </motion.a>
-          <motion.a
-            href="#projects"
-            className="relative px-7 py-3.5 bg-black/30 text-white font-semibold rounded-lg border border-lime/50 overflow-hidden group interactive backdrop-blur-md hover:border-lime/80 hover:bg-black/40"
-             style={{ willChange: 'transform, border-color, background-color' }}
-            variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 20 } }}
-            whileHover={{ scale: 1.06, y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 10 }}
-          >
-            <span className="relative z-10">View projects</span>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-lime/20 to-teal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10"
-            />
-          </motion.a>
-        </motion.div>
+            <span className="text-lime font-medium">Full stack developer</span> and{' '}
+            <span className="text-gold font-medium">problem solver</span> crafting immersive digital experiences.
+          </motion.h2>
 
-        {/* Social Links */}
-        <motion.div
-          className="flex space-x-6 mb-8"
-           initial="hidden"
-           animate={isRevealed ? "visible" : "hidden"}
-           variants={{
-            visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 1.7, staggerChildren: 0.08 } },
-            hidden: { opacity: 0, y: 15 }
-           }}
-        >
-          {[
-            { href: 'https://github.com/nikhiljangid120', icon: Github, text: 'GitHub' },
-            { href: 'https://www.linkedin.com/in/nikhil-jangid-b84360264/', icon: Linkedin, text: 'LinkedIn' },
-            { href: 'https://leetcode.com/u/nikhil_888/', icon: Code, text: 'LeetCode' },
-            { href: 'https://www.geeksforgeeks.org/user/nikhiljals77/', icon: ExternalLink, text: 'GeeksForGeeks' },
-          ].map(({ href, icon: Icon, text }) => (
-            <motion.div key={text} variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 15 } }}>
-                <HoverCard openDelay={150} closeDelay={100}>
+          <motion.div
+            className="flex flex-wrap gap-4 mb-12 justify-center md:justify-start"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.6, delay: 1.5 }}
+          >
+            <motion.a
+              href="#contact"
+              className="relative px-6 py-3 bg-gradient-to-r from-lime/80 to-teal/80 text-inkyblack font-semibold rounded-md overflow-hidden group interactive backdrop-blur-sm"
+              data-cursor-text="Let's talk"
+              whileHover={{
+                scale: 1.03,
+                boxShadow: '0 6px 15px -5px rgba(204, 255, 0, 0.3)',
+                rotate: [0, 0.3, -0.3, 0],
+                y: -1,
+              }}
+              whileTap={{ scale: 0.97 }}
+              animate={{ scale: [1, 1.01, 1], boxShadow: ['0 0 6px rgba(204, 255, 0, 0.15)', '0 0 10px rgba(204, 255, 0, 0.25)', '0 0 6px rgba(204, 255, 0, 0.15)'] }}
+              transition={{
+                rotate: { duration: 0.15 },
+                scale: { duration: 2.5, repeat: Infinity, repeatType: 'reverse' },
+                boxShadow: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
+              }}
+            >
+              <span className="relative z-10">Get in touch</span>
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-25 transition-opacity duration-150"
+                animate={{ x: ['-100%', '100%'], opacity: [0, 0.3, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  repeatType: 'loop',
+                  duration: 0.7,
+                  ease: 'linear',
+                }}
+              />
+            </motion.a>
+            <motion.a
+              href="#projects"
+              className="relative px-6 py-3 bg-transparent text-white font-semibold rounded-md border border-lime/25 overflow-hidden group interactive backdrop-blur-sm"
+              data-cursor-text="See work"
+              whileHover={{
+                scale: 1.03,
+                borderColor: 'rgba(204, 255, 0, 0.4)',
+                rotate: [0, -0.3, 0.3, 0],
+                y: -1,
+              }}
+              whileTap={{ scale: 0.97 }}
+              animate={{ scale: [1, 1.01, 1], borderColor: ['rgba(204, 255, 0, 0.25)', 'rgba(204, 255, 0, 0.35)', 'rgba(204, 255, 0, 0.25)'] }}
+              transition={{
+                rotate: { duration: 0.15 },
+                scale: { duration: 2.5, repeat: Infinity, repeatType: 'reverse' },
+                borderColor: { duration: 1, repeat: Infinity, repeatType: 'reverse' },
+              }}
+            >
+              <span className="relative z-10">View projects</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-lime/15 to-teal/15 -z-10"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.15 }}
+              />
+            </motion.a>
+          </motion.div>
+
+          <motion.div
+            className="flex space-x-6"
+            initial={{ opacity: 0 }}
+            animate={isRevealed ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.5, delay: 1.7 }}
+          >
+            {[
+              { href: 'https://github.com/nikhiljangid120', icon: Github, text: 'GitHub' },
+              { href: 'https://www.linkedin.com/in/nikhil-jangid-b84360264/', icon: Linkedin, text: 'LinkedIn' },
+              { href: 'https://leetcode.com/u/nikhil_888/', icon: Code, text: 'LeetCode' },
+              { href: 'https://www.geeksforgeeks.org/user/nikhiljals77/', icon: ExternalLink, text: 'GeeksForGeeks' },
+            ].map(({ href, icon: Icon, text }, index) => (
+              <HoverCard key={text}>
                 <HoverCardTrigger asChild>
                   <motion.a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-lime transition-colors duration-200 magnetic-element interactive relative group"
-                    data-strength="15"
-                    style={{ willChange: 'transform' }}
-                    whileHover={{ scale: 1.25, y: -4, rotate: 8 }}
-                    whileTap={{ scale: 1.1 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 8 }}
+                    className="text-gray-300 hover:text-lime transition-colors duration-150 magnetic-element interactive relative"
+                    data-cursor-text={text}
+                    data-strength="10"
+                    whileHover={{
+                      scale: 1.15,
+                      rotate: [0, 2, -2, 0],
+                      y: -1,
+                    }}
+                    animate={{
+                      rotate: [0, 0.5, -0.5, 0],
+                      scale: [1, 1.03, 1],
+                      boxShadow: ['0 0 6px rgba(204, 255, 0, 0)', '0 0 8px rgba(204, 255, 0, 0.15)', '0 0 6px rgba(204, 255, 0, 0)'],
+                    }}
+                    transition={{
+                      rotate: { duration: 2 + index * 0.3, repeat: Infinity, repeatType: 'reverse' },
+                      scale: { duration: 2 + index * 0.3, repeat: Infinity, repeatType: 'reverse' },
+                      boxShadow: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' },
+                    }}
                   >
                     <Icon size={28} />
                     <motion.span
-                      className="absolute -inset-2 bg-lime/15 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 -z-10"
+                      className="absolute -inset-1 bg-lime/10 blur-sm rounded-full -z-10"
+                      animate={{ opacity: [0, 0.15, 0] }}
+                      transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', delay: index * 0.1 }}
                     />
                   </motion.a>
                 </HoverCardTrigger>
-                <HoverCardContent className="bg-inkyblack/85 border border-lime/20 backdrop-blur-lg text-sm text-gray-200 shadow-xl rounded-lg">
-                  {text === 'GitHub' ? 'Explore my code on GitHub' : `Visit my ${text} profile`}
+                <HoverCardContent className="bg-inkyblack/70 border border-lime/10 backdrop-blur-sm">
+                  <p className="text-sm text-gray-200">{text === 'GitHub' ? 'Follow me on GitHub' : `View my ${text} profile`}</p>
                 </HoverCardContent>
               </HoverCard>
-            </motion.div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
 
-        {/* Achievement badges */}
-        <motion.div
-          className="flex flex-wrap gap-3 justify-center md:justify-start mb-6"
-           initial="hidden"
-           animate={isRevealed ? "visible" : "hidden"}
-           variants={{
-            visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 1.9, staggerChildren: 0.06 } },
-            hidden: { opacity: 0, y: 15 }
-           }}
-        >
-          {[
-            { text: 'LeetCode 100 Days', color: 'lime' },
-            { text: 'CodeChef Rated', color: 'gold' },
-            { text: 'HackerEarth Achiever', color: 'cyan' },
-          ].map(({ text, color }) => {
-            const classes = getBadgeClasses(color);
-            return (
+          {/* Achievement badges */}
+          <motion.div
+            className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.6, delay: 1.9 }}
+          >
+            {[
+              { text: 'LeetCode 100 Days', color: 'lime', bgColor: 'bg-lime' },
+              { text: 'CodeChef Badges', color: 'gold', bgColor: 'bg-gold' },
+              { text: 'HackerEarth Achiever', color: 'cyan-400', bgColor: 'bg-cyan-500' },
+            ].map(({ text, color, bgColor }, index) => (
               <motion.div
                 key={text}
-                className={`interactive bg-black/40 backdrop-blur px-3.5 py-1.5 rounded-full flex items-center gap-2.5 ${classes.border} shadow-md cursor-default group`}
-                 style={{ willChange: 'transform, box-shadow' }}
-                variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 15 } }}
-                whileHover={{ scale: 1.1, y: -2, rotate: 1, boxShadow: `0 5px 12px -3px rgba(204, 255, 0, 0.2)` }}
-                transition={{ type: 'spring', stiffness: 350, damping: 10 }}
+                className={`achievement-badge interactive bg-inkyblack/30 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-2 border border-${color}/15`}
+                data-cursor-text={text.split(' ')[0]}
+                whileHover={{ scale: 1.05, rotate: [0, 1.5, -1.5, 0], y: -1 }}
+                animate={{
+                  y: [0, -1, 0],
+                  scale: [1, 1.02, 1],
+                  boxShadow: ['0 0 6px rgba(204, 255, 0, 0)', '0 0 8px rgba(204, 255, 0, 0.15)', '0 0 6px rgba(204, 255, 0, 0)'],
+                }}
+                transition={{
+                  duration: 2 + index * 0.3,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                  rotate: { duration: 0.15 },
+                  scale: { duration: 2 + index * 0.3, repeat: Infinity, repeatType: 'reverse' },
+                  boxShadow: { duration: 0.8, repeat: Infinity, repeatType: 'reverse' },
+                }}
               >
                 <motion.span
-                  className={`h-2.5 w-2.5 rounded-full ${classes.bg}`}
-                  animate={{ scale: [1, 1.25, 1], opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 1.3, repeat: Infinity, repeatType: 'reverse' }}
+                  className={`h-2 w-2 rounded-full ${bgColor}`}
+                  animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.9, 0.5] }}
+                  transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', delay: index * 0.1 }}
                 />
-                <span className={`text-xs font-medium ${classes.text}`}>{text}</span>
+                <span className={`text-xs font-medium text-${color}`}>{text}</span>
                 <motion.span
-                  className="absolute -inset-1.5 bg-lime/10 blur-md rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-200 -z-10"
+                  className="absolute -inset-1 bg-lime/10 blur-sm rounded-full -z-10"
+                  animate={{ opacity: [0, 0.1, 0] }}
+                  transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', delay: index * 0.15 }}
                 />
               </motion.div>
-            );
-          })}
-        </motion.div>
+            ))}
+          </motion.div>
 
-        {/* Contact information - Removed as location added to subtitle */}
-        {/*
-        <motion.div
-          className="text-sm text-gray-400 bg-black/30 backdrop-blur px-4 py-1.5 rounded-lg shadow-sm"
-           style={{ willChange: 'transform, opacity' }}
-           initial={{ opacity: 0, y: 10 }}
-           animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-           transition={{ duration: 0.6, delay: 2.1 }}
-        >
-          Based in <span className="text-gray-200 font-medium">Jaipur, Rajasthan</span> <span className="inline-block ml-1">🇮🇳</span>
-        </motion.div>
-        */}
-
+          {/* Contact information badges */}
+          <motion.div
+            className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start bg-inkyblack/30 backdrop-blur-sm p-3 rounded-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.6, delay: 2.1 }}
+            animate={{ y: [0, -0.5, 0], opacity: [1, 0.9, 1] }}
+            transition={{ duration: 3.5, repeat: Infinity, repeatType: 'reverse' }}
+          >
+            <span className="text-sm text-gray-400">
+              <span className="text-gray-200 font-medium">Jaipur, Rajasthan</span>
+            </span>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
         <motion.div
-          className="w-1 h-5 border-0 border-lime/40 rounded-full flex justify-center items-end pb-[3px]"
-           style={{ willChange: 'opacity' }}
-           initial={{ opacity: 0 }}
-           animate={isRevealed ? { opacity: [0, 0.6, 0.6, 0], y: [0, 5, 5, 10] } : { opacity: 0 }}
-           transition={{ duration: 2.5, repeat: Infinity, ease: 'linear', delay: 4, repeatDelay: 2 }}
+          className="w-8 h-12 border-2 border-lime/15 rounded-full flex justify-center p-1 relative"
+          animate={{ y: [0, 6, 0], scale: [1, 1.03, 1] }}
+          transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
         >
-            <motion.div
-             className="w-1 h-1 bg-lime/80 rounded-full"
-           />
+          <motion.div
+            className="w-1.5 h-3 bg-lime/50 rounded-full"
+            animate={{ y: [0, 6, 0], opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+          />
         </motion.div>
       </div>
-
-      {/* Add the gradient animation style globally */}
-      <style>{`
-        @keyframes gradient-shine {
-          to { background-position: 250% center; }
-        }
-      `}</style>
     </section>
   );
 };
