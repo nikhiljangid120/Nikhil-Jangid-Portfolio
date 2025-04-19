@@ -17,7 +17,7 @@ const Navbar = () => {
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
     { id: 'timeline', label: 'Timeline' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'contact', label: 'Contact' },
   ];
 
   // Scroll to section function with offset
@@ -27,12 +27,13 @@ const Navbar = () => {
       const navbarHeight = document.querySelector('header')?.offsetHeight || 0;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
-      
+
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
-      
+
+      setActiveSection(id);
       setIsOpen(false);
     }
   };
@@ -40,97 +41,101 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
-      
+
       // Determine navbar visibility (hide on scroll down, show on scroll up)
       const isVisible = prevScrollPos > currentScrollPos || currentScrollPos < 10;
       setVisible(isVisible);
       setPrevScrollPos(currentScrollPos);
-      
+
       // Add background when scrolled
       setScrolled(currentScrollPos > 50);
-      
+
       // Determine active section based on scroll position
-      const sections = navItems.map(item => ({
-        id: item.id,
-        element: document.getElementById(item.id)
-      })).filter(item => item.element);
-      
+      const sections = navItems
+        .map((item) => ({
+          id: item.id,
+          element: document.getElementById(item.id),
+        }))
+        .filter((item) => item.element);
+
       if (sections.length) {
         const currentSection = sections.reduce((acc, section) => {
           if (!section.element) return acc;
           const rect = section.element.getBoundingClientRect();
           const offset = 150; // Adjust based on navbar height
-          
+
           if (rect.top <= offset && rect.bottom > offset) {
             return section.id;
           }
           return acc;
         }, sections[0].id);
-        
+
         setActiveSection(currentSection);
       }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [prevScrollPos, navItems]);
+  }, [prevScrollPos]);
 
   // Animation variants
   const navbarVariants = {
     visible: { y: 0, opacity: 1 },
-    hidden: { y: -100, opacity: 0 }
+    hidden: { y: -100, opacity: 0 },
   };
 
   const logoVariants = {
     initial: { opacity: 0, x: -20 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-    hover: { scale: 1.05, transition: { duration: 0.2 } }
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
   };
 
   const navItemVariants = {
     initial: { opacity: 0, y: -10 },
-    animate: (i) => ({ 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.3, delay: i * 0.1 } 
+    animate: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3, delay: i * 0.1 },
     }),
-    hover: { 
-      scale: 1.1, 
-      color: "#9BF00B", 
-      transition: { duration: 0.2 } 
-    }
+    hover: {
+      scale: 1.1,
+      color: '#9BF00B',
+      transition: { duration: 0.2 },
+    },
   };
 
   const mobileMenuVariants = {
-    closed: { 
+    closed: {
       opacity: 0,
       height: 0,
-      transition: { 
+      transition: {
         opacity: { duration: 0.2 },
-        height: { duration: 0.3 }
-      }
+        height: { duration: 0.3 },
+      },
     },
-    open: { 
+    open: {
       opacity: 1,
       height: 'auto',
-      transition: { 
+      transition: {
         opacity: { duration: 0.3 },
-        height: { duration: 0.4 }
-      }
-    }
+        height: { duration: 0.4 },
+      },
+    },
   };
 
   return (
-    <motion.header 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-inkyblack/90 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}
+    <motion.header
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-inkyblack/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+      }`}
       variants={navbarVariants}
       initial="visible"
-      animate={visible ? "visible" : "hidden"}
+      animate={visible ? 'visible' : 'hidden'}
       transition={{ duration: 0.3 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <motion.div 
+          <motion.div
             variants={logoVariants}
             initial="initial"
             animate="animate"
@@ -139,16 +144,16 @@ const Navbar = () => {
           >
             <span className="text-white">Nikhil</span>
             <span className="text-lime">Jangid</span>
-            <motion.div 
+            <motion.div
               className="ml-2 h-1 w-2 bg-lime rounded-full"
-              animate={{ 
+              animate={{
                 scale: [1, 1.5, 1],
-                opacity: [1, 0.8, 1]
+                opacity: [1, 0.8, 1],
               }}
-              transition={{ 
-                duration: 1.5, 
+              transition={{
+                duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut" 
+                ease: 'easeInOut',
               }}
             />
           </motion.div>
@@ -158,21 +163,29 @@ const Navbar = () => {
             {navItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                href={`#${item.id}`}
-                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                onClick={() => scrollToSection(item.id)}
+                className={`nav-link font-medium text-sm ${
+                  activeSection === item.id
+                    ? 'text-lime border-b-2 border-lime'
+                    : 'text-white hover:text-lime'
+                }`}
+                variants={navItemVariants}
+                custom={index}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
               >
                 {item.label}
               </motion.button>
             ))}
             <motion.button
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              variants={navItemVariants}
+              custom={navItems.length}
+              initial="initial"
+              animate="animate"
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3, delay: 0.6 }}
               className="bg-lime text-inkyblack px-4 py-2 rounded-full font-medium text-sm shadow-glow-sm hover:shadow-glow-md transition-all duration-300"
+              onClick={() => window.open('/resume.pdf', '_blank')}
             >
               Resume
             </motion.button>
@@ -206,25 +219,34 @@ const Navbar = () => {
               {navItems.map((item, index) => (
                 <motion.button
                   key={item.id}
-                  href={`#${item.id}`}
-                  className={`nav-link py-3 ${activeSection === item.id ? 'active' : ''}`}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2, delay: index * 0.05 }}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`nav-link py-3 text-left font-medium text-sm ${
+                    activeSection === item.id
+                      ? 'text-lime'
+                      : 'text-white hover:text-lime'
+                  }`}
+                  variants={navItemVariants}
+                  custom={index}
+                  initial="initial"
+                  animate="animate"
+                  whileHover="hover"
                 >
                   {item.label}
-                </motion.a>
+                </motion.button>
               ))}
               <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                variants={navItemVariants}
+                custom={navItems.length}
+                initial="initial"
+                animate="animate"
                 className="mt-4 bg-lime text-inkyblack py-3 rounded-md font-medium text-sm flex items-center justify-center"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  window.open('/resume.pdf', '_blank');
+                  setIsOpen(false);
+                }}
               >
                 View Resume
+                <ChevronRight size={16} className="ml-2" />
               </motion.button>
             </nav>
           </motion.div>
