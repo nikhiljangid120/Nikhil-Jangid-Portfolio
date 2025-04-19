@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Github, Linkedin, Code, ExternalLink } from 'lucide-react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 
@@ -9,40 +9,20 @@ interface MousePosition {
   y: number;
 }
 
-// Simple Particle component for Name Hover
+// Simplified Particle component for Name Hover - reduced count and complexity
 const HoverParticle = ({ delay }: { delay: number }) => (
   <motion.div
-    className="absolute w-1.5 h-1.5 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
-    style={{ originX: 0.5, originY: 0.5, willChange: 'transform, opacity' }}
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{
-      opacity: [0, 1, 0],
-      scale: [0, 1.2, 0],
-      x: (Math.random() - 0.5) * 80,
-      y: (Math.random() - 0.5) * 80,
-    }}
-    transition={{
-      duration: 0.6,
-      ease: 'easeOut',
-      delay,
-    }}
-  />
-);
-
-// Background Sparkle component for Name Hover
-const BackgroundSparkle = ({ delay }: { delay: number }) => (
-  <motion.div
-    className="absolute w-2 h-2 rounded-full bg-gradient-to-br from-lime/80 to-purple/80 pointer-events-none"
-    style={{ willChange: 'transform, opacity' }}
+    className="absolute w-1 h-1 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
+    style={{ originX: 0.5, originY: 0.5 }}
     initial={{ opacity: 0, scale: 0 }}
     animate={{
       opacity: [0, 0.8, 0],
-      scale: [0, 1.5, 0],
-      x: (Math.random() - 0.5) * 200,
-      y: (Math.random() - 0.5) * 200,
+      scale: [0, 1, 0],
+      x: (Math.random() - 0.5) * 60,
+      y: (Math.random() - 0.5) * 60,
     }}
     transition={{
-      duration: 0.8,
+      duration: 0.5,
       ease: 'easeOut',
       delay,
     }}
@@ -61,20 +41,16 @@ const HeroSection = () => {
   const [isHoveringName, setIsHoveringName] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Parallax effect
+  // Parallax effect - simplified
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 600], [0, 80]);
+  const y = useTransform(scrollY, [0, 600], [0, 50]); // Reduced movement
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
 
-  // Smooth cursor
-  const springCursorSize = useSpring(cursorVariant === 'interactive' ? 30 : 15, { stiffness: 800, damping: 40 });
-  const springCursorOpacity = useSpring(cursorVariant === 'interactive' ? 0.4 : 0.3, { stiffness: 600, damping: 40 });
-
-  // Text animation characters
+  // Text animation characters - memoized
   const titleChars = useMemo(() => "Hi, I'm".split(''), []);
   const nameChars = useMemo(() => "Nikhil Jangid".split(''), []);
 
-  // Intersection Observer and Initial Setup
+  // Intersection Observer
   useEffect(() => {
     setIsMounted(true);
     setIsMobile(window.innerWidth < 768);
@@ -85,12 +61,17 @@ const HeroSection = () => {
     );
     const currentRef = containerRef.current;
     if (currentRef) observer.observe(currentRef);
+    
+    // Reveal animation with a small delay
+    const timer = setTimeout(() => setIsRevealed(true), 200);
+    
     return () => {
       if (currentRef) observer.unobserve(currentRef);
+      clearTimeout(timer);
     };
   }, []);
 
-  // Mouse Handling
+  // Mouse Handling - optimized with throttling
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (!containerRef.current || isMobile) return;
@@ -108,28 +89,38 @@ const HeroSection = () => {
     [isMobile]
   );
 
+  // Throttled mouse move handler
+  const throttledMouseMove = useCallback((e: MouseEvent) => {
+    if (!window.requestAnimationFrame) {
+      handleMouseMove(e); 
+      return;
+    }
+    
+    window.requestAnimationFrame(() => {
+      handleMouseMove(e);
+    });
+  }, [handleMouseMove]);
+
   const handleMouseLeave = useCallback(() => {
     if (!containerRef.current || isMobile) return;
     setCursorVariant('default');
   }, [isMobile]);
 
+  // Effect for mouse events
   useEffect(() => {
     const element = containerRef.current;
     if (element && !isMobile) {
-      element.addEventListener('mousemove', handleMouseMove, { passive: true });
+      element.addEventListener('mousemove', throttledMouseMove, { passive: true });
       element.addEventListener('mouseleave', handleMouseLeave);
     }
 
-    const timer = setTimeout(() => setIsRevealed(true), 200);
-
     return () => {
       if (element && !isMobile) {
-        element.removeEventListener('mousemove', handleMouseMove);
+        element.removeEventListener('mousemove', throttledMouseMove);
         element.removeEventListener('mouseleave', handleMouseLeave);
       }
-      clearTimeout(timer);
     };
-  }, [isMobile, handleMouseMove, handleMouseLeave]);
+  }, [isMobile, throttledMouseMove, handleMouseLeave]);
 
   // Name hover handlers
   const handleNameEnter = useCallback(() => setIsHoveringName(true), []);
@@ -152,89 +143,47 @@ const HeroSection = () => {
       className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-inkyblack text-white isolate"
       style={{ cursor: isMobile ? 'auto' : 'none' }}
     >
-      <AnimatePresence>
-        {isMounted && isInView && (
-          <>
-            {/* Gradient Background */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-radial from-lime/25 via-purple/20 to-teal/20"
-              style={{ zIndex: 1 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.7 }}
-              transition={{ duration: 1 }}
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-lime/15 via-teal/15 to-purple/15"
-                animate={{
-                  scale: [1, 1.05, 1],
-                  opacity: [0.4, 0.6, 0.4],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  repeatType: 'reverse',
-                }}
-              />
-            </motion.div>
+      {/* Simplified Background Effects */}
+      {isMounted && isInView && (
+        <>
+          {/* Lighter gradient background */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-radial from-lime/15 via-purple/10 to-teal/10"
+            style={{ zIndex: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            transition={{ duration: 0.8 }}
+          />
 
-            {/* Mouse-Interactive Glow */}
-            {!isMobile && (
-              <motion.div
-                className="absolute w-[100px] h-[100px] rounded-full bg-gradient-radial from-lime/20 via-teal/15 to-transparent blur-2xl pointer-events-none"
-                style={{ x: mousePos.x - 50, y: mousePos.y - 50, zIndex: 2 }}
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-              />
-            )}
+          {/* Simplified Grid Overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              zIndex: 4,
+              backgroundImage: `
+                linear-gradient(to right, #CCFF00 1px, transparent 1px),
+                linear-gradient(to bottom, #00C4B4 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px', // Larger grid for better performance
+              opacity: 0.05,
+              mixBlendMode: 'soft-light',
+            }}
+          />
+        </>
+      )}
 
-            {/* Background Sparkles on Name Hover */}
-            <AnimatePresence>
-              {isHoveringName && !isMobile && (
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{ zIndex: 3 }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <BackgroundSparkle key={`bg-sparkle-${i}`} delay={i * 0.05} />
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Grid Overlay */}
-            <motion.div
-              className="absolute inset-0"
-              style={{
-                zIndex: 4,
-                backgroundImage: `
-                  linear-gradient(to right, #CCFF00 1px, transparent 1px),
-                  linear-gradient(to bottom, #00C4B4 1px, transparent 1px)
-                `,
-                backgroundSize: '25px 25px',
-                opacity: 0.08,
-                mixBlendMode: 'soft-light',
-              }}
-            />
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Custom Cursor */}
-      {!isMobile && isMounted && (
+      {/* Optimized Mouse Cursor - only render when needed */}
+      {!isMobile && isMounted && cursorVariant && (
         <motion.div
           className="absolute top-0 left-0 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
           style={{
-            width: springCursorSize,
-            height: springCursorSize,
+            width: cursorVariant === 'interactive' ? 30 : 15,
+            height: cursorVariant === 'interactive' ? 30 : 15,
             x: mousePos.x,
             y: mousePos.y,
             translateX: '-50%',
             translateY: '-50%',
-            opacity: springCursorOpacity,
+            opacity: cursorVariant === 'interactive' ? 0.4 : 0.3,
             zIndex: 1000,
           }}
         />
@@ -250,10 +199,10 @@ const HeroSection = () => {
             {titleChars.map((char, index) => (
               <motion.span
                 key={`title-${index}`}
-                className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-300 inline-block mr-[1px] font-orbitron"
+                className="text-2xl md:text-4xl lg:text-5xl font-bold text-gray-300 inline-block mr-[1px] font-orbitron"
                 initial={{ y: '100%', opacity: 0 }}
                 animate={isRevealed ? { y: '0%', opacity: 1 } : {}}
-                transition={{ duration: 0.6, delay: 0.4 + index * 0.03 }}
+                transition={{ duration: 0.5, delay: 0.3 + index * 0.03 }}
               >
                 {char === ' ' ? '\u00A0' : char}
               </motion.span>
@@ -263,35 +212,33 @@ const HeroSection = () => {
 
         <motion.div
           ref={nameWrapperRef}
-          className="relative mb-6 group interactive"
+          className="relative mb-5 group interactive"
           whileHover="hover"
           onMouseEnter={handleNameEnter}
           onMouseLeave={handleNameLeave}
           style={{ cursor: 'pointer' }}
         >
+          {/* Optimized hover effect */}
           <motion.div
-            className="absolute -inset-x-3 -inset-y-1.5 bg-gradient-to-r from-lime/15 via-purple/15 to-teal/15 opacity-0 group-hover:opacity-100 blur-xl rounded-lg -z-10"
+            className="absolute -inset-x-2 -inset-y-1 bg-gradient-to-r from-lime/10 via-purple/10 to-teal/10 opacity-0 group-hover:opacity-100 rounded-lg -z-10"
             variants={{ hover: { opacity: 1 } }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           />
-          <AnimatePresence>
-            {isHoveringName && (
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10"
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1 }}
-              >
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <HoverParticle key={`hover-particle-${i}`} delay={i * 0.02} />
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          
+          {/* Reduced particles for better performance */}
+          {isHoveringName && !isMobile && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <HoverParticle key={`hover-particle-${i}`} delay={i * 0.03} />
+              ))}
+            </div>
+          )}
+          
           <div className="flex justify-center md:justify-start flex-wrap">
             {nameChars.map((char, index) => (
               <motion.span
                 key={`name-${index}`}
-                className={`text-3xl md:text-5xl lg:text-6xl font-bold inline-block mr-[1px] transition-colors duration-200 font-orbitron ${
+                className={`text-2xl md:text-4xl lg:text-5xl font-bold inline-block mr-[1px] transition-colors duration-200 font-orbitron ${
                   isHoveringName ? 'text-transparent' : 'text-white'
                 }`}
                 style={{
@@ -301,15 +248,14 @@ const HeroSection = () => {
                   backgroundSize: '200% auto',
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
-                  animation: isHoveringName ? 'gradient-shine 2s linear infinite' : 'none',
                 }}
                 initial={{ y: '100%', opacity: 0 }}
                 animate={isRevealed ? { y: '0%', opacity: 1 } : {}}
-                transition={{ duration: 0.6, delay: 0.6 + index * 0.04 }}
+                transition={{ duration: 0.5, delay: 0.5 + index * 0.03 }}
                 variants={{
                   hover: {
-                    y: (Math.random() - 0.5) * 4,
-                    transition: { duration: 0.15, delay: index * 0.01 },
+                    y: (Math.random() - 0.5) * 2, // Reduced movement
+                    transition: { duration: 0.1, delay: index * 0.01 },
                   },
                 }}
               >
@@ -318,18 +264,18 @@ const HeroSection = () => {
             ))}
           </div>
           <motion.div
-            className="absolute -bottom-2.5 left-0 w-full h-[3px] bg-gradient-to-r from-teal via-lime to-purple rounded-full"
+            className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-teal via-lime to-purple rounded-full"
             initial={{ scaleX: 0 }}
             animate={isRevealed ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.6, delay: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
           />
         </motion.div>
 
         <motion.h2
-          className="text-lg md:text-xl mb-8 text-gray-300 max-w-xl bg-black/30 backdrop-blur-sm p-4 rounded-lg font-poppins"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-base md:text-lg mb-6 text-gray-300 max-w-lg bg-black/20 backdrop-blur-sm p-3 rounded-lg font-poppins"
+          initial={{ opacity: 0, y: 15 }}
           animate={isRevealed ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 1.2 }}
+          transition={{ duration: 0.4, delay: 1 }}
         >
           <span className="text-lime font-semibold">Full-stack developer</span> &{' '}
           <span className="text-teal font-semibold">problem solver</span> from{' '}
@@ -337,50 +283,50 @@ const HeroSection = () => {
         </motion.h2>
 
         <motion.div
-          className="flex flex-wrap gap-4 mb-10 justify-center md:justify-start"
+          className="flex flex-wrap gap-3 mb-8 justify-center md:justify-start"
           initial="hidden"
           animate={isRevealed ? 'visible' : 'hidden'}
           variants={{
-            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.4, staggerChildren: 0.1 } },
+            visible: { opacity: 1, transition: { duration: 0.4, delay: 1.2, staggerChildren: 0.08 } },
             hidden: { opacity: 0 },
           }}
         >
           <motion.a
             href="#contact"
-            className="relative px-7 py-3.5 bg-gradient-to-r from-lime to-teal text-inkyblack font-bold rounded-lg overflow-hidden group interactive shadow-lg font-poppins"
+            className="relative px-6 py-2.5 bg-gradient-to-r from-lime to-teal text-inkyblack font-bold rounded-lg overflow-hidden group interactive shadow-md font-poppins"
             variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
           >
             <span className="relative z-10">Get in touch</span>
             <motion.span
-              className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100"
-              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100"
+              transition={{ duration: 0.2 }}
             />
           </motion.a>
           <motion.a
             href="#projects"
-            className="relative px-7 py-3.5 bg-black/30 text-white font-semibold rounded-lg border border-lime/50 group interactive backdrop-blur-md font-poppins"
+            className="relative px-6 py-2.5 bg-black/20 text-white font-semibold rounded-lg border border-lime/40 group interactive backdrop-blur-sm font-poppins"
             variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
           >
             <span className="relative z-10">View projects</span>
             <motion.div
-              className="absolute inset-0 bg-lime/20 opacity-0 group-hover:opacity-100 -z-10"
-              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-lime/10 opacity-0 group-hover:opacity-100 -z-10"
+              transition={{ duration: 0.2 }}
             />
           </motion.a>
         </motion.div>
 
         <motion.div
-          className="flex space-x-6 mb-8"
+          className="flex space-x-5 mb-6"
           initial="hidden"
           animate={isRevealed ? 'visible' : 'hidden'}
           variants={{
-            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.6, staggerChildren: 0.08 } },
+            visible: { opacity: 1, transition: { duration: 0.4, delay: 1.4, staggerChildren: 0.06 } },
             hidden: { opacity: 0 },
           }}
         >
@@ -391,24 +337,23 @@ const HeroSection = () => {
             { href: 'https://www.geeksforgeeks.org/user/nikhiljals77/', icon: ExternalLink, text: 'GeeksForGeeks' },
           ].map(({ href, icon: Icon, text }) => (
             <motion.div key={text} variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}>
-              <HoverCard openDelay={100} closeDelay={50}>
+              <HoverCard openDelay={200} closeDelay={100}>
                 <HoverCardTrigger asChild>
                   <motion.a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-lime transition-colors duration-200 interactive relative group"
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 12 }}
                   >
-                    <Icon size={28} />
-                    <motion.span
-                      className="absolute -inset-2 bg-lime/15 blur-lg rounded-full opacity-0 group-hover:opacity-100 -z-10"
-                      transition={{ duration: 0.2 }}
+                    <Icon size={24} />
+                    <span
+                      className="absolute -inset-1.5 bg-lime/10 rounded-full opacity-0 group-hover:opacity-100 -z-10"
                     />
                   </motion.a>
                 </HoverCardTrigger>
-                <HoverCardContent className="bg-inkyblack/85 border border-lime/20 backdrop-blur-lg text-sm text-gray-200 rounded-lg font-poppins">
+                <HoverCardContent className="bg-inkyblack/80 border border-lime/15 backdrop-blur-sm text-xs text-gray-200 rounded-lg font-poppins">
                   {text === 'GitHub' ? 'Explore my code on GitHub' : `Visit my ${text} profile`}
                 </HoverCardContent>
               </HoverCard>
@@ -417,11 +362,11 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-wrap gap-3 justify-center md:justify-start mb-6"
+          className="flex flex-wrap gap-2 justify-center md:justify-start mb-4"
           initial="hidden"
           animate={isRevealed ? 'visible' : 'hidden'}
           variants={{
-            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.8, staggerChildren: 0.06 } },
+            visible: { opacity: 1, transition: { duration: 0.4, delay: 1.6, staggerChildren: 0.04 } },
             hidden: { opacity: 0 },
           }}
         >
@@ -434,34 +379,26 @@ const HeroSection = () => {
             return (
               <motion.div
                 key={text}
-                className={`interactive bg-black/40 backdrop-blur px-3.5 py-1.5 rounded-full flex items-center gap-2.5 ${classes.border} cursor-default group font-poppins`}
+                className={`interactive bg-black/30 px-3 py-1 rounded-full flex items-center gap-2 ${classes.border} cursor-default group font-poppins`}
                 variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
-                whileHover={{ scale: 1.08 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 12 }}
               >
-                <motion.span
-                  className={`h-2.5 w-2.5 rounded-full ${classes.bg}`}
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                />
+                <span className={`h-2 w-2 rounded-full ${classes.bg}`} />
                 <span className={`text-xs font-medium ${classes.text}`}>{text}</span>
-                <motion.span
-                  className="absolute -inset-1.5 bg-lime/10 blur-md rounded-full opacity-0 group-hover:opacity-50 -z-10"
-                  transition={{ duration: 0.2 }}
-                />
               </motion.div>
             );
           })}
         </motion.div>
 
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
           <motion.div
-            className="w-1 h-5 border-0 border-lime/40 rounded-full flex justify-center items-end pb-[3px]"
+            className="w-0.5 h-4 border-0 border-lime/30 rounded-full flex justify-center items-end"
             initial={{ opacity: 0 }}
-            animate={isRevealed ? { opacity: [0, 0.5, 0], y: [0, 8, 8] } : {}}
-            transition={{ duration: 2, repeat: Infinity, delay: 3 }}
+            animate={isRevealed ? { opacity: [0, 0.4, 0], y: [0, 6, 6] } : {}}
+            transition={{ duration: 1.5, repeat: Infinity, delay: 2.5 }}
           >
-            <motion.div className="w-1 h-1 bg-lime/80 rounded-full" />
+            <div className="w-0.5 h-0.5 bg-lime/70 rounded-full" />
           </motion.div>
         </div>
 
@@ -473,11 +410,15 @@ const HeroSection = () => {
           .font-poppins {
             font-family: 'Poppins', sans-serif;
           }
+          .bg-gradient-radial {
+            background-image: radial-gradient(circle, var(--tw-gradient-stops));
+          }
           @keyframes gradient-shine {
             to { background-position: 200% center; }
           }
-          .bg-gradient-radial {
-            background-image: radial-gradient(circle, var(--tw-gradient-stops));
+          /* Add will-change properties for better hardware acceleration */
+          .interactive {
+            will-change: transform;
           }
         `}</style>
       </motion.div>
