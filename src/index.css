@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -329,9 +330,37 @@
     );
   }
   
-  /* Enhanced section styles */
-  .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative overflow-hidden;
+  /* Profile image styles */
+  .profile-image {
+    @apply relative overflow-hidden rounded-full border-2 border-lime/30;
+    box-shadow: 0 0 25px rgba(204, 255, 0, 0.2);
+  }
+  
+  .profile-image::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-tr from-transparent via-lime/10 to-transparent opacity-0 transition-opacity duration-500;
+  }
+  
+  .profile-image:hover::before {
+    @apply opacity-100;
+  }
+  
+  /* Sparkle effect */
+  .sparkle {
+    @apply absolute w-1 h-1 rounded-full bg-white;
+    animation: sparkle-animation 2s infinite;
+  }
+  
+  /* Glass card effect */
+  .glass-card {
+    @apply relative overflow-hidden rounded-xl backdrop-blur-md bg-white/5 border border-white/10
+           transition-all duration-300 hover:bg-white/10;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .glass-card:hover {
+    @apply transform -translate-y-1 border-lime/20;
+    box-shadow: 0 10px 30px rgba(204, 255, 0, 0.1);
   }
   
   /* Enhanced text gradient effect */
@@ -355,6 +384,18 @@
   
   .clip-path-inset {
     clip-path: inset(0 0 0 0);
+  }
+  
+  .animate-text-shimmer {
+    animation: shimmer 8s infinite;
+  }
+  
+  .animate-float {
+    animation: float-slow 6s ease-in-out infinite;
+  }
+  
+  .animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
   }
 }
 
@@ -421,6 +462,51 @@
   }
 }
 
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: scale(0.7); 
+  }
+}
+
+@keyframes sparkle-animation {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Premium smooth cursor trail effect */
+.cursor-trail {
+  @apply pointer-events-none fixed top-0 left-0 w-6 h-6 rounded-full z-50 mix-blend-difference;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.cursor-dot {
+  @apply pointer-events-none fixed top-0 left-0 w-2 h-2 bg-white rounded-full z-50;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+
 /* Ensure mobile responsiveness */
 @media (max-width: 768px) {
   .section-container {
@@ -437,26 +523,5 @@
   
   h3, .h3 {
     @apply text-xl;
-  }
-}
-
-@keyframes shimmer {
-  0% { backgroundPosition: '200% center' }
-  100% { backgroundPosition: '-200% center' }
-}
-
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(0) }
-  50% { transform: translateY(-15px) rotate(2deg) }
-}
-
-@keyframes sparkle {
-  0%, 100% { 
-    opacity: 1; 
-    transform: scale(1); 
-  }
-  50% { 
-    opacity: 0.5; 
-    transform: scale(0.7); 
   }
 }

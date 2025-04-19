@@ -1,174 +1,143 @@
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles } from 'lucide-react';
 
 const CustomCursor = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const [cursorText, setCursorText] = useState('');
   const [position, setPosition] = useState({ x: -100, y: -100 });
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const lastUpdateTimeRef = useRef<number>(0);
-  const requestRef = useRef<number>();
-  const lastPositionRef = useRef({ x: 0, y: 0 });
-  
-  // Reduced throttle time for more responsive cursor
-  const throttleAmount = 2; // Reduced from 3ms to 2ms for faster response
+  const [clicked, setClicked] = useState(false);
+  const [linkHovered, setLinkHovered] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [text, setText] = useState('');
   
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) return; // Don't run cursor effects on mobile
+    
+    // Add event listener for cursor movement
+    const addEventListeners = () => {
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mousedown', onMouseDown);
+      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mouseenter', onMouseEnter);
+      document.addEventListener('mouseleave', onMouseLeave);
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    // Remove event listeners on cleanup
+    const removeEventListeners = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mouseenter', onMouseEnter);
+      document.removeEventListener('mouseleave', onMouseLeave);
+    };
     
-    if (isMobile) return;
-
-    const updateCursorPosition = (clientX: number, clientY: number) => {
-      const now = performance.now();
-      if (now - lastUpdateTimeRef.current < throttleAmount) return;
+    // Custom cursor follow effect
+    const onMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
       
-      lastUpdateTimeRef.current = now;
-      lastPositionRef.current = { x: clientX, y: clientY };
-      setPosition({ x: clientX, y: clientY });
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      updateCursorPosition(e.clientX, e.clientY);
-    };
-
-    const handleMouseLeave = () => {
-      setPosition({ x: -100, y: -100 });
-    };
-
-    const handleInteractiveElements = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const interactiveElement = target.closest('.interactive');
+      // Check if cursor is over interactive element
+      const hoveredEl = document.elementFromPoint(e.clientX, e.clientY);
+      const cursorTextAttr = hoveredEl?.getAttribute('data-cursor-text');
       
-      if (interactiveElement) {
-        const rect = interactiveElement.getBoundingClientRect();
-        updateCursorPosition(
-          rect.left + rect.width / 2,
-          rect.top + rect.height / 2
-        );
-        setIsHovering(true);
-        const text = interactiveElement.getAttribute('data-cursor-text') || '';
-        setCursorText(text);
+      if (hoveredEl?.closest('a, button, [role="button"], .interactive')) {
+        setLinkHovered(true);
+        setText(cursorTextAttr || '');
       } else {
-        setIsHovering(false);
-        setCursorText('');
+        setLinkHovered(false);
+        setText('');
       }
     };
-
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseover', handleInteractiveElements, { passive: true });
     
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseover', handleInteractiveElements);
-      window.removeEventListener('resize', checkMobile);
-      
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
-    };
-  }, [isMobile]);
-
-  if (isMobile) return null;
-
+    // Mouse states
+    const onMouseDown = () => setClicked(true);
+    const onMouseUp = () => setClicked(false);
+    const onMouseLeave = () => setHidden(true);
+    const onMouseEnter = () => setHidden(false);
+    
+    addEventListeners();
+    return () => removeEventListeners();
+  }, []);
+  
+  // Don't render on mobile devices
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    return null;
+  }
+  
   return (
     <AnimatePresence>
-      {/* Enhanced main cursor */}
-      <motion.div 
-        ref={cursorRef}
-        className="fixed pointer-events-none z-[100]"
-        animate={{
-          x: position.x,
-          y: position.y,
-          width: isHovering ? '64px' : '28px',
-          height: isHovering ? '64px' : '28px',
-          backgroundColor: isHovering ? 'rgba(204, 255, 0, 0.15)' : 'rgba(204, 255, 0, 0.4)',
-          boxShadow: isHovering 
-            ? '0 0 20px rgba(204, 255, 0, 0.4), inset 0 0 10px rgba(204, 255, 0, 0.2)' 
-            : '0 0 8px rgba(204, 255, 0, 0.2)',
-          borderRadius: '50%',
-          scale: isHovering ? 1.2 : 1,
-        }}
-        transition={{
-          type: "spring",
-          damping: 30,
-          stiffness: 450,
-          mass: 0.8,
-          duration: 0.08,
-        }}
-        style={{
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      >
-        {isHovering && (
+      {!hidden && (
+        <>
+          {/* Main cursor */}
           <motion.div
-            className="absolute inset-0"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-          >
-            <Sparkles className="w-full h-full p-4 text-lime/50" />
-          </motion.div>
-        )}
-      </motion.div>
-      
-      {/* Enhanced inner dot cursor */}
-      <motion.div 
-        className="fixed pointer-events-none z-[100] bg-lime rounded-full"
-        animate={{
-          x: position.x,
-          y: position.y,
-          width: isHovering ? '8px' : '6px',
-          height: isHovering ? '8px' : '6px',
-          opacity: position.x < 0 ? 0 : 1,
-          scale: isHovering ? 1.5 : 1,
-        }}
-        transition={{
-          type: "spring",
-          damping: 30,
-          stiffness: 450,
-          mass: 0.8,
-          duration: 0.08,
-        }}
-        style={{
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      />
-      
-      {/* Enhanced cursor text */}
-      {cursorText && (
-        <motion.div
-          className="fixed text-xs font-spaceGrotesk font-medium pointer-events-none z-[100] text-lime"
-          animate={{
-            x: position.x,
-            y: position.y + 40,
-            opacity: 1,
-            scale: 1,
-          }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{
-            type: "spring",
-            damping: 25,
-            stiffness: 350,
-          }}
-          style={{
-            translateX: "-50%",
-          }}
-        >
-          {cursorText}
-        </motion.div>
+            key="cursor-main"
+            className="cursor-trail mix-blend-difference bg-white fixed top-0 left-0 pointer-events-none z-50"
+            animate={{
+              x: position.x,
+              y: position.y,
+              scale: clicked ? 0.5 : linkHovered ? 1.5 : 1,
+              opacity: hidden ? 0 : 1,
+              width: linkHovered ? 64 : 24,
+              height: linkHovered ? 64 : 24,
+              borderRadius: linkHovered ? 12 : 24,
+            }}
+            transition={{
+              type: "spring",
+              damping: 35,
+              stiffness: 400,
+              mass: 0.2
+            }}
+            style={{
+              translateX: "-50%",
+              translateY: "-50%"
+            }}
+          />
+          
+          {/* Cursor dot for precise pointing */}
+          <motion.div
+            key="cursor-dot"
+            className="cursor-dot bg-white fixed top-0 left-0 pointer-events-none z-50"
+            animate={{
+              x: position.x,
+              y: position.y,
+              opacity: linkHovered ? 0 : 1,
+              scale: clicked ? 0.5 : 1
+            }}
+            transition={{
+              type: "spring",
+              damping: 50,
+              stiffness: 600,
+              mass: 0.1
+            }}
+          />
+          
+          {/* Text label for interactive elements */}
+          {text && (
+            <motion.div
+              key="cursor-text"
+              className="fixed top-0 left-0 text-black font-medium text-xs pointer-events-none z-50 flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: position.x,
+                y: position.y
+              }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{
+                type: "spring",
+                damping: 35,
+                stiffness: 400,
+                mass: 0.2
+              }}
+              style={{
+                transform: 'translate(-50%, -50%)'
+              }}
+            >
+              {text}
+            </motion.div>
+          )}
+        </>
       )}
     </AnimatePresence>
   );

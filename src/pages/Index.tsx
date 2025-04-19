@@ -9,6 +9,7 @@ import ProjectsSection from "@/components/ProjectsSection";
 import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeSection from "@/components/ResumeSection";
+import ProfileSection from "@/components/ProfileSection";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const Index = () => {
@@ -84,7 +85,7 @@ const Index = () => {
           {/* Animated particles */}
           {particles.map(particle => (
             <motion.div
-              key={particle.id}
+              key={`loading-particle-${particle.id}`}
               className="absolute w-1 h-1 rounded-full bg-lime"
               style={{
                 width: `${particle.size}px`,
@@ -192,6 +193,7 @@ const Index = () => {
             <Layout>
               <HeroSection />
               <AboutSection />
+              <ProfileSection />
               <SkillsSection />
               <ProjectsSection />
               <ResumeSection />
