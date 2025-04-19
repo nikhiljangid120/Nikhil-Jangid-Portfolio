@@ -1,6 +1,6 @@
 
 import { useRef, useState } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { Code, ShieldCheck, Database, User, Lightbulb, Github, Linkedin, Mail, Coffee } from 'lucide-react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 
@@ -9,15 +9,7 @@ const AboutSection = () => {
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
-  // Parallax effect for image
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePosition({
@@ -33,25 +25,17 @@ const AboutSection = () => {
     { icon: <Coffee className="w-6 h-6" />, href: "https://www.buymeacoffee.com/nikhiljangid", label: "Buy me a coffee" }
   ];
 
-  const journey = [
-    { year: "2020", title: "Started Coding Journey", description: "First encounter with programming and web development basics" },
-    { year: "2021", title: "First Major Project", description: "Developed a full-stack web application with React and Node.js" },
-    { year: "2022", title: "College Admission", description: "Started B.Tech in Computer Science & Engineering" },
-    { year: "2023", title: "Internship Experience", description: "Worked as a software development intern at a tech startup" }
-  ];
-
   const philosophyPoints = [
-    "Clean code leads to maintainable software",
-    "User experience should always be prioritized",
-    "Continuous learning is key to growth",
-    "Collaborate to build better solutions"
+    { icon: <Code className="w-5 h-5" />, title: "Clean Code", description: "Writing maintainable and scalable solutions" },
+    { icon: <ShieldCheck className="w-5 h-5" />, title: "Best Practices", description: "Following industry standards and patterns" },
+    { icon: <Database className="w-5 h-5" />, title: "Optimization", description: "Building performant applications" },
+    { icon: <Lightbulb className="w-5 h-5" />, title: "Innovation", description: "Exploring cutting-edge technologies" }
   ];
 
   return (
     <section id="about" ref={ref} className="py-24 relative overflow-hidden bg-inkyblack">
+      {/* Enhanced background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/20 to-inkyblack/90" />
-      
-      {/* Grid pattern and animated gradient blobs */}
       <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       <motion.div 
         className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-teal/5 blur-3xl"
@@ -78,13 +62,12 @@ const AboutSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Profile Image with Advanced Effects */}
+          {/* Enhanced Profile Image with Advanced Effects */}
           <motion.div
             className="relative group perspective"
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={{ y }}
           >
             <motion.div 
               className="relative w-full aspect-square rounded-2xl overflow-hidden card-3d"
@@ -103,7 +86,7 @@ const AboutSection = () => {
                 className="w-full h-full object-cover"
               />
               
-              {/* Glassmorphism Overlay */}
+              {/* Advanced Glassmorphism Overlay */}
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
@@ -136,9 +119,40 @@ const AboutSection = () => {
                   }}
                 />
               ))}
+
+              {/* Floating Tech Icons */}
+              <div className="absolute inset-0 pointer-events-none">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute"
+                    style={{
+                      left: `${20 + i * 15}%`,
+                      top: `${30 + (i % 3) * 20}%`,
+                    }}
+                    animate={{
+                      y: [0, -10, 0],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      delay: i * 0.2,
+                      repeat: Infinity,
+                    }}
+                  >
+                    <div className="w-8 h-8 bg-charcoal/50 backdrop-blur-sm rounded-lg flex items-center justify-center text-lime border border-lime/20">
+                      {i % 5 === 0 ? <Code className="w-4 h-4" /> :
+                       i % 5 === 1 ? <Database className="w-4 h-4" /> :
+                       i % 5 === 2 ? <ShieldCheck className="w-4 h-4" /> :
+                       i % 5 === 3 ? <Lightbulb className="w-4 h-4" /> :
+                       <User className="w-4 h-4" />}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
 
-            {/* Social Links */}
+            {/* Enhanced Social Links with Hover Cards */}
             <motion.div 
               className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4"
               initial={{ opacity: 0, y: 20 }}
@@ -153,7 +167,10 @@ const AboutSection = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-3 bg-charcoal/50 backdrop-blur-sm rounded-full text-gray-400 hover:text-lime transition-colors duration-300 interactive"
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ 
+                        scale: 1.1,
+                        boxShadow: "0 0 20px rgba(204, 255, 0, 0.3)"
+                      }}
                       data-cursor-text={link.label}
                     >
                       {link.icon}
@@ -167,65 +184,31 @@ const AboutSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Journey and Philosophy */}
-          <div className="space-y-12">
-            {/* Journey Timeline */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-charcoal/30 backdrop-blur-sm rounded-xl p-6 border border-white/10"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <User className="w-6 h-6 text-teal" />
-                <h3 className="text-2xl font-bold text-teal">My Journey</h3>
-              </div>
-              <div className="space-y-4">
-                {journey.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    className="relative pl-8 pb-4 border-l border-lime/20 last:pb-0"
-                  >
-                    <div className="absolute -left-3 w-6 h-6 bg-gradient-to-r from-teal to-lime rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full" />
-                    </div>
-                    <span className="text-sm text-lime/80">{item.year}</span>
-                    <h4 className="text-lg font-semibold text-white mt-1">{item.title}</h4>
-                    <p className="text-gray-400 text-sm">{item.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Philosophy */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-charcoal/30 backdrop-blur-sm rounded-xl p-6 border border-white/10"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <Lightbulb className="w-6 h-6 text-orange" />
-                <h3 className="text-2xl font-bold text-orange">My Philosophy</h3>
-              </div>
-              <div className="grid gap-4">
-                {philosophyPoints.map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    className="flex items-center gap-3"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange to-gold" />
-                    <p className="text-gray-300">{point}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+          {/* Philosophy Cards with Enhanced Animations */}
+          <div className="space-y-8">
+            {philosophyPoints.map((point, index) => (
+              <motion.div
+                key={index}
+                className="bg-charcoal/30 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-lime/20 transition-all duration-300"
+                initial={{ opacity: 0, x: 50 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 0 30px rgba(204, 255, 0, 0.1)"
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-gradient-to-r from-lime/20 to-teal/20 border border-lime/20">
+                    {point.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">{point.title}</h3>
+                    <p className="text-gray-400">{point.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
