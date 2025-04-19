@@ -1,8 +1,9 @@
+
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { Loader, Code, Sparkles } from 'lucide-react';
+import { Loader } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,10 +16,16 @@ const Layout = ({ children }: LayoutProps) => {
   
   useEffect(() => {
     // Hide default cursor for desktop users
-    const isMobile = window.innerWidth < 768;
-    if (!isMobile) {
-      document.body.style.cursor = 'none';
-    }
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      document.body.style.cursor = isMobile ? 'auto' : 'none';
+    };
+    
+    // Initial check
+    handleResize();
+    
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
     
     // Simulate loading progress with multiple steps
     const loadingTexts = [
@@ -46,7 +53,7 @@ const Layout = ({ children }: LayoutProps) => {
     
     return () => {
       document.body.style.cursor = 'auto';
-      clearInterval(intervalId);
+      clearTimeout(timer);
     };
   }, []);
   
@@ -171,6 +178,7 @@ const Layout = ({ children }: LayoutProps) => {
     <AnimatePresence mode="wait">
       <div className="min-h-screen flex flex-col overflow-hidden">
         <Navbar />
+        <CustomCursor />
         <motion.main
           className="flex-grow"
           initial="initial"

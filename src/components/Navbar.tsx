@@ -20,6 +20,23 @@ const Navbar = () => {
     { id: 'contact', label: 'Contact' }
   ];
 
+  // Scroll to section function with offset
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const navbarHeight = document.querySelector('header')?.offsetHeight || 0;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      setIsOpen(false);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
@@ -139,29 +156,16 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
-              <motion.a
+              <motion.button
                 key={item.id}
                 href={`#${item.id}`}
-                custom={index}
-                variants={navItemVariants}
-                initial="initial"
-                animate="animate"
-                whileHover="hover"
-                className={`relative nav-link font-medium text-sm transition-colors
-                  ${activeSection === item.id 
-                    ? 'text-lime font-semibold' 
-                    : 'text-gray-300 hover:text-white'}`}
+                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                {activeSection === item.id && (
-                  <motion.span
-                    className="absolute -bottom-1 left-0 h-0.5 bg-lime"
-                    initial={{ width: 0 }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
                 {item.label}
-              </motion.a>
+              </motion.button>
             ))}
             <motion.button
               initial={{ opacity: 0, scale: 0.9 }}
@@ -200,26 +204,17 @@ const Navbar = () => {
           >
             <nav className="flex flex-col py-4 px-4">
               {navItems.map((item, index) => (
-                <motion.a
+                <motion.button
                   key={item.id}
                   href={`#${item.id}`}
-                  initial={{ opacity: 0, x: -20 }}
+                  className={`nav-link py-3 ${activeSection === item.id ? 'active' : ''}`}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center justify-between py-4 border-b border-gray-800/30 last:border-0
-                    ${activeSection === item.id 
-                      ? 'text-lime font-medium' 
-                      : 'text-gray-300'}`}
                 >
-                  <span>{item.label}</span>
-                  <motion.div
-                    animate={{ x: activeSection === item.id ? 0 : -4, opacity: activeSection === item.id ? 1 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {activeSection === item.id && <ChevronRight size={16} className="text-lime" />}
-                  </motion.div>
+                  {item.label}
                 </motion.a>
               ))}
               <motion.button
