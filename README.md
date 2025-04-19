@@ -21,14 +21,14 @@ To run this project on your local machine, follow the steps below:
 ### 1. Clone the Repository
 git clone <YOUR_GIT_REPO_URL>
 
-2. Navigate into the Project Directory
+### 2. Navigate into the Project Directory
 cd <your-project-folder>
 
-3. Install Dependencies
+### 3. Install Dependencies
 Make sure you have Node.js and npm installed.
 npm install
 
-4. Start the Development Server
+### 4. Start the Development Server
 npm run dev
 
 The app will be available at http://localhost:5173 (or the port shown in the terminal).
