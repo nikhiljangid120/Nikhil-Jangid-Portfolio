@@ -1,20 +1,41 @@
-
 import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Send, Mail, Phone, MapPin, Github, Linkedin, Code, ExternalLink } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Send, Mail, Phone, MapPin, Github, Linkedin, Code, ExternalLink, CheckCircle } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import confetti from 'canvas-confetti';
 
 const ContactSection = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   
-  const formRef = useRef<HTMLFormElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef(null);
+  const sectionRef = useRef(null);
+  const successButtonRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.2 });
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const triggerConfetti = () => {
+    if (successButtonRef.current) {
+      const rect = successButtonRef.current.getBoundingClientRect();
+      const x = rect.x + rect.width / 2;
+      const y = rect.y + rect.height / 2;
+      
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { 
+          x: x / window.innerWidth, 
+          y: y / window.innerHeight 
+        },
+        colors: ['#10B981', '#A3E635', '#22D3EE', '#ffffff'],
+        zIndex: 1000,
+      });
+    }
+  };
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validation
@@ -42,16 +63,25 @@ const ContactSection = () => {
     
     // Simulate form submission
     setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      
+      // Trigger confetti effect
+      triggerConfetti();
+      
+      // Reset success state after animation completes
+      setTimeout(() => {
+        setIsSuccess(false);
+        // Reset form
+        setName('');
+        setEmail('');
+        setMessage('');
+      }, 3000);
+      
       toast({
         title: "Message Sent",
         description: "Thanks for reaching out! I'll get back to you soon.",
       });
-      
-      // Reset form
-      setName('');
-      setEmail('');
-      setMessage('');
-      setIsSubmitting(false);
     }, 1500);
   };
   
@@ -103,12 +133,12 @@ const ContactSection = () => {
     {
       label: 'CodeChef',
       href: 'https://www.codechef.com/users/nikhil_139/',
-      badge: '5⭐ Coder',
+      badge: '3⭐ Coder',
     },
     {
       label: 'HackerEarth',
       href: 'https://www.hackerearth.com/@nikhil_888/',
-      badge: 'Top Contributor',
+      badge: 'Emerging Programmer',
     },
     {
       label: 'LeetCode',
@@ -118,7 +148,7 @@ const ContactSection = () => {
     {
       label: 'GeeksForGeeks',
       href: 'https://www.geeksforgeeks.org/user/nikhiljals77/',
-      badge: 'Active Contributor',
+      badge: 'Daily DSA Practice',
     },
   ];
   
@@ -140,6 +170,24 @@ const ContactSection = () => {
       opacity: 1,
       transition: { duration: 0.5 },
     },
+  };
+
+  const successVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: { 
+      scale: 1, 
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        stiffness: 200,
+        damping: 15
+      }
+    },
+    exit: { 
+      scale: 1.2, 
+      opacity: 0,
+      transition: { duration: 0.3 } 
+    }
   };
 
   return (
@@ -213,13 +261,21 @@ const ContactSection = () => {
             variants={containerVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="bg-charcoal/50 backdrop-blur-sm rounded-xl border border-white/5 p-6 md:p-8"
+            className="bg-charcoal/50 backdrop-blur-sm rounded-xl border border-white/5 p-6 md:p-8 relative overflow-hidden"
           >
             <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center">
               <span className="text-lime mr-2">📝</span> Send a Message
             </motion.h3>
             
-            <motion.form ref={formRef} onSubmit={handleSubmit} variants={containerVariants}>
+            {/* Form */}
+            <motion.form 
+              ref={formRef} 
+              onSubmit={handleSubmit} 
+              variants={containerVariants}
+              className={isSuccess ? "opacity-0 pointer-events-none" : ""}
+              animate={isSuccess ? { opacity: 0 } : { opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               <motion.div variants={itemVariants} className="mb-6">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Name</label>
                 <input
@@ -266,10 +322,21 @@ const ContactSection = () => {
               >
                 {isSubmitting ? (
                   <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-inkyblack" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <motion.div 
+                      className="mr-3 h-5 w-5"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      <svg className="h-full w-full text-inkyblack" viewBox="0 0 24 24">
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeWidth="3"
+                          d="M12 2C6.477 2 2 6.477 2 12c0 5.523 4.477 10 10 10s10-4.477 10-10"
+                        />
+                      </svg>
+                    </motion.div>
                     Sending...
                   </span>
                 ) : (
@@ -279,6 +346,115 @@ const ContactSection = () => {
                 )}
               </motion.button>
             </motion.form>
+            
+            {/* Success Animation */}
+            <AnimatePresence>
+              {isSuccess && (
+                <motion.div
+                  className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-charcoal/90 to-inkyblack/90 backdrop-blur-sm z-10"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={successVariants}
+                >
+                  <motion.div 
+                    ref={successButtonRef}
+                    className="relative flex flex-col items-center"
+                    initial={{ scale: 0 }}
+                    animate={{ 
+                      scale: 1,
+                      transition: { 
+                        type: "spring", 
+                        stiffness: 200, 
+                        damping: 20,
+                        delay: 0.1
+                      } 
+                    }}
+                  >
+                    <motion.div
+                      className="w-20 h-20 rounded-full bg-gradient-to-r from-lime to-teal flex items-center justify-center mb-6"
+                      animate={{ 
+                        boxShadow: ["0 0 0 0 rgba(163, 230, 53, 0.7)", "0 0 0 20px rgba(163, 230, 53, 0)"],
+                      }}
+                      transition={{
+                        repeat: 3,
+                        duration: 1.5,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <CheckCircle size={40} className="text-inkyblack" />
+                    </motion.div>
+                    
+                    <motion.h3
+                      className="text-2xl font-bold text-white mb-2"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                        transition: { delay: 0.3 } 
+                      }}
+                    >
+                      Message Sent!
+                    </motion.h3>
+                    
+                    <motion.p
+                      className="text-gray-300 text-center max-w-xs"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ 
+                        opacity: 1, 
+                        y: 0,
+                        transition: { delay: 0.4 } 
+                      }}
+                    >
+                      Thanks for reaching out! I'll get back to you as soon as possible.
+                    </motion.p>
+                  </motion.div>
+                  
+                  {/* Animated particles */}
+                  <motion.div className="absolute inset-0 pointer-events-none">
+                    {[...Array(20)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-2 h-2 rounded-full bg-lime"
+                        initial={{ 
+                          x: "50%", 
+                          y: "50%", 
+                          opacity: 0,
+                          scale: 0 
+                        }}
+                        animate={{ 
+                          x: `${Math.random() * 100}%`,
+                          y: `${Math.random() * 100}%`,
+                          opacity: [0, 1, 0],
+                          scale: [0, 1.5, 0]
+                        }}
+                        transition={{
+                          duration: 2 + Math.random() * 2,
+                          delay: 0.2 + Math.random() * 0.3,
+                          ease: "easeOut"
+                        }}
+                      />
+                    ))}
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
+            {/* Background pulse animation */}
+            {isSuccess && (
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-lime/20 to-teal/20 rounded-xl z-0"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: [0, 0.2, 0],
+                  scale: [0.8, 1.2, 1.5],
+                }}
+                transition={{
+                  duration: 2,
+                  ease: "easeOut",
+                }}
+              />
+            )}
           </motion.div>
           
           {/* Contact Information */}

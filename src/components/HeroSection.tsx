@@ -1,419 +1,486 @@
-
-import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, Code, ExternalLink } from 'lucide-react';
-import ParticleField from './ParticleField';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
+
+// Define TypeScript interfaces
+interface MousePosition {
+  x: number;
+  y: number;
+}
+
+// Simple Particle component for Name Hover
+const HoverParticle = ({ delay }: { delay: number }) => (
+  <motion.div
+    className="absolute w-1.5 h-1.5 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
+    style={{ originX: 0.5, originY: 0.5, willChange: 'transform, opacity' }}
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{
+      opacity: [0, 1, 0],
+      scale: [0, 1.2, 0],
+      x: (Math.random() - 0.5) * 80,
+      y: (Math.random() - 0.5) * 80,
+    }}
+    transition={{
+      duration: 0.6,
+      ease: 'easeOut',
+      delay,
+    }}
+  />
+);
+
+// Background Sparkle component for Name Hover
+const BackgroundSparkle = ({ delay }: { delay: number }) => (
+  <motion.div
+    className="absolute w-2 h-2 rounded-full bg-gradient-to-br from-lime/80 to-purple/80 pointer-events-none"
+    style={{ willChange: 'transform, opacity' }}
+    initial={{ opacity: 0, scale: 0 }}
+    animate={{
+      opacity: [0, 0.8, 0],
+      scale: [0, 1.5, 0],
+      x: (Math.random() - 0.5) * 200,
+      y: (Math.random() - 0.5) * 200,
+    }}
+    transition={{
+      duration: 0.8,
+      ease: 'easeOut',
+      delay,
+    }}
+  />
+);
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const nameWrapperRef = useRef<HTMLDivElement>(null);
+
   const [isRevealed, setIsRevealed] = useState(false);
-  
-  // Parallax effect on scroll
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  
-  // Text animation characters
-  const titleChars = "Hi, I'm".split('');
-  const nameChars = "Nikhil Jangid".split('');
-  
-  // Mobile detection
+  const [mousePos, setMousePos] = useState<MousePosition>({ x: 0, y: 0 });
+  const [cursorVariant, setCursorVariant] = useState<'default' | 'interactive'>('default');
+  const [isMounted, setIsMounted] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [isHoveringName, setIsHoveringName] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Parallax effect
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 600], [0, 80]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+
+  // Smooth cursor
+  const springCursorSize = useSpring(cursorVariant === 'interactive' ? 30 : 15, { stiffness: 800, damping: 40 });
+  const springCursorOpacity = useSpring(cursorVariant === 'interactive' ? 0.4 : 0.3, { stiffness: 600, damping: 40 });
+
+  // Text animation characters
+  const titleChars = useMemo(() => "Hi, I'm".split(''), []);
+  const nameChars = useMemo(() => "Nikhil Jangid".split(''), []);
+
+  // Intersection Observer and Initial Setup
   useEffect(() => {
-    // Check mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    setIsMounted(true);
+    setIsMobile(window.innerWidth < 768);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    const currentRef = containerRef.current;
+    if (currentRef) observer.observe(currentRef);
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
     };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    // Magnetic effect on hover (desktop only)
-    const handleMouseMove = (e: MouseEvent) => {
+  }, []);
+
+  // Mouse Handling
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
       if (!containerRef.current || isMobile) return;
 
-      const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-      
-      const x = (e.clientX - left) / width - 0.5;
-      const y = (e.clientY - top) / height - 0.5;
-      
-      const elements = containerRef.current.querySelectorAll('.magnetic-element');
-      elements.forEach(element => {
-        const el = element as HTMLElement;
-        const strength = parseFloat(el.dataset.strength || '10');
-        el.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
-      });
-    };
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
+      setMousePos({ x, y });
+
+      const targetElement = e.target as Element;
+      const isInteractive = targetElement?.closest('.interactive');
+      setCursorVariant(isInteractive ? 'interactive' : 'default');
+    },
+    [isMobile]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    if (!containerRef.current || isMobile) return;
+    setCursorVariant('default');
+  }, [isMobile]);
+
+  useEffect(() => {
     const element = containerRef.current;
     if (element && !isMobile) {
-      element.addEventListener('mousemove', handleMouseMove);
+      element.addEventListener('mousemove', handleMouseMove, { passive: true });
+      element.addEventListener('mouseleave', handleMouseLeave);
     }
-    
-    // Trigger text reveal animation
-    const timer = setTimeout(() => {
-      setIsRevealed(true);
-    }, 300);
-    
+
+    const timer = setTimeout(() => setIsRevealed(true), 200);
+
     return () => {
       if (element && !isMobile) {
         element.removeEventListener('mousemove', handleMouseMove);
+        element.removeEventListener('mouseleave', handleMouseLeave);
       }
-      window.removeEventListener('resize', checkMobile);
       clearTimeout(timer);
     };
-  }, [isMobile]);
+  }, [isMobile, handleMouseMove, handleMouseLeave]);
+
+  // Name hover handlers
+  const handleNameEnter = useCallback(() => setIsHoveringName(true), []);
+  const handleNameLeave = useCallback(() => setIsHoveringName(false), []);
+
+  // Badge classes
+  const getBadgeClasses = useCallback((color: string) => {
+    switch (color) {
+      case 'lime': return { border: 'border-lime/25', text: 'text-lime', bg: 'bg-lime' };
+      case 'gold': return { border: 'border-yellow-400/25', text: 'text-yellow-400', bg: 'bg-yellow-400' };
+      case 'cyan': return { border: 'border-cyan-400/25', text: 'text-cyan-400', bg: 'bg-cyan-400' };
+      default: return { border: 'border-gray-500/25', text: 'text-gray-300', bg: 'bg-gray-500' };
+    }
+  }, []);
 
   return (
-    <section 
-      id="home" 
-      ref={containerRef} 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    <section
+      id="home"
+      ref={containerRef}
+      className="relative min-h-screen h-screen flex items-center justify-center overflow-hidden bg-inkyblack text-white isolate"
+      style={{ cursor: isMobile ? 'auto' : 'none' }}
     >
-      {/* Dynamic Background with Animated Elements */}
-      <div className="absolute inset-0 bg-inkyblack overflow-hidden">
-        {/* Animated gradient blobs */}
-        <motion.div 
-          className="absolute w-[800px] h-[800px] rounded-full bg-gradient-to-r from-purple/10 via-teal/10 to-lime/10 blur-3xl"
-          style={{ top: '10%', left: '30%' }}
-          animate={{ 
-            x: [0, 50, 0], 
-            y: [0, -30, 0],
-            scale: [1, 1.05, 1],
-            opacity: [0.4, 0.6, 0.4]
-          }}
-          transition={{ duration: 15, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        
-        <motion.div 
-          className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-r from-teal/10 via-lime/10 to-gold/10 blur-3xl"
-          style={{ bottom: '10%', right: '20%' }}
-          animate={{ 
-            x: [0, -40, 0], 
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', delay: 1 }}
-        />
-        
-        <motion.div 
-          className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-gold/10 via-orange/10 to-purple/10 blur-3xl"
-          style={{ top: '40%', left: '10%' }}
-          animate={{ 
-            x: [0, 30, 0], 
-            y: [0, 40, 0],
-            scale: [1, 1.08, 1],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse', delay: 2 }}
-        />
-        
-        {/* Particle field background */}
-        <ParticleField 
-          particleCount={80} 
-          colors={['#005A66', '#D94F30', '#FFB100', '#2E1760', '#CCFF00']} 
-          minSize={1}
-          maxSize={3}
-          speed={0.5}
-          className="opacity-30"
-        />
-        
-        {/* Subtle grid overlay with improved opacity */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-        
-        {/* Animated gradient lines */}
-        <div className="absolute inset-0 overflow-hidden">
-          {Array.from({ length: 5 }).map((_, index) => (
+      <AnimatePresence>
+        {isMounted && isInView && (
+          <>
+            {/* Gradient Background */}
             <motion.div
-              key={`line-${index}`}
-              className="absolute h-px bg-gradient-to-r from-teal/0 via-lime/30 to-purple/0"
-              style={{ 
-                left: 0,
-                right: 0,
-                top: `${15 + index * 20}%`,
-                scaleX: 0.8,
-                originX: index % 2 ? 0 : 1
-              }}
-              animate={{ 
-                scaleX: [0.8, 1, 0.8], 
-                opacity: [0.1, 0.3, 0.1],
-              }}
-              transition={{ 
-                duration: 8 + index * 2, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                delay: index * 0.5
+              className="absolute inset-0 bg-gradient-radial from-lime/25 via-purple/20 to-teal/20"
+              style={{ zIndex: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.7 }}
+              transition={{ duration: 1 }}
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-lime/15 via-teal/15 to-purple/15"
+                animate={{
+                  scale: [1, 1.05, 1],
+                  opacity: [0.4, 0.6, 0.4],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                }}
+              />
+            </motion.div>
+
+            {/* Mouse-Interactive Glow */}
+            {!isMobile && (
+              <motion.div
+                className="absolute w-[100px] h-[100px] rounded-full bg-gradient-radial from-lime/20 via-teal/15 to-transparent blur-2xl pointer-events-none"
+                style={{ x: mousePos.x - 50, y: mousePos.y - 50, zIndex: 2 }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
+              />
+            )}
+
+            {/* Background Sparkles on Name Hover */}
+            <AnimatePresence>
+              {isHoveringName && !isMobile && (
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{ zIndex: 3 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <BackgroundSparkle key={`bg-sparkle-${i}`} delay={i * 0.05} />
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Grid Overlay */}
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                zIndex: 4,
+                backgroundImage: `
+                  linear-gradient(to right, #CCFF00 1px, transparent 1px),
+                  linear-gradient(to bottom, #00C4B4 1px, transparent 1px)
+                `,
+                backgroundSize: '25px 25px',
+                opacity: 0.08,
+                mixBlendMode: 'soft-light',
               }}
             />
-          ))}
-        </div>
-      </div>
-      
-      <motion.div 
-        style={{ y, opacity }} 
-        className="section-container relative z-10"
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Custom Cursor */}
+      {!isMobile && isMounted && (
+        <motion.div
+          className="absolute top-0 left-0 rounded-full bg-gradient-to-br from-lime to-teal pointer-events-none"
+          style={{
+            width: springCursorSize,
+            height: springCursorSize,
+            x: mousePos.x,
+            y: mousePos.y,
+            translateX: '-50%',
+            translateY: '-50%',
+            opacity: springCursorOpacity,
+            zIndex: 1000,
+          }}
+        />
+      )}
+
+      {/* Main Content */}
+      <motion.div
+        style={{ y, opacity, zIndex: 10 }}
+        className="section-container relative px-4 text-center md:text-left flex flex-col items-center md:items-start"
       >
-        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <motion.div className="relative mb-8 overflow-hidden">
-            <div className="flex justify-center md:justify-start mb-2">
-              {titleChars.map((char, index) => (
-                <motion.span
-                  key={`title-${index}`}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold inline-block"
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={isRevealed ? { y: 0, opacity: 1 } : { y: 100, opacity: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.1 + index * 0.05,
-                    ease: [0.215, 0.61, 0.355, 1]
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
-            </div>
-            
-            <div className="flex justify-center md:justify-start flex-wrap relative">
-              {nameChars.map((char, index) => (
-                <motion.span
-                  key={`name-${index}`}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold inline-block"
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={isRevealed ? { y: 0, opacity: 1 } : { y: 100, opacity: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.5 + index * 0.05,
-                    ease: [0.215, 0.61, 0.355, 1]
-                  }}
-                >
-                  <span className="relative">
-                    {char === ' ' ? '\u00A0' : char}
-                    <motion.span 
-                      className="absolute -inset-1 rounded bg-gradient-to-r from-lime/20 via-purple/20 to-teal/20 -z-10 blur-sm"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 1 + index * 0.05, duration: 1 }}
-                    />
-                  </span>
-                </motion.span>
-              ))}
-              
-              <motion.div
-                className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-teal via-lime to-orange origin-left rounded-full"
-                initial={{ scaleX: 0 }}
-                animate={isRevealed ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 1, delay: 1.5, ease: "easeInOut" }}
-              />
-            </div>
-          </motion.div>
-          
-          <motion.h2
-            className="text-xl md:text-2xl mb-8 text-gray-300 max-w-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 1.8 }}
-          >
-            <span className="text-lime font-medium">Full stack developer</span> and <span className="text-gold font-medium">problem solver</span> creating immersive digital experiences.
-          </motion.h2>
-          
-          <motion.div
-            className="flex flex-wrap gap-4 mb-12 justify-center md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 2 }}
-          >
-            <motion.a 
-              href="#contact" 
-              className="relative px-6 py-3 bg-gradient-to-r from-lime/90 to-teal/90 text-inkyblack font-semibold rounded-md overflow-hidden group interactive"
-              data-cursor-text="Let's talk"
-              whileHover={{ scale: 1.03, boxShadow: "0 10px 25px -5px rgba(204, 255, 0, 0.4)" }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="relative z-10">Get in touch</span>
-              <motion.span 
-                className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                animate={{ 
-                  x: ["-100%", "100%"],
-                  opacity: [0, 0.5, 0],
-                }}
-                transition={{ 
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 1.5,
-                  ease: "linear",
-                  repeatDelay: 0.5
-                }}
-              />
-            </motion.a>
-            <motion.a
-              href="#projects"
-              className="relative px-6 py-3 bg-transparent text-white font-semibold rounded-md border border-lime/30 overflow-hidden group interactive"
-              data-cursor-text="See work"
-              whileHover={{ scale: 1.03, borderColor: "rgba(204, 255, 0, 0.5)" }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="relative z-10">View projects</span>
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-lime/20 to-teal/20 -z-10"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.a>
-          </motion.div>
-          
-          <motion.div
-            className="flex space-x-6"
-            initial={{ opacity: 0 }}
-            animate={isRevealed ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.5, delay: 2.2 }}
-          >
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <motion.a 
-                  href="https://github.com/nikhiljangid120" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors duration-300 magnetic-element interactive"
-                  data-cursor-text="GitHub"
-                  data-strength="15"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  <Github size={24} />
-                </motion.a>
-              </HoverCardTrigger>
-              <HoverCardContent className="bg-inkyblack/90 border border-lime/20">
-                <p className="text-sm text-gray-300">Follow me on GitHub</p>
-              </HoverCardContent>
-            </HoverCard>
-            
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <motion.a 
-                  href="https://www.linkedin.com/in/nikhil-jangid-b84360264/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors duration-300 magnetic-element interactive"
-                  data-cursor-text="LinkedIn"
-                  data-strength="15"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  <Linkedin size={24} />
-                </motion.a>
-              </HoverCardTrigger>
-              <HoverCardContent className="bg-inkyblack/90 border border-lime/20">
-                <p className="text-sm text-gray-300">Connect on LinkedIn</p>
-              </HoverCardContent>
-            </HoverCard>
-            
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <motion.a 
-                  href="https://leetcode.com/u/nikhil_888/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors duration-300 magnetic-element interactive"
-                  data-cursor-text="LeetCode"
-                  data-strength="15"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  <Code size={24} />
-                </motion.a>
-              </HoverCardTrigger>
-              <HoverCardContent className="bg-inkyblack/90 border border-lime/20">
-                <p className="text-sm text-gray-300">View my LeetCode profile</p>
-              </HoverCardContent>
-            </HoverCard>
-            
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <motion.a 
-                  href="https://www.geeksforgeeks.org/user/nikhiljals77/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors duration-300 magnetic-element interactive"
-                  data-cursor-text="GeeksForGeeks"
-                  data-strength="15"
-                  whileHover={{ scale: 1.2 }}
-                >
-                  <ExternalLink size={24} />
-                </motion.a>
-              </HoverCardTrigger>
-              <HoverCardContent className="bg-inkyblack/90 border border-lime/20">
-                <p className="text-sm text-gray-300">Check my GeeksForGeeks profile</p>
-              </HoverCardContent>
-            </HoverCard>
-          </motion.div>
-          
-          {/* Achievement badges with enhanced hover effects */}
-          <motion.div
-            className="mt-8 flex flex-wrap gap-3 justify-center md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 2.4 }}
-          >
-            <motion.div 
-              className="achievement-badge badge-leetcode interactive"
-              data-cursor-text="LeetCode"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <span className="h-2 w-2 rounded-full bg-lime"></span>
-              <span className="text-xs font-medium text-lime">LeetCode 100 Days</span>
-            </motion.div>
-            
-            <motion.div 
-              className="achievement-badge badge-codechef interactive"
-              data-cursor-text="CodeChef"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <span className="h-2 w-2 rounded-full bg-gold"></span>
-              <span className="text-xs font-medium text-gold">CodeChef Badges</span>
-            </motion.div>
-            
-            <motion.div 
-              className="achievement-badge badge-hackerearth interactive"
-              data-cursor-text="HackerEarth"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <span className="h-2 w-2 rounded-full bg-purple"></span>
-              <span className="text-xs font-medium text-purple">HackerEarth Achiever</span>
-            </motion.div>
-          </motion.div>
-          
-          {/* Contact information badges */}
-          <motion.div
-            className="mt-6 flex flex-wrap gap-3 justify-center md:justify-start"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 2.6 }}
-          >
-            <span className="text-sm text-gray-500">
-              <span className="text-gray-400 font-medium">Jaipur, Rajasthan</span>
-            </span>
-          </motion.div>
-        </div>
-      </motion.div>
-      
-      {/* Animated scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-        <motion.div 
-          className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+        <motion.div className="mb-1 overflow-hidden">
+          <div className="flex justify-center md:justify-start">
+            {titleChars.map((char, index) => (
+              <motion.span
+                key={`title-${index}`}
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-300 inline-block mr-[1px] font-orbitron"
+                initial={{ y: '100%', opacity: 0 }}
+                animate={isRevealed ? { y: '0%', opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.4 + index * 0.03 }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          ref={nameWrapperRef}
+          className="relative mb-6 group interactive"
+          whileHover="hover"
+          onMouseEnter={handleNameEnter}
+          onMouseLeave={handleNameLeave}
+          style={{ cursor: 'pointer' }}
         >
-          <motion.div 
-            className="w-1 h-2 bg-white/50 rounded-full"
-            animate={{ y: [0, 5, 0], opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+          <motion.div
+            className="absolute -inset-x-3 -inset-y-1.5 bg-gradient-to-r from-lime/15 via-purple/15 to-teal/15 opacity-0 group-hover:opacity-100 blur-xl rounded-lg -z-10"
+            variants={{ hover: { opacity: 1 } }}
+            transition={{ duration: 0.3 }}
+          />
+          <AnimatePresence>
+            {isHoveringName && (
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10"
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <HoverParticle key={`hover-particle-${i}`} delay={i * 0.02} />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="flex justify-center md:justify-start flex-wrap">
+            {nameChars.map((char, index) => (
+              <motion.span
+                key={`name-${index}`}
+                className={`text-3xl md:text-5xl lg:text-6xl font-bold inline-block mr-[1px] transition-colors duration-200 font-orbitron ${
+                  isHoveringName ? 'text-transparent' : 'text-white'
+                }`}
+                style={{
+                  backgroundImage: isHoveringName
+                    ? 'linear-gradient(90deg, #CCFF00, #00C4B4, #8B00FF, #CCFF00)'
+                    : 'none',
+                  backgroundSize: '200% auto',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  animation: isHoveringName ? 'gradient-shine 2s linear infinite' : 'none',
+                }}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={isRevealed ? { y: '0%', opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.6 + index * 0.04 }}
+                variants={{
+                  hover: {
+                    y: (Math.random() - 0.5) * 4,
+                    transition: { duration: 0.15, delay: index * 0.01 },
+                  },
+                }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </motion.span>
+            ))}
+          </div>
+          <motion.div
+            className="absolute -bottom-2.5 left-0 w-full h-[3px] bg-gradient-to-r from-teal via-lime to-purple rounded-full"
+            initial={{ scaleX: 0 }}
+            animate={isRevealed ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.6, delay: 1 }}
           />
         </motion.div>
-      </div>
+
+        <motion.h2
+          className="text-lg md:text-xl mb-8 text-gray-300 max-w-xl bg-black/30 backdrop-blur-sm p-4 rounded-lg font-poppins"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isRevealed ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 1.2 }}
+        >
+          <span className="text-lime font-semibold">Full-stack developer</span> &{' '}
+          <span className="text-teal font-semibold">problem solver</span> from{' '}
+          <span className="font-medium text-gray-100">Jaipur</span>.
+        </motion.h2>
+
+        <motion.div
+          className="flex flex-wrap gap-4 mb-10 justify-center md:justify-start"
+          initial="hidden"
+          animate={isRevealed ? 'visible' : 'hidden'}
+          variants={{
+            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.4, staggerChildren: 0.1 } },
+            hidden: { opacity: 0 },
+          }}
+        >
+          <motion.a
+            href="#contact"
+            className="relative px-7 py-3.5 bg-gradient-to-r from-lime to-teal text-inkyblack font-bold rounded-lg overflow-hidden group interactive shadow-lg font-poppins"
+            variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          >
+            <span className="relative z-10">Get in touch</span>
+            <motion.span
+              className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100"
+              transition={{ duration: 0.3 }}
+            />
+          </motion.a>
+          <motion.a
+            href="#projects"
+            className="relative px-7 py-3.5 bg-black/30 text-white font-semibold rounded-lg border border-lime/50 group interactive backdrop-blur-md font-poppins"
+            variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          >
+            <span className="relative z-10">View projects</span>
+            <motion.div
+              className="absolute inset-0 bg-lime/20 opacity-0 group-hover:opacity-100 -z-10"
+              transition={{ duration: 0.3 }}
+            />
+          </motion.a>
+        </motion.div>
+
+        <motion.div
+          className="flex space-x-6 mb-8"
+          initial="hidden"
+          animate={isRevealed ? 'visible' : 'hidden'}
+          variants={{
+            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.6, staggerChildren: 0.08 } },
+            hidden: { opacity: 0 },
+          }}
+        >
+          {[
+            { href: 'https://github.com/nikhiljangid120', icon: Github, text: 'GitHub' },
+            { href: 'https://www.linkedin.com/in/nikhil-jangid-b84360264/', icon: Linkedin, text: 'LinkedIn' },
+            { href: 'https://leetcode.com/u/nikhil_888/', icon: Code, text: 'LeetCode' },
+            { href: 'https://www.geeksforgeeks.org/user/nikhiljals77/', icon: ExternalLink, text: 'GeeksForGeeks' },
+          ].map(({ href, icon: Icon, text }) => (
+            <motion.div key={text} variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}>
+              <HoverCard openDelay={100} closeDelay={50}>
+                <HoverCardTrigger asChild>
+                  <motion.a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-lime transition-colors duration-200 interactive relative group"
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                  >
+                    <Icon size={28} />
+                    <motion.span
+                      className="absolute -inset-2 bg-lime/15 blur-lg rounded-full opacity-0 group-hover:opacity-100 -z-10"
+                      transition={{ duration: 0.2 }}
+                    />
+                  </motion.a>
+                </HoverCardTrigger>
+                <HoverCardContent className="bg-inkyblack/85 border border-lime/20 backdrop-blur-lg text-sm text-gray-200 rounded-lg font-poppins">
+                  {text === 'GitHub' ? 'Explore my code on GitHub' : `Visit my ${text} profile`}
+                </HoverCardContent>
+              </HoverCard>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          className="flex flex-wrap gap-3 justify-center md:justify-start mb-6"
+          initial="hidden"
+          animate={isRevealed ? 'visible' : 'hidden'}
+          variants={{
+            visible: { opacity: 1, transition: { duration: 0.5, delay: 1.8, staggerChildren: 0.06 } },
+            hidden: { opacity: 0 },
+          }}
+        >
+          {[
+            { text: 'LeetCode 100 Days', color: 'lime' },
+            { text: 'CodeChef Rated', color: 'gold' },
+            { text: 'HackerEarth Achiever', color: 'cyan' },
+          ].map(({ text, color }) => {
+            const classes = getBadgeClasses(color);
+            return (
+              <motion.div
+                key={text}
+                className={`interactive bg-black/40 backdrop-blur px-3.5 py-1.5 rounded-full flex items-center gap-2.5 ${classes.border} cursor-default group font-poppins`}
+                variants={{ visible: { opacity: 1 }, hidden: { opacity: 0 } }}
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              >
+                <motion.span
+                  className={`h-2.5 w-2.5 rounded-full ${classes.bg}`}
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                />
+                <span className={`text-xs font-medium ${classes.text}`}>{text}</span>
+                <motion.span
+                  className="absolute -inset-1.5 bg-lime/10 blur-md rounded-full opacity-0 group-hover:opacity-50 -z-10"
+                  transition={{ duration: 0.2 }}
+                />
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <motion.div
+            className="w-1 h-5 border-0 border-lime/40 rounded-full flex justify-center items-end pb-[3px]"
+            initial={{ opacity: 0 }}
+            animate={isRevealed ? { opacity: [0, 0.5, 0], y: [0, 8, 8] } : {}}
+            transition={{ duration: 2, repeat: Infinity, delay: 3 }}
+          >
+            <motion.div className="w-1 h-1 bg-lime/80 rounded-full" />
+          </motion.div>
+        </div>
+
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;600&display=swap');
+          .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+          }
+          .font-poppins {
+            font-family: 'Poppins', sans-serif;
+          }
+          @keyframes gradient-shine {
+            to { background-position: 200% center; }
+          }
+          .bg-gradient-radial {
+            background-image: radial-gradient(circle, var(--tw-gradient-stops));
+          }
+        `}</style>
+      </motion.div>
     </section>
   );
 };

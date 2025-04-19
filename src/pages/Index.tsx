@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
@@ -84,7 +83,7 @@ const Index = () => {
           {/* Animated particles */}
           {particles.map(particle => (
             <motion.div
-              key={particle.id}
+              key={`loading-particle-${particle.id}`}
               className="absolute w-1 h-1 rounded-full bg-lime"
               style={{
                 width: `${particle.size}px`,

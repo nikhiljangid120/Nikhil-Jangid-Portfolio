@@ -41,50 +41,51 @@ const TimelineSection = () => {
   
   const timelineItems: TimelineItem[] = [
     {
-      year: "2021 - Present",
+      year: "2022",
       title: "B.Tech in Computer Science & Engineering",
-      organization: "Engineering College, Rajasthan",
-      description: "Currently pursuing my bachelor's degree with a focus on algorithms, data structures, and web development technologies.",
+      organization: "Amity University, Rajasthan",
+      description: "Currently pursuing my bachelor's degree with a focus on algorithms, data structures, and web development technologies (2022-2026).",
       type: "education",
-      details: "Coursework includes Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Actively participating in coding clubs and hackathons while maintaining a strong academic record.",
+      details: "Coursework includes Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Actively participating in coding clubs, hackathons, and academic projects while maintaining a strong academic record.",
       location: "Jaipur, Rajasthan"
     },
     {
-      year: "2023",
+      year: "2024",
       title: "Web Development Intern",
-      organization: "Tech Startup",
+      organization: "Internpe",
       description: "Worked on developing responsive web applications using React.js and Node.js, implementing RESTful APIs and user authentication systems.",
       type: "experience",
       details: "Built and deployed a full-stack e-commerce platform with features like user authentication, product catalog, and payment integration. Collaborated with design and backend teams to ensure seamless integration. Improved website performance by 40% through code optimization and image compression techniques.",
       location: "Remote"
     },
     {
-      year: "2022",
-      title: "National Coding Competition Finalist",
-      organization: "TechFest 2022",
-      description: "Secured a position in the finals of a national-level coding competition, showcasing problem-solving skills and algorithmic thinking.",
+      year: "2023",
+      title: "2nd Runner-Up – Whack Hackathon 2.0",
+      organization: "Amity University, Rajasthan",
+      description: "Secured the 2nd runner-up position in Whack Hackathon 2.0, a college-level hackathon, by developing an innovative solution in the field of web development and AI.",
       type: "achievement",
-      details: "Competed among 5000+ participants nationwide and reached the final round of 20 contestants. Solved complex algorithmic challenges involving graph theory, dynamic programming, and optimization problems under tight time constraints.",
-      location: "Mumbai, Maharashtra"
+      details: "Worked with a team to design and implement a web-based solution that combined AI with user experience design to improve customer engagement for local businesses. The project was recognized for its creativity, technical execution, and real-world applicability.",
+      location: "Jaipur, Rajasthan"
     },
     {
       year: "2021",
-      title: "Senior Secondary Education",
-      organization: "Senior Secondary School, Rajasthan",
-      description: "Completed senior secondary education with a focus on Mathematics and Computer Science, graduating with high honors.",
+      title: "Senior Secondary Education (12th Grade)",
+      organization: "Spectrum Global Academy",
+      description: "Completed senior secondary education with a focus on Physics, Chemistry, and Mathematics (PCM), graduating with high honors.",
       type: "education",
-      details: "Graduated with 95% marks with distinction in Mathematics, Physics, and Computer Science. Developed a strong foundation in logical thinking, problem-solving, and analytical skills that later proved essential for computer science studies.",
+      details: "Graduated with distinction, achieving exceptional marks in Mathematics, Physics, and Chemistry. Developed a solid foundation in logical reasoning, analytical thinking, and problem-solving, which laid the groundwork for future computer science studies.",
       location: "Jaipur, Rajasthan"
     },
     {
-      year: "2020",
-      title: "Web Design Contest Winner",
-      organization: "Regional Tech Symposium",
-      description: "Won first place in a regional web design competition for creating an innovative and accessible educational platform interface.",
-      type: "achievement",
-      details: "Designed and prototyped an intuitive learning management system focused on accessibility for differently-abled users. Implemented responsive design principles, high-contrast modes, and screen reader compatibility to ensure inclusive user experience.",
+      year: "2019",
+      title: "Secondary School Graduation (10th Grade)",
+      organization: "Emmanuel Mission Secondary School",
+      description: "Completed secondary education with a focus on science and mathematics subjects, excelling in mathematics and science along with other subjects too.",
+      type: "education",
+      details: "Graduated with top honors, achieving excellence in subjects like Mathematics, Physics, and Computer Science. Actively participated in extracurricular activities such as chess clubs and science fairs.",
       location: "Jaipur, Rajasthan"
     }
+      
   ];
   
   const getIcon = (type: string) => {
@@ -186,19 +187,35 @@ const TimelineSection = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <motion.span 
-              className="bg-clip-text text-transparent bg-gradient-to-r from-purple via-teal to-purple"
-              animate={{ 
-                backgroundPosition: ['0% center', '100% center', '0% center'],
-              }}
-              transition={{ 
-                duration: 8, 
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              My Journey
-            </motion.span>
+                <motion.span 
+      className="text-3xl md:text-5xl font-bold relative inline-block font-['Montserrat']"
+      animate={{ 
+        backgroundPosition: ['0% center', '100% center', '0% center'],
+      }}
+      transition={{ 
+        duration: 4, 
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    >
+      <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-400 to-pink-400 to-coral-400 px-3 py-1 rounded-lg shadow-[0_4px_14px_rgba(236,72,153,0.4)]">
+        My Journey
+      </span>
+      <motion.span 
+        className="absolute -inset-2 blur-2xl opacity-50 bg-gradient-to-r from-green-300 via-blue-400 to-pink-400 to-coral-400 rounded-xl -z-10"
+        animate={{ 
+          opacity: [0.4, 0.8, 0.4],
+          scale: [1, 1.06, 1],
+          boxShadow: [
+            '4px 4px 16px rgba(236,72,153,0.3)', 
+            '6px 6px 24px rgba(59,130,246,0.5)', 
+            '4px 4px 16px rgba(236,72,153,0.3)'
+          ],
+          backgroundPosition: ['0% center', '100% center', '0% center']
+        }}
+        transition={{ duration: 2.5, repeat: Infinity, repeatType: "mirror" }}
+      />
+    </motion.span>
           </motion.h2>
           
           <motion.div 

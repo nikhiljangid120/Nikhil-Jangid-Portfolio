@@ -39,9 +39,9 @@ const SkillsSection = () => {
   const skills: Skill[] = [
     // Programming Languages
     { name: "C++", level: 90, category: "languages", color: "from-teal to-lime", icon: <Gauge /> },
-    { name: "JavaScript", level: 85, category: "languages", color: "from-gold to-orange", icon: <Zap /> },
-    { name: "Python", level: 75, category: "languages", color: "from-purple to-teal", icon: <BookOpen /> },
-    { name: "HTML/CSS", level: 90, category: "languages", color: "from-orange to-gold", icon: <Sparkles /> },
+    { name: "JavaScript", level: 80, category: "languages", color: "from-gold to-orange", icon: <Zap /> },
+    { name: "Python", level: 55, category: "languages", color: "from-purple to-teal", icon: <BookOpen /> },
+    { name: "HTML/CSS", level: 100, category: "languages", color: "from-orange to-gold", icon: <Sparkles /> },
     
     // Frontend
     { name: "React.js", level: 85, category: "frontend", color: "from-teal to-lime", icon: <Gauge /> },
@@ -57,9 +57,9 @@ const SkillsSection = () => {
     
     // Tools & Others
     { name: "Git/GitHub", level: 85, category: "tools", color: "from-purple to-teal", icon: <Gauge /> },
-    { name: "Data Structures", level: 90, category: "tools", color: "from-lime to-teal", icon: <Award /> },
-    { name: "Algorithms", level: 85, category: "tools", color: "from-teal to-purple", icon: <Trophy /> },
-    { name: "Linux", level: 70, category: "tools", color: "from-gold to-orange", icon: <BookOpen /> }
+    { name: "Data Structures", level: 75, category: "tools", color: "from-lime to-teal", icon: <Award /> },
+    { name: "Algorithms", level: 65, category: "tools", color: "from-teal to-purple", icon: <Trophy /> },
+    { name: "Linux", level: 50, category: "tools", color: "from-gold to-orange", icon: <BookOpen /> }
   ];
   
   const categories = [
@@ -105,13 +105,33 @@ const SkillsSection = () => {
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
       >
-        <motion.div variants={skillVariants} className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Skills</h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-lime to-teal mx-auto mb-8" />
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            My technical toolkit spans multiple domains, from low-level programming to modern web development frameworks.
-          </p>
-        </motion.div>
+       <motion.div variants={skillVariants} className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 relative inline-block font-['Inter']">
+        <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-600 px-4 py-2 rounded-xl shadow-[0_6px_16px_rgba(59,130,246,0.5)]">
+          Technical Skills
+        </span>
+        <motion.span 
+          className="absolute -inset-3 blur-3xl opacity-60 bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-600 rounded-xl -z-10"
+          animate={{ 
+            opacity: [0.5, 0.9, 0.5],
+            scale: [1, 1.08, 1],
+            rotate: [0, 2, -2, 0],
+            boxShadow: [
+              '6px 6px 20px rgba(59,130,246,0.4)', 
+              '8px 8px 28px rgba(79,70,229,0.6)', 
+              '6px 6px 20px rgba(16,185,129,0.4)',
+              '6px 6px 20px rgba(59,130,246,0.4)'
+            ],
+            backgroundPosition: ['0% center', '100% center', '0% center']
+          }}
+          transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
+        />
+      </h2>
+      <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-indigo-600 mx-auto mb-8" />
+      <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+        My technical toolkit spans multiple domains, from low-level programming to modern web development frameworks.
+      </p>
+    </motion.div>
         
         {/* Category selection tabs */}
         <motion.div 
@@ -255,7 +275,7 @@ const SkillsSection = () => {
         >
           <h3 className="text-2xl font-bold mb-8">Currently Learning</h3>
           <div className="flex flex-wrap justify-center gap-4">
-            {["Advanced MongoDB", "AWS Cloud Services", "Deep Learning", "TypeScript", "Next.js", "GraphQL"].map((tech, index) => (
+            {["Generative AI", "AWS Cloud Services", "Web3", "TypeScript", "Next.js", "GraphQL"].map((tech, index) => (
               <motion.div 
                 key={index}
                 className="tech-pill relative overflow-hidden group interactive"
