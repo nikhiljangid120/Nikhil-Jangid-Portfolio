@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -366,6 +365,35 @@
   /* Enhanced text gradient effect */
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-teal via-lime to-purple animate-text-shimmer bg-[size:200%];
+  }
+  
+  /* Mini-game styles */
+  .game-container {
+    @apply relative overflow-hidden rounded-xl backdrop-blur-sm bg-charcoal/30 border border-white/10 
+           transition-all duration-300;
+  }
+  
+  .game-item {
+    @apply absolute rounded-full bg-gradient-to-r from-lime/30 to-teal/30 border border-lime/20
+           flex items-center justify-center transition-all duration-300;
+  }
+  
+  .game-character {
+    @apply absolute rounded-full bg-gradient-to-r from-lime to-teal shadow-lg shadow-lime/20
+           flex items-center justify-center z-10;
+  }
+  
+  .game-particle {
+    @apply absolute rounded-full bg-lime/50 opacity-80 pointer-events-none;
+  }
+  
+  .game-controls {
+    @apply grid grid-cols-3 gap-2 mt-4 mx-auto;
+  }
+  
+  .game-button {
+    @apply rounded-lg bg-charcoal/50 border border-white/10 transition-all duration-200
+           hover:bg-charcoal/70 hover:border-lime/20 active:scale-95;
   }
 }
 

@@ -8,6 +8,7 @@ const CustomCursor = () => {
   const [linkHovered, setLinkHovered] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [text, setText] = useState('');
+  const [isGameElement, setIsGameElement] = useState(false);
   
   useEffect(() => {
     const isMobile = window.innerWidth <= 768;
@@ -39,6 +40,9 @@ const CustomCursor = () => {
       // Check if cursor is over interactive element
       const hoveredEl = document.elementFromPoint(e.clientX, e.clientY);
       const cursorTextAttr = hoveredEl?.getAttribute('data-cursor-text');
+      const isGameEl = hoveredEl?.closest('#about-mini-game, #about-mini-game *');
+      
+      setIsGameElement(!!isGameEl);
       
       if (hoveredEl?.closest('a, button, [role="button"], .interactive')) {
         setLinkHovered(true);
@@ -75,11 +79,13 @@ const CustomCursor = () => {
             animate={{
               x: position.x,
               y: position.y,
-              scale: clicked ? 0.5 : linkHovered ? 1.5 : 1,
+              scale: clicked ? 0.5 : linkHovered ? 1.5 : isGameElement ? 0.7 : 1,
               opacity: hidden ? 0 : 1,
-              width: linkHovered ? 64 : 24,
-              height: linkHovered ? 64 : 24,
+              width: linkHovered ? 64 : isGameElement ? 16 : 24,
+              height: linkHovered ? 64 : isGameElement ? 16 : 24,
               borderRadius: linkHovered ? 12 : 24,
+              mixBlendMode: isGameElement ? "normal" : "difference",
+              backgroundColor: isGameElement ? "rgba(204, 255, 0, 0.5)" : "white"
             }}
             transition={{
               type: "spring",
@@ -101,7 +107,8 @@ const CustomCursor = () => {
               x: position.x,
               y: position.y,
               opacity: linkHovered ? 0 : 1,
-              scale: clicked ? 0.5 : 1
+              scale: clicked ? 0.5 : 1,
+              backgroundColor: isGameElement ? "rgba(204, 255, 0, 0.8)" : "white"
             }}
             transition={{
               type: "spring",
@@ -135,6 +142,35 @@ const CustomCursor = () => {
               }}
             >
               {text}
+            </motion.div>
+          )}
+          
+          {/* Game cursor indicator */}
+          {isGameElement && (
+            <motion.div
+              key="cursor-game"
+              className="fixed top-0 left-0 pointer-events-none z-50"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: position.x,
+                y: position.y
+              }}
+              exit={{ opacity: 0, scale: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                transform: 'translate(-50%, -50%)'
+              }}
+            >
+              <motion.div
+                className="w-20 h-20 rounded-full border-2 border-lime opacity-20"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.2, 0.1, 0.2]
+                }}
+                transition={{ duration: 1, repeat: Infinity }}
+              />
             </motion.div>
           )}
         </>
