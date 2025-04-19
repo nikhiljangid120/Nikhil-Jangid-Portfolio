@@ -1,282 +1,234 @@
 
 import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Laptop, Code, ShieldCheck, Database, User, Lightbulb } from 'lucide-react';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { Code, ShieldCheck, Database, User, Lightbulb, Github, Linkedin, Mail, Coffee } from 'lucide-react';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 
 const AboutSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
-  const [activeInterest, setActiveInterest] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
+  // Parallax effect for image
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
   };
-  
-  const childVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }
-    }
-  };
-  
-  const interests = [
-    { 
-      icon: <Code className="h-8 w-8" />,
-      title: "Data Structures & Algorithms",
-      description: "Passionate about solving complex problems with efficient code using C++",
-      color: "rgb(204, 255, 0)",
-      bgColor: "rgba(204, 255, 0, 0.2)"
-    },
-    { 
-      icon: <Laptop className="h-8 w-8" />,
-      title: "Full Stack Development",
-      description: "Building responsive web applications with React, Node.js and modern frontend technologies",
-      color: "rgb(255, 154, 0)",
-      bgColor: "rgba(255, 154, 0, 0.2)"
-    },
-    { 
-      icon: <ShieldCheck className="h-8 w-8" />,
-      title: "Cybersecurity",
-      description: "Exploring ethical hacking concepts and securing applications from vulnerabilities",
-      color: "rgb(250, 204, 21)",
-      bgColor: "rgba(250, 204, 21, 0.2)"
-    },
-    { 
-      icon: <Database className="h-8 w-8" />,
-      title: "Machine Learning",
-      description: "Learning Python-based ML foundations to build intelligent data systems",
-      color: "rgb(168, 85, 247)",
-      bgColor: "rgba(168, 85, 247, 0.2)"
-    }
+
+  const socialLinks = [
+    { icon: <Github className="w-6 h-6" />, href: "https://github.com/nikhiljangid120", label: "GitHub" },
+    { icon: <Linkedin className="w-6 h-6" />, href: "https://www.linkedin.com/in/nikhil-jangid-b84360264/", label: "LinkedIn" },
+    { icon: <Mail className="w-6 h-6" />, href: "mailto:nikhiljangid120@gmail.com", label: "Email" },
+    { icon: <Coffee className="w-6 h-6" />, href: "https://www.buymeacoffee.com/nikhiljangid", label: "Buy me a coffee" }
   ];
-  
+
+  const journey = [
+    { year: "2020", title: "Started Coding Journey", description: "First encounter with programming and web development basics" },
+    { year: "2021", title: "First Major Project", description: "Developed a full-stack web application with React and Node.js" },
+    { year: "2022", title: "College Admission", description: "Started B.Tech in Computer Science & Engineering" },
+    { year: "2023", title: "Internship Experience", description: "Worked as a software development intern at a tech startup" }
+  ];
+
+  const philosophyPoints = [
+    "Clean code leads to maintainable software",
+    "User experience should always be prioritized",
+    "Continuous learning is key to growth",
+    "Collaborate to build better solutions"
+  ];
+
   return (
-    <section id="about" ref={ref} className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-inkyblack/60 to-charcoal/60 -z-10" />
+    <section id="about" ref={ref} className="py-24 relative overflow-hidden bg-inkyblack">
+      <div className="absolute inset-0 bg-gradient-to-b from-charcoal/20 to-inkyblack/90" />
       
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-inkyblack to-transparent -z-10" />
-      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-inkyblack to-transparent -z-10" />
-      
+      {/* Grid pattern and animated gradient blobs */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10" />
       <motion.div 
-        className="absolute -top-32 -left-32 w-64 h-64 rounded-full bg-purple/10 blur-3xl -z-10"
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-teal/5 blur-3xl"
         animate={{ 
-          x: [0, 30, 0],
-          y: [0, 20, 0],
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.3, 0.2]
         }}
-        transition={{ 
-          duration: 15, 
-          repeat: Infinity,
-          repeatType: "mirror"
-        }}
+        transition={{ duration: 8, repeat: Infinity }}
       />
       
-      <motion.div 
-        className="absolute -bottom-32 -right-32 w-64 h-64 rounded-full bg-teal/10 blur-3xl -z-10"
-        animate={{ 
-          x: [0, -30, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{ 
-          duration: 12, 
-          repeat: Infinity,
-          repeatType: "mirror"
-        }}
-      />
-      
-      <motion.div 
-        className="section-container"
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-      >
-        <motion.div variants={childVariants} className="text-center mb-16">
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            About Me
-          </motion.h2>
-          <motion.div 
-            className="w-20 h-1.5 bg-gradient-to-r from-teal to-orange mx-auto mb-8"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          />
-          <motion.p 
-            className="text-lg text-gray-300 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.6 }}
-          >
-            Computer Science & Engineering student passionate about creating innovative digital solutions.
-          </motion.p>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-          <motion.div 
-            variants={childVariants} 
-            className="card-3d p-8 bg-charcoal/50 backdrop-blur-sm relative overflow-hidden group"
-          >
-            <motion.div 
-              className="absolute top-4 left-4 p-3 rounded-full bg-teal/20 text-teal"
-              whileHover={{ scale: 1.2, rotate: 15 }}
-            >
-              <User className="w-6 h-6" />
-            </motion.div>
-            
-            <h3 className="text-2xl font-bold mb-4 text-teal mt-12">My Journey</h3>
-            <p className="text-gray-300 mb-4">
-              From curiosity about digital systems to a passion for full-stack development. Currently pursuing my B.Tech degree while mastering computer science fundamentals and cutting-edge web technologies.
-            </p>
-            
-            <motion.div 
-              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-teal to-lime"
-              initial={{ width: 0 }}
-              whileInView={{ width: "100%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2 }}
-            />
-            
-            <motion.div 
-              className="absolute -z-10 top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal/5 blur-xl"
-              animate={{ 
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ 
-                duration: 4, 
-                repeat: Infinity,
-                repeatType: "mirror"
-              }}
-            />
-          </motion.div>
-          
-          <motion.div 
-            variants={childVariants} 
-            className="card-3d p-8 bg-charcoal/50 backdrop-blur-sm relative overflow-hidden group"
-          >
-            <motion.div 
-              className="absolute top-4 left-4 p-3 rounded-full bg-orange/20 text-orange"
-              whileHover={{ scale: 1.2, rotate: 15 }}
-            >
-              <Lightbulb className="w-6 h-6" />
-            </motion.div>
-            
-            <h3 className="text-2xl font-bold mb-4 text-orange mt-12">My Philosophy</h3>
-            <p className="text-gray-300 mb-4">
-              Great software combines technical excellence with intuitive user experience. Transforming complex problems into elegant, impactful solutions while constantly learning new technologies.
-            </p>
-            
-            <motion.div 
-              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-orange to-gold"
-              initial={{ width: 0 }}
-              whileInView={{ width: "100%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.4 }}
-            />
-            
-            <motion.div 
-              className="absolute -z-10 top-1/2 left-1/2 w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange/5 blur-xl"
-              animate={{ 
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ 
-                duration: 5, 
-                repeat: Infinity,
-                repeatType: "mirror"
-              }}
-            />
-          </motion.div>
-        </div>
-        
-        <motion.h3 
-          variants={childVariants}
-          className="text-2xl font-bold text-center mb-12"
-        >
-          My Areas of Interest
-        </motion.h3>
-        
+      <div className="section-container relative z-10">
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-          variants={containerVariants}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
-          {interests.map((interest, index) => (
-            <motion.div
-              key={index}
-              className="card-3d p-6 text-center flex flex-col items-center bg-charcoal/50 backdrop-blur-sm relative overflow-hidden interactive"
-              data-cursor-text="Explore"
-              variants={childVariants}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              onMouseEnter={() => setActiveInterest(index)}
-              onMouseLeave={() => setActiveInterest(null)}
-              style={{
-                borderColor: activeInterest === index ? interest.color : 'rgba(255, 255, 255, 0.1)'
-              }}
-            >
-              <motion.div
-                className="mb-4 p-3 rounded-full relative"
-                animate={activeInterest === index ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                style={{
-                  backgroundColor: activeInterest === index ? interest.bgColor : 'rgba(15, 23, 42, 0.5)'
-                }}
-              >
-                <motion.div style={{ color: interest.color }}>
-                  {interest.icon}
-                </motion.div>
-                <motion.div 
-                  className="absolute inset-0 rounded-full"
-                  initial={{ boxShadow: "0 0 0 0 rgba(204, 255, 0, 0)" }}
-                  animate={activeInterest === index 
-                    ? { boxShadow: `0 0 0 10px ${interest.color}00` } 
-                    : { boxShadow: "0 0 0 0 rgba(204, 255, 0, 0)" }
-                  }
-                  transition={{ duration: 1, repeat: activeInterest === index ? Infinity : 0 }}
-                />
-              </motion.div>
-              <h4 className="text-xl font-bold mb-2" style={{ 
-                color: activeInterest === index ? interest.color : 'white'
-              }}>
-                {interest.title}
-              </h4>
-              <p className="text-gray-400 text-sm">{interest.description}</p>
-              
-              {activeInterest === index && (
-                <motion.div
-                  className="absolute -z-10 inset-0"
-                  style={{ 
-                    background: `radial-gradient(circle at center, ${interest.bgColor} 0%, rgba(15, 23, 42, 0) 70%)`,
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.6 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-              
-              <motion.div 
-                className="absolute bottom-0 left-0 h-0.5"
-                style={{ backgroundColor: interest.color, opacity: 0.5 }}
-                initial={{ width: 0 }}
-                animate={activeInterest === index ? { width: "100%" } : { width: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.div>
-          ))}
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-teal via-lime to-orange bg-clip-text text-transparent">
+            About Me
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Computer Science & Engineering student passionate about creating innovative digital solutions that combine technical excellence with intuitive user experiences.
+          </p>
         </motion.div>
-      </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Profile Image with Advanced Effects */}
+          <motion.div
+            className="relative group perspective"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{ y }}
+          >
+            <motion.div 
+              className="relative w-full aspect-square rounded-2xl overflow-hidden card-3d"
+              animate={isHovered ? {
+                rotateX: (mousePosition.y - 50) * 0.1,
+                rotateY: (mousePosition.x - 50) * 0.1,
+              } : {
+                rotateX: 0,
+                rotateY: 0,
+              }}
+              transition={{ type: "spring", stiffness: 150, damping: 20 }}
+            >
+              <img 
+                src="/profile.jpg" 
+                alt="Nikhil Jangid"
+                className="w-full h-full object-cover"
+              />
+              
+              {/* Glassmorphism Overlay */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: `radial-gradient(
+                    circle at ${mousePosition.x}% ${mousePosition.y}%,
+                    rgba(204, 255, 0, 0.2),
+                    transparent 70%
+                  )`,
+                  backdropFilter: "blur(4px)"
+                }}
+              />
+              
+              {/* Sparkle Effects */}
+              {Array.from({ length: 8 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 bg-lime rounded-full"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    opacity: [0, 1, 0],
+                    scale: [0, 1, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                  }}
+                />
+              ))}
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div 
+              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.5 }}
+            >
+              {socialLinks.map((link, index) => (
+                <HoverCard key={index}>
+                  <HoverCardTrigger asChild>
+                    <motion.a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-charcoal/50 backdrop-blur-sm rounded-full text-gray-400 hover:text-lime transition-colors duration-300 interactive"
+                      whileHover={{ scale: 1.1 }}
+                      data-cursor-text={link.label}
+                    >
+                      {link.icon}
+                    </motion.a>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="bg-inkyblack/90 border border-lime/20">
+                    <p className="text-sm text-gray-300">Connect on {link.label}</p>
+                  </HoverCardContent>
+                </HoverCard>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Journey and Philosophy */}
+          <div className="space-y-12">
+            {/* Journey Timeline */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-charcoal/30 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <User className="w-6 h-6 text-teal" />
+                <h3 className="text-2xl font-bold text-teal">My Journey</h3>
+              </div>
+              <div className="space-y-4">
+                {journey.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    className="relative pl-8 pb-4 border-l border-lime/20 last:pb-0"
+                  >
+                    <div className="absolute -left-3 w-6 h-6 bg-gradient-to-r from-teal to-lime rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    </div>
+                    <span className="text-sm text-lime/80">{item.year}</span>
+                    <h4 className="text-lg font-semibold text-white mt-1">{item.title}</h4>
+                    <p className="text-gray-400 text-sm">{item.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Philosophy */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="bg-charcoal/30 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Lightbulb className="w-6 h-6 text-orange" />
+                <h3 className="text-2xl font-bold text-orange">My Philosophy</h3>
+              </div>
+              <div className="grid gap-4">
+                {philosophyPoints.map((point, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange to-gold" />
+                    <p className="text-gray-300">{point}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
