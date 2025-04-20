@@ -38,8 +38,8 @@ const projects: Project[] = [
     image: "/Resume.jpeg",
     technologies: ["Next.js", "OpenAI", "Firebase", "TailwindCSS"],
     category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/resumerocket",
+    githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
+    liveUrl: "https://resume-rocket-nikhiljangid120s-projects.vercel.app/",
     featured: true
   },
   {
