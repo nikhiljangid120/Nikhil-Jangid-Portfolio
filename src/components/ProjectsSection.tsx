@@ -39,7 +39,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "OpenAI", "Firebase", "TailwindCSS"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
-    liveUrl: "https://resume-rocket-nikhiljangid120s-projects.vercel.app/",
+    liveUrl: "https://ai-resume-builder-five-pi.vercel.app/",
     featured: true
   },
   {
