@@ -20,21 +20,34 @@ const Navbar = () => {
     { id: 'contact', label: 'Contact' },
   ];
 
-  // Scroll to section function with offset
+  // Detect if device is mobile
+  const isMobile = () => window.innerWidth < 768;
+
+  // Scroll to section function with mobile-specific offset
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const navbarHeight = document.querySelector('header')?.offsetHeight || 0;
+      // Use getBoundingClientRect to get accurate header height
+      const header = document.querySelector('header');
+      const navbarHeight = header?.getBoundingClientRect().height || 0;
+      
+      // Adjust offset for mobile (extra space for browser toolbars)
+      const mobileOffset = isMobile() ? 20 : 20; // Increased for mobile toolbar
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
+      const offsetPosition = elementPosition + window.scrollY - navbarHeight - mobileOffset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      // Ensure menu closes before scrolling to prevent glitches
+      setIsOpen(false);
+
+      // Add slight delay for mobile to ensure menu animation completes
+      setTimeout(() => {
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }, isMobile() ? 300 : 0); // Delay only on mobile to sync with menu close
 
       setActiveSection(id);
-      setIsOpen(false);
     }
   };
 
@@ -59,10 +72,10 @@ const Navbar = () => {
         .filter((item) => item.element);
 
       if (sections.length) {
+        const offset = isMobile() ? 100 : 150; // Smaller offset for mobile
         const currentSection = sections.reduce((acc, section) => {
           if (!section.element) return acc;
           const rect = section.element.getBoundingClientRect();
-          const offset = 150; // Adjust based on navbar height
 
           if (rect.top <= offset && rect.bottom > offset) {
             return section.id;
@@ -75,10 +88,21 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Handle viewport resize for mobile (e.g., orientation change)
+    const handleResize = () => {
+      // Recalculate active section on resize
+      handleScroll();
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, [prevScrollPos]);
 
-  // Animation variants
+  // Animation variants (unchanged)
   const navbarVariants = {
     visible: { y: 0, opacity: 1 },
     hidden: { y: -100, opacity: 0 },
