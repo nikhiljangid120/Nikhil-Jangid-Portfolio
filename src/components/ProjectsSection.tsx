@@ -86,7 +86,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "JavaScript", "D3.js", "GPT-4"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/code-analyzer",
+    liveUrl: "https://code-analyzer-5v1c.onrender.com/Code-Analyzer",
     featured: false
   },
   {
