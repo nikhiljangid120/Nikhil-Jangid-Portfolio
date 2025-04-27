@@ -75,6 +75,7 @@ const projects: Project[] = [
     technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Redis"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
+    liveUrl: "https://nexicon.vercel.app/",
     featured: false
   },
   {
