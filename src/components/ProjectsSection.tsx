@@ -16,7 +16,7 @@ interface Project {
   featured: boolean;
 }
 
-// Project data (unchanged)
+// Project data
 const projects: Project[] = [
   {
     id: "nj-careers",
@@ -39,7 +39,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "OpenAI", "Firebase", "TailwindCSS"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
-    liveUrl: "https://ai-resume-builder-five-pi.vercel.app/",
+    liveUrl: "https://resume-rocket-nikhiljangid120s-projects.vercel.app/",
     featured: true
   },
   {
@@ -75,7 +75,6 @@ const projects: Project[] = [
     technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Redis"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://nexicon.vercel.app/",
     featured: false
   },
   {
@@ -87,7 +86,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "JavaScript", "D3.js", "GPT-4"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://code-analyzer-5v1c.onrender.com/Code-Analyzer",
+    liveUrl: "https://example.com/code-analyzer",
     featured: false
   },
   {
@@ -184,6 +183,9 @@ const ProjectsSection = () => {
     { id: 'mobile', name: 'Mobile Apps', icon: Plus },
     { id: 'tool', name: 'Tools & Utilities', icon: Lightbulb },
   ];
+
+  // Define live projects
+  const liveProjectIds = ['flex-forge', 'ai-code-analyzer', 'resume-rocket', 'nexicon'];
 
   return (
     <section id="projects" ref={ref} className="py-24 relative overflow-hidden bg-inkyblack">
@@ -300,6 +302,61 @@ const ProjectsSection = () => {
                     transition={{ delay: 0.2 }}
                   >
                     {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
+                  </motion.div>
+                  {/* Live/In Progress Badge */}
+                  <motion.div
+                    className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold flex items-center ${
+                      liveProjectIds.includes(project.id)
+                        ? 'bg-[#CCFF00]/90 text-[#005A66] shadow-[0_0_10px_rgba(204,255,0,0.5)]'
+                        : 'bg-[#FFB100]/90 text-[#0A0E17] shadow-[0_0_10px_rgba(255,177,0,0.5)]'
+                    }`}
+                    animate={{
+                      scale: liveProjectIds.includes(project.id) ? [1, 1.05, 1] : 1,
+                      opacity: [0.9, 1, 0.9],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    {liveProjectIds.includes(project.id) ? (
+                      <>
+                        <span className="mr-1">Live</span>
+                        <motion.div
+                          className="w-2 h-2 bg-[#005A66] rounded-full"
+                          animate={{ scale: [1, 1.3, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        />
+                        {/* Particle Effect on Hover */}
+                        <motion.div
+                          className="absolute inset-0 -z-10"
+                          initial={{ opacity: 0 }}
+                          whileHover={{ opacity: 0.3 }}
+                        >
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <motion.div
+                              key={i}
+                              className="absolute w-1 h-1 rounded-full bg-[#CCFF00]"
+                              initial={{ x: 0, y: 0, opacity: 1 }}
+                              animate={{
+                                x: (Math.random() - 0.5) * 30,
+                                y: (Math.random() - 0.5) * 30,
+                                opacity: 0,
+                              }}
+                              transition={{
+                                duration: 0.4 + Math.random() * 0.2,
+                                repeat: Infinity,
+                                ease: 'easeOut',
+                              }}
+                              style={{ left: '50%', top: '50%' }}
+                            />
+                          ))}
+                        </motion.div>
+                      </>
+                    ) : (
+                      <span>In Progress</span>
+                    )}
                   </motion.div>
                 </div>
 
@@ -437,6 +494,61 @@ const ProjectsSection = () => {
                   >
                     {project.category}
                   </motion.div>
+                  {/* Live/In Progress Badge */}
+                  <motion.div
+                    className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold flex items-center ${
+                      liveProjectIds.includes(project.id)
+                        ? 'bg-[#CCFF00]/90 text-[#005A66] shadow-[0_0_10px_rgba(204,255,0,0.5)]'
+                        : 'bg-[#FFB100]/90 text-[#0A0E17] shadow-[0_0_10px_rgba(255,177,0,0.5)]'
+                    }`}
+                    animate={{
+                      scale: liveProjectIds.includes(project.id) ? [1, 1.05, 1] : 1,
+                      opacity: [0.9, 1, 0.9],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    {liveProjectIds.includes(project.id) ? (
+                      <>
+                        <span className="mr-1">Live</span>
+                        <motion.div
+                          className="w-2 h-2 bg-[#005A66] rounded-full"
+                          animate={{ scale: [1, 1.3, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        />
+                        {/* Particle Effect on Hover */}
+                        <motion.div
+                          className="absolute inset-0 -z-10"
+                          initial={{ opacity: 0 }}
+                          whileHover={{ opacity: 0.3 }}
+                        >
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <motion.div
+                              key={i}
+                              className="absolute w-1 h-1 rounded-full bg-[#CCFF00]"
+                              initial={{ x: 0, y: 0, opacity: 1 }}
+                              animate={{
+                                x: (Math.random() - 0.5) * 30,
+                                y: (Math.random() - 0.5) * 30,
+                                opacity: 0,
+                              }}
+                              transition={{
+                                duration: 0.4 + Math.random() * 0.2,
+                                repeat: Infinity,
+                                ease: 'easeOut',
+                              }}
+                              style={{ left: '50%', top: '50%' }}
+                            />
+                          ))}
+                        </motion.div>
+                      </>
+                    ) : (
+                      <span>In Progress</span>
+                    )}
+                  </motion.div>
                 </div>
 
                 <div className="p-5">
@@ -496,70 +608,70 @@ const ProjectsSection = () => {
           animate={inView ? "visible" : "hidden"}
           className="text-center"
         >
-         <motion.a 
-  href="https://github.com/nikhiljangid120" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="relative inline-flex items-center px-8 py-4 bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-xl text-lg font-bold text-white overflow-hidden group shadow-lg shadow-black/50 hover:shadow-xl hover:shadow-lime/20 transition-all duration-500"
-  variants={itemVariants}
-  whileHover={{ 
-    scale: 1.05,
-    borderColor: 'rgba(204, 255, 0, 0.5)',
-  }}
-  whileTap={{ scale: 0.98 }}
->
-  {/* Animated glow effect */}
-  <motion.div 
-    className="absolute inset-0 bg-gradient-to-r from-lime/30 via-teal/20 to-purple-500/30 opacity-0 blur-xl group-hover:opacity-100 transition-opacity duration-500"
-    animate={{
-      backgroundPosition: ['0% center', '100% center', '0% center'],
-    }}
-    transition={{ duration: 3, repeat: Infinity, repeatType: "mirror" }}
-  />
-  
-  {/* Border highlight */}
-  <motion.div 
-    className="absolute inset-0 rounded-xl border border-lime/50 opacity-0 group-hover:opacity-100"
-    animate={{ 
-      boxShadow: ['0 0 10px rgba(204, 255, 0, 0.3)', '0 0 20px rgba(204, 255, 0, 0.5)', '0 0 10px rgba(204, 255, 0, 0.3)']
-    }}
-    transition={{ duration: 1.5, repeat: Infinity }}
-  />
-  
-  {/* Particles effect */}
-  <motion.div 
-    className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-gradient-to-br from-lime via-teal to-cyan-400 opacity-0 blur-md group-hover:opacity-70"
-    animate={{ 
-      scale: [0.8, 1.2, 0.8],
-      opacity: [0, 0.7, 0]
-    }}
-    transition={{ duration: 2, repeat: Infinity }}
-  />
-  
-  <Github className="mr-3 text-lime relative z-10" size={24} />
-  
-  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-lime to-teal group-hover:from-lime group-hover:via-teal group-hover:to-cyan-400 transition-all duration-500">
-    Dive into My Code Universe
-  </span>
-  
-  {/* Animated underline */}
-  <motion.div 
-    className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-lime via-teal to-cyan-400"
-    initial={{ width: 0 }}
-    whileHover={{ width: '100%' }}
-    transition={{ duration: 0.4 }}
-  />
-  
-  {/* Moving star/sparkle effect */}
-  <motion.div
-    className="absolute top-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 blur-md -rotate-45"
-    initial={{ left: '-30%' }}
-    whileHover={{ 
-      left: '130%',
-      transition: { duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }
-    }}
-  />
-</motion.a>
+          <motion.a 
+            href="https://github.com/nikhiljangid120" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="relative inline-flex items-center px-8 py-4 bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-xl text-lg font-bold text-white overflow-hidden group shadow-lg shadow-black/50 hover:shadow-xl hover:shadow-lime/20 transition-all duration-500"
+            variants={itemVariants}
+            whileHover={{ 
+              scale: 1.05,
+              borderColor: 'rgba(204, 255, 0, 0.5)',
+            }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {/* Animated glow effect */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-lime/30 via-teal/20 to-purple-500/30 opacity-0 blur-xl group-hover:opacity-100 transition-opacity duration-500"
+              animate={{
+                backgroundPosition: ['0% center', '100% center', '0% center'],
+              }}
+              transition={{ duration: 3, repeat: Infinity, repeatType: "mirror" }}
+            />
+            
+            {/* Border highlight */}
+            <motion.div 
+              className="absolute inset-0 rounded-xl border border-lime/50 opacity-0 group-hover:opacity-100"
+              animate={{ 
+                boxShadow: ['0 0 10px rgba(204, 255, 0, 0.3)', '0 0 20px rgba(204, 255, 0, 0.5)', '0 0 10px rgba(204, 255, 0, 0.3)']
+              }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+            
+            {/* Particles effect */}
+            <motion.div 
+              className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-gradient-to-br from-lime via-teal to-cyan-400 opacity-0 blur-md group-hover:opacity-70"
+              animate={{ 
+                scale: [0.8, 1.2, 0.8],
+                opacity: [0, 0.7, 0]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            
+            <Github className="mr-3 text-lime relative z-10" size={24} />
+            
+            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-lime to-teal group-hover:from-lime group-hover:via-teal group-hover:to-cyan-400 transition-all duration-500">
+              Dive into My Code Universe
+            </span>
+            
+            {/* Animated underline */}
+            <motion.div 
+              className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-lime via-teal to-cyan-400"
+              initial={{ width: 0 }}
+              whileHover={{ width: '100%' }}
+              transition={{ duration: 0.4 }}
+            />
+            
+            {/* Moving star/sparkle effect */}
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 blur-md -rotate-45"
+              initial={{ left: '-30%' }}
+              whileHover={{ 
+                left: '130%',
+                transition: { duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }
+              }}
+            />
+          </motion.a>
         </motion.div>
 
         {/* Project Details Modal */}
