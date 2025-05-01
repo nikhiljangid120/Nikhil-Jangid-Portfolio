@@ -209,7 +209,7 @@ const Navbar = () => {
               animate="animate"
               whileHover={{ scale: 1.05 }}
               className="bg-lime text-inkyblack px-4 py-2 rounded-full font-medium text-sm shadow-glow-sm hover:shadow-glow-md transition-all duration-300"
-              onClick={() => window.open('/Nikhil Jangid_ATS Friendly Nikhil Jangid_ATS Friendly Resume.pdf', '_blank')}
+              onClick={() => window.open('/Nikhil Jangid_ATS Friendly Resume.pdf', '_blank')}
             >
               Resume
             </motion.button>
@@ -265,7 +265,7 @@ const Navbar = () => {
                 animate="animate"
                 className="mt-4 bg-lime text-inkyblack py-3 rounded-md font-medium text-sm flex items-center justify-center"
                 onClick={() => {
-                  window.open('/Nikhil Jangid_ATS Friendly Nikhil Jangid_ATS Friendly Resume.pdf', '_blank');
+                  window.open('/Nikhil Jangid_ATS Friendly Resume.pdf', '_blank');
                   setIsOpen(false);
                 }}
               >
