@@ -416,7 +416,7 @@ const ResumeSection = () => {
 
             {/* Download button with hover effect */}
             <motion.a
-              href="/resume.pdf"
+              href="/Nikhil Jangid_ATS Friendly Resume.pdf"
               download
               className="absolute bottom-6 right-6 p-3 rounded-full bg-orange text-inky-black flex items-center justify-center group overflow-hidden"
               whileHover={{ 
