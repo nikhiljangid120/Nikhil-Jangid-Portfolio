@@ -8,6 +8,7 @@ import ProjectsSection from "@/components/ProjectsSection";
 import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeSection from "@/components/ResumeSection";
+import BadgesCertificates from "@/components/BadgesCertificates";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const Index = () => {
@@ -193,6 +194,7 @@ const Index = () => {
               <AboutSection />
               <SkillsSection />
               <ProjectsSection />
+              <BadgesCertificates />
               <ResumeSection />
               <TimelineSection />
               <ContactSection />
