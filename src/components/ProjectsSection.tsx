@@ -75,6 +75,7 @@ const projects: Project[] = [
     technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Redis"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
+    liveUrl: "http://nexicon.vercel.app/"
     featured: false
   },
   {
@@ -86,7 +87,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "JavaScript", "D3.js", "GPT-4"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/code-analyzer",
+    liveUrl: "https://code-analyzer-5v1c.onrender.com",
     featured: false
   },
   {
