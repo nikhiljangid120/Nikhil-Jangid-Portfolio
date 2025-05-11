@@ -63,7 +63,7 @@ const projects: Project[] = [
     technologies: ["Next.js", "React", "Firebase", "Express"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/flexforge",
+    liveUrl: "https://flex-forge.vercel.app/",
     featured: true
   },
   {
