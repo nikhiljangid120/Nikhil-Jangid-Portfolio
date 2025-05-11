@@ -14,9 +14,10 @@ interface Project {
   githubUrl?: string;
   liveUrl?: string;
   featured: boolean;
+  status: 'live' | 'in-progress'; // Added status field
 }
 
-// Project data
+// Project data with status
 const projects: Project[] = [
   {
     id: "nj-careers",
@@ -28,7 +29,8 @@ const projects: Project[] = [
     category: 'featured',
     githubUrl: "https://github.com/nikhiljangid120",
     liveUrl: "https://example.com/njcareers",
-    featured: true
+    featured: true,
+    status: 'in-progress'
   },
   {
     id: "resume-rocket",
@@ -40,7 +42,8 @@ const projects: Project[] = [
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
     liveUrl: "https://ai-resume-builder-five-pi.vercel.app/",
-    featured: true
+    featured: true,
+    status: 'live' // Live status
   },
   {
     id: "one-note",
@@ -52,7 +55,8 @@ const projects: Project[] = [
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
     liveUrl: "https://example.com/onenote",
-    featured: true
+    featured: true,
+    status: 'in-progress'
   },
   {
     id: "flex-forge",
@@ -62,9 +66,10 @@ const projects: Project[] = [
     image: "Fitness.png",
     technologies: ["Next.js", "React", "Firebase", "Express"],
     category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120",
+    githubUrl: "https://github.com/nikhiljangid120/Fitness-Platform",
     liveUrl: "https://flex-forge.vercel.app/",
-    featured: true
+    featured: true,
+    status: 'live' // Live status
   },
   {
     id: "nexicon",
@@ -74,9 +79,10 @@ const projects: Project[] = [
     image: "Media.png",
     technologies: ["React", "Node.js", "MongoDB", "Socket.IO", "Redis"],
     category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "http://nexicon.vercel.app/"
-    featured: false
+    githubUrl: "https://github.com/nikhiljangid120/Social-Media-Platform",
+    liveUrl: "https://nexicon.vercel.app/",
+    featured: false,
+    status: 'live' // Live status
   },
   {
     id: "ai-code-analyzer",
@@ -86,9 +92,10 @@ const projects: Project[] = [
     image: "Analyzer.png",
     technologies: ["Next.js", "JavaScript", "D3.js", "GPT-4"],
     category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://code-analyzer-5v1c.onrender.com",
-    featured: false
+    githubUrl: "https://github.com/nikhiljangid120/Code-Analyzer",
+    liveUrl: "https://code-analyzer-5v1c.onrender.com/Code-Analyzer",
+    featured: false,
+    status: 'live' // Live status
   },
   {
     id: "ai-website-builder",
@@ -99,7 +106,8 @@ const projects: Project[] = [
     technologies: ["Next.js", "Gemini Flash 2.0", "AWS", "TailwindCSS"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120",
-    featured: false
+    featured: false,
+    status: 'in-progress'
   },
   {
     id: "flyeng-career",
@@ -111,7 +119,8 @@ const projects: Project[] = [
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
     liveUrl: "https://example.com/flyeng",
-    featured: false
+    featured: false,
+    status: 'in-progress'
   },
   {
     id: "quiz-website",
@@ -122,7 +131,8 @@ const projects: Project[] = [
     technologies: ["React", "Firebase", "TailwindCSS", "JavaScript"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
-    featured: false
+    featured: false,
+    status: 'in-progress'
   },
   {
     id: "hospital-management",
@@ -133,7 +143,8 @@ const projects: Project[] = [
     technologies: ["Java", "JSP", "JDBC", "Servlet", "MySQL"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120",
-    featured: false
+    featured: false,
+    status: 'in-progress'
   },
 ];
 
@@ -143,15 +154,15 @@ const ProjectsSection = () => {
   const { scrollYProgress } = useScroll({ target: ref });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  
+
   const featuredProjects = projects.filter(project => project.featured);
-  const filteredProjects = activeCategory === 'all' 
+  const filteredProjects = activeCategory === 'all'
     ? projects.filter(project => !project.featured)
     : projects.filter(project => !project.featured && project.category === activeCategory);
 
   // Parallax effect
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
-  
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -169,7 +180,7 @@ const ProjectsSection = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { 
+      transition: {
         type: 'spring',
         stiffness: 100,
         damping: 20
@@ -185,17 +196,14 @@ const ProjectsSection = () => {
     { id: 'tool', name: 'Tools & Utilities', icon: Lightbulb },
   ];
 
-  // Define live projects
-  const liveProjectIds = ['flex-forge', 'ai-code-analyzer', 'resume-rocket', 'nexicon'];
-
   return (
     <section id="projects" ref={ref} className="py-24 relative overflow-hidden bg-inkyblack">
       {/* Background Elements */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-gradient-to-b from-inkyblack via-charcoal/95 to-inkyblack"
         style={{ y: backgroundY }}
       />
-      
+
       {/* Particle Effects */}
       {[...Array(20)].map((_, i) => (
         <motion.div
@@ -222,7 +230,7 @@ const ProjectsSection = () => {
       {/* Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center max-w-3xl mx-auto mb-20"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -232,20 +240,20 @@ const ProjectsSection = () => {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-lime via-teal to-purple">
               My Creations
             </span>
-            <motion.span 
+            <motion.span
               className="absolute inset-0 blur-2xl opacity-50 bg-gradient-to-r from-lime/50 via-teal/50 to-purple/50 -z-10"
               animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
               transition={{ duration: 5, repeat: Infinity }}
             />
           </h2>
-          
-          <motion.div 
+
+          <motion.div
             className="w-24 h-1 bg-gradient-to-r from-lime to-teal mx-auto mb-8"
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           />
-          
+
           <p className="text-xl text-gray-300 leading-relaxed">
             Discover my portfolio of innovative solutions and technical craftsmanship
           </p>
@@ -258,7 +266,7 @@ const ProjectsSection = () => {
           animate={inView ? "visible" : "hidden"}
           className="mb-24"
         >
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="relative mb-12 flex items-center"
           >
@@ -268,7 +276,7 @@ const ProjectsSection = () => {
                 Star Projects
               </span>
             </h3>
-            <motion.div 
+            <motion.div
               className="ml-6 h-0.5 flex-grow bg-gradient-to-r from-gold/50 to-transparent"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
@@ -287,15 +295,15 @@ const ProjectsSection = () => {
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="relative h-56 overflow-hidden">
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title} 
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.5 }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-inkyblack via-inkyblack/50 to-transparent opacity-75" />
-                  
+
                   <motion.div
                     className="absolute top-4 right-4 px-3 py-1 bg-lime/90 text-inkyblack rounded-full text-sm font-semibold"
                     initial={{ y: 20, opacity: 0 }}
@@ -304,60 +312,17 @@ const ProjectsSection = () => {
                   >
                     {project.category.charAt(0).toUpperCase() + project.category.slice(1)}
                   </motion.div>
-                  {/* Live/In Progress Badge */}
+
+                  {/* Status Indicator */}
                   <motion.div
-                    className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold flex items-center ${
-                      liveProjectIds.includes(project.id)
-                        ? 'bg-[#CCFF00]/90 text-[#005A66] shadow-[0_0_10px_rgba(204,255,0,0.5)]'
-                        : 'bg-[#FFB100]/90 text-[#0A0E17] shadow-[0_0_10px_rgba(255,177,0,0.5)]'
+                    className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold ${
+                      project.status === 'live' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-inkyblack'
                     }`}
-                    animate={{
-                      scale: liveProjectIds.includes(project.id) ? [1, 1.05, 1] : 1,
-                      opacity: [0.9, 1, 0.9],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    {liveProjectIds.includes(project.id) ? (
-                      <>
-                        <span className="mr-1">Live</span>
-                        <motion.div
-                          className="w-2 h-2 bg-[#005A66] rounded-full"
-                          animate={{ scale: [1, 1.3, 1] }}
-                          transition={{ duration: 1, repeat: Infinity }}
-                        />
-                        {/* Particle Effect on Hover */}
-                        <motion.div
-                          className="absolute inset-0 -z-10"
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 0.3 }}
-                        >
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className="absolute w-1 h-1 rounded-full bg-[#CCFF00]"
-                              initial={{ x: 0, y: 0, opacity: 1 }}
-                              animate={{
-                                x: (Math.random() - 0.5) * 30,
-                                y: (Math.random() - 0.5) * 30,
-                                opacity: 0,
-                              }}
-                              transition={{
-                                duration: 0.4 + Math.random() * 0.2,
-                                repeat: Infinity,
-                                ease: 'easeOut',
-                              }}
-                              style={{ left: '50%', top: '50%' }}
-                            />
-                          ))}
-                        </motion.div>
-                      </>
-                    ) : (
-                      <span>In Progress</span>
-                    )}
+                    {project.status === 'live' ? 'Live' : 'In Progress'}
                   </motion.div>
                 </div>
 
@@ -386,9 +351,9 @@ const ProjectsSection = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex space-x-4">
                       {project.githubUrl && (
-                        <motion.a 
-                          href={project.githubUrl} 
-                          target="_blank" 
+                        <motion.a
+                          href={project.githubUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-gray-400 hover:text-lime transition-colors duration-300"
                           onClick={(e) => e.stopPropagation()}
@@ -398,9 +363,9 @@ const ProjectsSection = () => {
                         </motion.a>
                       )}
                       {project.liveUrl && (
-                        <motion.a 
-                          href={project.liveUrl} 
-                          target="_blank" 
+                        <motion.a
+                          href={project.liveUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-gray-400 hover:text-lime transition-colors duration-300"
                           onClick={(e) => e.stopPropagation()}
@@ -411,7 +376,7 @@ const ProjectsSection = () => {
                       )}
                     </div>
 
-                    <motion.div 
+                    <motion.div
                       className="flex items-center text-sm font-medium text-lime"
                       whileHover={{ x: 8 }}
                       transition={{ type: 'spring', stiffness: 300 }}
@@ -422,7 +387,7 @@ const ProjectsSection = () => {
                   </div>
                 </div>
 
-                <motion.div 
+                <motion.div
                   className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-lime via-teal to-purple"
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
@@ -454,8 +419,8 @@ const ProjectsSection = () => {
               <motion.button
                 key={category.id}
                 className={`px-5 py-2 rounded-full flex items-center text-sm font-semibold transition-all duration-300 ${
-                  activeCategory === category.id 
-                    ? 'bg-gradient-to-r from-lime to-teal text-inkyblack shadow-lg shadow-lime/30' 
+                  activeCategory === category.id
+                    ? 'bg-gradient-to-r from-lime to-teal text-inkyblack shadow-lg shadow-lime/30'
                     : 'bg-charcoal/50 text-gray-300 hover:bg-charcoal/80'
                 }`}
                 onClick={() => setActiveCategory(category.id)}
@@ -478,15 +443,15 @@ const ProjectsSection = () => {
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="relative h-48 overflow-hidden">
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title} 
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.5 }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-inkyblack to-transparent opacity-70" />
-                  
+
                   <motion.div
                     className="absolute top-3 right-3 px-2 py-1 bg-teal/90 text-inkyblack rounded-full text-xs font-semibold"
                     initial={{ scale: 0 }}
@@ -495,60 +460,17 @@ const ProjectsSection = () => {
                   >
                     {project.category}
                   </motion.div>
-                  {/* Live/In Progress Badge */}
+
+                  {/* Status Indicator */}
                   <motion.div
-                    className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold flex items-center ${
-                      liveProjectIds.includes(project.id)
-                        ? 'bg-[#CCFF00]/90 text-[#005A66] shadow-[0_0_10px_rgba(204,255,0,0.5)]'
-                        : 'bg-[#FFB100]/90 text-[#0A0E17] shadow-[0_0_10px_rgba(255,177,0,0.5)]'
+                    className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${
+                      project.status === 'live' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-inkyblack'
                     }`}
-                    animate={{
-                      scale: liveProjectIds.includes(project.id) ? [1, 1.05, 1] : 1,
-                      opacity: [0.9, 1, 0.9],
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200 }}
                   >
-                    {liveProjectIds.includes(project.id) ? (
-                      <>
-                        <span className="mr-1">Live</span>
-                        <motion.div
-                          className="w-2 h-2 bg-[#005A66] rounded-full"
-                          animate={{ scale: [1, 1.3, 1] }}
-                          transition={{ duration: 1, repeat: Infinity }}
-                        />
-                        {/* Particle Effect on Hover */}
-                        <motion.div
-                          className="absolute inset-0 -z-10"
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 0.3 }}
-                        >
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className="absolute w-1 h-1 rounded-full bg-[#CCFF00]"
-                              initial={{ x: 0, y: 0, opacity: 1 }}
-                              animate={{
-                                x: (Math.random() - 0.5) * 30,
-                                y: (Math.random() - 0.5) * 30,
-                                opacity: 0,
-                              }}
-                              transition={{
-                                duration: 0.4 + Math.random() * 0.2,
-                                repeat: Infinity,
-                                ease: 'easeOut',
-                              }}
-                              style={{ left: '50%', top: '50%' }}
-                            />
-                          ))}
-                        </motion.div>
-                      </>
-                    ) : (
-                      <span>In Progress</span>
-                    )}
+                    {project.status === 'live' ? 'Live' : 'In Progress'}
                   </motion.div>
                 </div>
 
@@ -564,9 +486,9 @@ const ProjectsSection = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex space-x-3">
                       {project.githubUrl && (
-                        <motion.a 
-                          href={project.githubUrl} 
-                          target="_blank" 
+                        <motion.a
+                          href={project.githubUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-gray-400 hover:text-teal"
                           onClick={(e) => e.stopPropagation()}
@@ -576,9 +498,9 @@ const ProjectsSection = () => {
                         </motion.a>
                       )}
                       {project.liveUrl && (
-                        <motion.a 
-                          href={project.liveUrl} 
-                          target="_blank" 
+                        <motion.a
+                          href={project.liveUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-gray-400 hover:text-teal"
                           onClick={(e) => e.stopPropagation()}
@@ -589,7 +511,7 @@ const ProjectsSection = () => {
                       )}
                     </div>
 
-                    <motion.span 
+                    <motion.span
                       className="text-xs text-teal group-hover:underline"
                       whileHover={{ x: 5 }}
                     >
@@ -609,65 +531,54 @@ const ProjectsSection = () => {
           animate={inView ? "visible" : "hidden"}
           className="text-center"
         >
-          <motion.a 
-            href="https://github.com/nikhiljangid120" 
-            target="_blank" 
+          <motion.a
+            href="https://github.com/nikhiljangid120"
+            target="_blank"
             rel="noopener noreferrer"
             className="relative inline-flex items-center px-8 py-4 bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-xl text-lg font-bold text-white overflow-hidden group shadow-lg shadow-black/50 hover:shadow-xl hover:shadow-lime/20 transition-all duration-500"
             variants={itemVariants}
-            whileHover={{ 
+            whileHover={{
               scale: 1.05,
               borderColor: 'rgba(204, 255, 0, 0.5)',
             }}
             whileTap={{ scale: 0.98 }}
           >
-            {/* Animated glow effect */}
-            <motion.div 
+            <motion.div
               className="absolute inset-0 bg-gradient-to-r from-lime/30 via-teal/20 to-purple-500/30 opacity-0 blur-xl group-hover:opacity-100 transition-opacity duration-500"
               animate={{
                 backgroundPosition: ['0% center', '100% center', '0% center'],
               }}
               transition={{ duration: 3, repeat: Infinity, repeatType: "mirror" }}
             />
-            
-            {/* Border highlight */}
-            <motion.div 
+            <motion.div
               className="absolute inset-0 rounded-xl border border-lime/50 opacity-0 group-hover:opacity-100"
-              animate={{ 
+              animate={{
                 boxShadow: ['0 0 10px rgba(204, 255, 0, 0.3)', '0 0 20px rgba(204, 255, 0, 0.5)', '0 0 10px rgba(204, 255, 0, 0.3)']
               }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            
-            {/* Particles effect */}
-            <motion.div 
+            <motion.div
               className="absolute -top-2 -right-2 w-12 h-12 rounded-full bg-gradient-to-br from-lime via-teal to-cyan-400 opacity-0 blur-md group-hover:opacity-70"
-              animate={{ 
+              animate={{
                 scale: [0.8, 1.2, 0.8],
                 opacity: [0, 0.7, 0]
               }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            
             <Github className="mr-3 text-lime relative z-10" size={24} />
-            
             <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white via-lime to-teal group-hover:from-lime group-hover:via-teal group-hover:to-cyan-400 transition-all duration-500">
               Dive into My Code Universe
             </span>
-            
-            {/* Animated underline */}
-            <motion.div 
+            <motion.div
               className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-lime via-teal to-cyan-400"
               initial={{ width: 0 }}
               whileHover={{ width: '100%' }}
               transition={{ duration: 0.4 }}
             />
-            
-            {/* Moving star/sparkle effect */}
             <motion.div
               className="absolute top-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-r from-transparent via-white to-transparent opacity-10 blur-md -rotate-45"
               initial={{ left: '-30%' }}
-              whileHover={{ 
+              whileHover={{
                 left: '130%',
                 transition: { duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }
               }}
@@ -684,7 +595,7 @@ const ProjectsSection = () => {
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
           >
-            <motion.div 
+            <motion.div
               className="relative bg-gradient-to-b from-charcoal/95 to-inkyblack/95 border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto shadow-2xl"
               initial={{ scale: 0.8, opacity: 0, rotateX: 10 }}
               animate={{ scale: 1, opacity: 1, rotateX: 0 }}
@@ -693,18 +604,18 @@ const ProjectsSection = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-80">
-                <motion.img 
-                  src={selectedProject.image} 
-                  alt={selectedProject.title} 
+                <motion.img
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
                   className="w-full h-full object-cover"
                   initial={{ scale: 1.2 }}
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.8 }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-inkyblack via-inkyblack/60 to-transparent" />
-                
+
                 <div className="absolute bottom-0 left-0 w-full p-8">
-                  <motion.h3 
+                  <motion.h3
                     className="text-4xl font-bold text-white mb-4"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -712,7 +623,7 @@ const ProjectsSection = () => {
                   >
                     {selectedProject.title}
                   </motion.h3>
-                  <motion.div 
+                  <motion.div
                     className="flex flex-wrap gap-3"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -728,9 +639,20 @@ const ProjectsSection = () => {
                       </motion.span>
                     ))}
                   </motion.div>
+                  {/* Status Indicator in Modal */}
+                  <motion.div
+                    className={`mt-4 px-4 py-1.5 rounded-full text-sm font-semibold ${
+                      selectedProject.status === 'live' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-inkyblack'
+                    }`}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {selectedProject.status === 'live' ? 'Live' : 'In Progress'}
+                  </motion.div>
                 </div>
 
-                <motion.button 
+                <motion.button
                   className="absolute top-4 right-4 w-10 h-10 bg-inkyblack/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-lime hover:text-inkyblack transition-all duration-300"
                   onClick={() => setSelectedProject(null)}
                   whileHover={{ scale: 1.1, rotate: 90 }}
@@ -739,7 +661,7 @@ const ProjectsSection = () => {
                 </motion.button>
               </div>
 
-              <motion.div 
+              <motion.div
                 className="p-8"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -751,9 +673,9 @@ const ProjectsSection = () => {
 
                 <div className="flex flex-wrap gap-4">
                   {selectedProject.githubUrl && (
-                    <motion.a 
-                      href={selectedProject.githubUrl} 
-                      target="_blank" 
+                    <motion.a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="px-6 py-3 bg-inkyblack/80 hover:bg-inkyblack text-white rounded-xl flex items-center font-semibold transition-all duration-300"
                       whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(0, 0, 0, 0.3)' }}
@@ -763,9 +685,9 @@ const ProjectsSection = () => {
                     </motion.a>
                   )}
                   {selectedProject.liveUrl && (
-                    <motion.a 
-                      href={selectedProject.liveUrl} 
-                      target="_blank" 
+                    <motion.a
+                      href={selectedProject.liveUrl}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="px-6 py-3 bg-gradient-to-r from-lime to-teal text-inkyblack rounded-xl flex items-center font-semibold transition-all duration-300"
                       whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(204, 255, 0, 0.3)' }}
