@@ -1,6 +1,6 @@
 # 🌟 Welcome to My Awesome Project and wait for more things to come
   
-## 🚀 Project Overview (Wait for more the updates) 
+## 🚀 Project Overview (Wait for more the updates)  
 
 This is a modern and powerful web application built using the latest web technologies including **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. The goal of this project is to deliver a fast, beautiful, and responsive user experience with clean design and smooth interactions. 
 
