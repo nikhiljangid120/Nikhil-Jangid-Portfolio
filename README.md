@@ -11,7 +11,7 @@ This is a modern and powerful web application built using the latest web technol
 - 🟦 **TypeScript** – Typed JavaScript at scale
 - 💨 **Tailwind CSS** – Utility-first CSS framework for styling  
 - 🧩 **shadcn/ui** – Beautifully designed components for React
-
+ 
 ---
 
 ## 🛠 How to Run This Project Locally
