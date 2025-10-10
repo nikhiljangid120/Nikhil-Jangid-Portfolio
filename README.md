@@ -25,7 +25,7 @@ git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
 cd *Nikhil Portfolio*
 
 ### 3. Install Dependencies
-Make sure you have Node.js and npm installed.
+Make sure you have Node.js and npm installed. 
 npm install
 
 ### 4. Start the Development Server
