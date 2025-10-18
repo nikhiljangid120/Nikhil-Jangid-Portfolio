@@ -16,7 +16,7 @@ This is a modern and powerful web application built using the latest web technol
 
 ## 🛠 How to Run This Project Locally
 
-To run this project on your local machine, follow the steps below:
+To run this project on your local machine, follow the steps below: 
 
 ### 1. Clone the Repository
 git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
