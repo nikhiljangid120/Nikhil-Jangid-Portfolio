@@ -5,7 +5,7 @@
 This is a modern and powerful web application built using the latest web technologies including **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. The goal of this project is to deliver a fast, beautiful, and responsive user experience with clean design and smooth interactions. 
 
 ## 📦 Tech Stack
- 
+  
 - ⚛ **React** – A powerful JavaScript library for building user interfaces
 - ⚡ **Vite** – Lightning-fast build tool for modern web development 
 - 🟦 **TypeScript** – Typed JavaScript at scale
