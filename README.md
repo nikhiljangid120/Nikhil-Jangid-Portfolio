@@ -8,7 +8,7 @@ This is a modern and powerful web application built using the latest web technol
   
 - ⚛ **React** – A powerful JavaScript library for building user interfaces
 - ⚡ **Vite** – Lightning-fast build tool for modern web development 
-- 🟦 **TypeScript** – Typed JavaScript at scale
+- 🟦 **TypeScript** – Typed JavaScript at scale 
 - 💨 **Tailwind CSS** – Utility-first CSS framework for styling  
 - 🧩 **shadcn/ui** – Beautifully designed components for React
   
