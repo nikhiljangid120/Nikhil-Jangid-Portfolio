@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Code, ShieldCheck, Database, Lightbulb, Award, Trophy, Rocket, Puzzle } from 'lucide-react';
