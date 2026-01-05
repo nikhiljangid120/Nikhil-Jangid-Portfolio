@@ -154,7 +154,7 @@ const AboutSection = () => {
             {
               parts: [
                 {
-                  text: `You are JARVIS 2.0, Nikhil Jangid’s AI assistant. Nikhil is a 20-year-old B.Tech CSE student from Shahpura, Jaipur, skilled in MERN, AI/ML, DSA, Java, Python, and projects like ResumeRocket, Flyeng Career, FlexForge, and NJ Careers. Respond to the query "${query}" in a ${tone} tone. Keep it under 80 words, relevant to Nikhil’s profile, and end with a question. Avoid references to sci-fi, Bollywood, or unrelated themes unless explicitly relevant to the query.`,
+                  text: `You are JARVIS 2.0, Nikhil Jangid’s AI assistant. Nikhil is a 21-year-old (as of 2026) Final Year B.Tech CSE student from Shahpura, Jaipur. He is an expert in MERN Stack, AI/ML, DSA, Java, and Python. His key projects include ResumeRocket (AI Resume Builder), Flyeng Career, FlexForge, and NJ Careers. Respond to the query "${query}" in a ${tone} tone. Keep it under 80 words, highly relevant to his portfolio, and end with an engaging question. Avoid generic filler.`,
                 },
               ],
             },
@@ -163,10 +163,10 @@ const AboutSection = () => {
       });
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || `Sorry, I didn’t catch that. Want to ask about Nikhil’s projects?`;
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || `System busy. Try asking about ResumeRocket or his MERN skills via local database.`;
     } catch (error) {
       console.error('Gemini API error:', error);
-      return `I couldn’t process that. Try asking about Nikhil’s skills or projects. What’s next?`;
+      return `Connection interrupted. Want to explore his projects manually?`;
     }
   }, []);
 
@@ -187,9 +187,9 @@ const AboutSection = () => {
 
       const responses: { [key: string]: string[] } = {
         'who are you|what’s your name|who’s the human': [
-          `${getTimeGreeting()} I’m JARVIS 2.0, Nikhil Jangid’s AI assistant. He’s a 20-year-old B.Tech CSE student from Shahpura, Jaipur, working on projects like ResumeRocket. What would you like to know?`,
-          `Nikhil Jangid is a 20-year-old B.Tech CSE student at Amity University, Jaipur, skilled in MERN and AI. I’m his AI assistant, JARVIS 2.0. Want to explore his projects?`,
-          `I’m JARVIS 2.0, and Nikhil Jangid is a 20-year-old coder from Shahpura, Jaipur, studying B.Tech CSE. Check out his work like Flyeng Career. What’s next?`,
+          `${getTimeGreeting()} I’m JARVIS 2.0. Nikhil Jangid is a 21-year-old Final Year CSE undergrad from Shahpura, Jaipur. He builds things like ResumeRocket. What can I show you?`,
+          `Nikhil Jangid is a 21-year-old Full Stack dev and AI enthusiast in his final year at Amity University. I’m his digital assistant. Want to see his latest work?`,
+          `I’m JARVIS 2.0. Nikhil is a 21-year-old coder from Jaipur, crushing it in his final year with projects like FlexForge. Check out his GitHub?`,
         ],
         // ... (other query responses remain the same for brevity)
       };
@@ -658,7 +658,7 @@ const AboutSection = () => {
                 className="image-container w-full h-full"
                 style={{
                   transform: isHovered
-                    ? `perspective(1000px) rotateX(${(IsserPosition.y - 50) * 0.08}deg) rotateY(${(mousePosition.x - 50) * 0.08}deg) translateZ(0)`
+                    ? `perspective(1000px) rotateX(${(mousePosition.y - 50) * 0.08}deg) rotateY(${(mousePosition.x - 50) * 0.08}deg) translateZ(0)`
                     : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)',
                 }}
               >
