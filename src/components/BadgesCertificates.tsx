@@ -51,7 +51,7 @@ const BadgeCard = memo(({ badge, index, onClick }: { badge: Badge; index: number
     const centerY = rect.height / 2;
     const rotateX = (y - centerY) / 20;
     const rotateY = (centerX - x) / 20;
-    
+
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
   }, []);
 
@@ -85,7 +85,7 @@ const BadgeCard = memo(({ badge, index, onClick }: { badge: Badge; index: number
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
+
       {/* Floating particles effect */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(3)].map((_, i) => (
@@ -201,13 +201,13 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/80 backdrop-blur-xl"
         onClick={closePopup}
       />
-      
+
       {/* Modal */}
-      <div 
+      <div
         className="relative w-full max-w-4xl max-h-[90vh] bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 overflow-hidden"
         style={{
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
@@ -232,21 +232,20 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
               <p className="text-white/60">{badge.platform}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3">
             {/* 3D Toggle */}
             <button
               onClick={() => setIs3DEnabled(!is3DEnabled)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                is3DEnabled 
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${is3DEnabled
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
                   : 'bg-white/10 text-white/80 hover:bg-white/20'
-              }`}
+                }`}
             >
               <Zap className="w-4 h-4" />
               <span className="text-sm font-medium">3D View</span>
             </button>
-            
+
             {/* External link */}
             <a
               href={badge.credentialUrl}
@@ -256,7 +255,7 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
             >
               <ExternalLink className="w-5 h-5 text-white" />
             </a>
-            
+
             {/* Close button */}
             <button
               onClick={closePopup}
@@ -302,7 +301,7 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
                     <p className="text-white/60">{badge.platform}</p>
                   </div>
                 )}
-                
+
                 {/* 3D indicator */}
                 {is3DEnabled && (
                   <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-medium text-white">
@@ -366,7 +365,7 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
                   <ExternalLink className="w-4 h-4" />
                   View Credential
                 </a>
-                
+
                 {badge.pdf && (
                   <a
                     href={badge.pdf}
@@ -522,8 +521,8 @@ const BadgesCertificates = () => {
   ], []);
 
   const categories = ['All', 'AI', 'Coding', 'Programming', 'Web Dev', 'DSA', 'Cloud', 'Data Science'];
-  const filteredBadges = useMemo(() => 
-    badges.filter(b => activeCategory === 'All' || b.category === activeCategory), 
+  const filteredBadges = useMemo(() =>
+    badges.filter(b => activeCategory === 'All' || b.category === activeCategory),
     [badges, activeCategory]
   );
 
@@ -538,37 +537,38 @@ const BadgesCertificates = () => {
   }, []);
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-20">
+    <section className="min-h-screen bg-background py-20 relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-5xl font-bold mb-6 relative inline-block font-['Inter']">
-  <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 px-4 py-2 rounded-xl shadow-[0_6px_16px_rgba(168,85,247,0.5)]">
-    Badges & Certifications
-  </span>
-  <motion.span 
-   className="absolute -inset-3 blur-3xl opacity-60 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 rounded-xl -z-10"
-    animate={{ 
-       opacity: [0.4, 0.9, 0.4],
-      scale: [1, 1.08, 1],
-      rotate: [0, 2, -2, 0],
-      boxShadow: [
-        '6px 6px 20px rgba(168,85,247,0.4)',     // purple-500
-        '8px 8px 28px rgba(232,121,249,0.6)',    // fuchsia-500
-        '6px 6px 20px rgba(34,211,238,0.4)',     // cyan-400
-        '6px 6px 20px rgba(168,85,247,0.4)'
-      ],
-      backgroundPosition: ['0% center', '100% center', '0% center']
-    }}
-    transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
-  />
-</h1>
+            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 px-4 py-2 rounded-xl shadow-[0_6px_16px_rgba(168,85,247,0.5)]">
+              Badges & Certifications
+            </span>
+            <motion.span
+              className="absolute -inset-3 blur-3xl opacity-60 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 rounded-xl -z-10"
+              animate={{
+                opacity: [0.4, 0.9, 0.4],
+                scale: [1, 1.08, 1],
+                rotate: [0, 2, -2, 0],
+                boxShadow: [
+                  '6px 6px 20px rgba(168,85,247,0.4)',     // purple-500
+                  '8px 8px 28px rgba(232,121,249,0.6)',    // fuchsia-500
+                  '6px 6px 20px rgba(34,211,238,0.4)',     // cyan-400
+                  '6px 6px 20px rgba(168,85,247,0.4)'
+                ],
+                backgroundPosition: ['0% center', '100% center', '0% center']
+              }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
+            />
+          </h1>
 
           <p className="text-xl text-white/60 max-w-2xl mx-auto">
             Explore my professional certifications and achievements across various technologies and platforms
@@ -582,11 +582,10 @@ const BadgesCertificates = () => {
             return (
               <button
                 key={category}
-                className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${
-                  activeCategory === category
+                className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${activeCategory === category
                     ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
                     : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
-                }`}
+                  }`}
                 onClick={() => setActiveCategory(category)}
               >
                 {category !== 'All' && <CategoryIcon className="w-4 h-4" />}
@@ -599,11 +598,11 @@ const BadgesCertificates = () => {
         {/* Badges Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredBadges.map((badge, index) => (
-            <BadgeCard 
-              key={badge.id} 
-              badge={badge} 
-              index={index} 
-              onClick={() => openPopup(badge)} 
+            <BadgeCard
+              key={badge.id}
+              badge={badge}
+              index={index}
+              onClick={() => openPopup(badge)}
             />
           ))}
         </div>
