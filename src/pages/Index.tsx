@@ -10,172 +10,45 @@ import ContactSection from "@/components/ContactSection";
 import ResumeSection from "@/components/ResumeSection";
 import BadgesCertificates from "@/components/BadgesCertificates";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import TerminalBlock from "@/components/TerminalBlock";
+import CustomCursor from "@/components/CustomCursor";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [showContent, setShowContent] = useState(false);
-  
-  // Animation variants
-  const titleVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.8,
-        ease: [0.6, 0.05, 0.01, 0.9],
-      }
-    },
-    exit: { 
-      opacity: 0,
-      scale: 0.8,
-      transition: { 
-        duration: 0.5,
-        ease: [0.6, 0.05, 0.01, 0.9],
-      }
-    }
-  };
 
-  useEffect(() => {
-    // Simulate resource loading with progress
-    const interval = setInterval(() => {
-      setLoadingProgress(prev => {
-        const newProgress = prev + Math.random() * 10;
-        return newProgress > 100 ? 100 : newProgress;
-      });
+  const bootSequence = [
+    { text: "initializing_system_core...", delay: 200, color: "text-blue-400" },
+    { text: "loading_modules: [react, framer-motion, three.js]", delay: 150 },
+    { text: "verifying_integrity... OK", delay: 100, color: "text-green-400" },
+    { text: "establishing_secure_connection...", delay: 300, isCommand: true },
+    { text: "fetching_user_profile: 'Nikhil Jangid'", delay: 200, color: "text-yellow-400" },
+    { text: "optimizing_assets...", delay: 200 },
+    { text: "starting_dev_environment...", delay: 400, color: "text-primary" },
+    { text: "ACCESS_GRANTED", delay: 200, color: "text-green-500 font-bold" },
+  ];
+
+  const handleBootComplete = () => {
+    setIsLoading(false);
+    setTimeout(() => {
+      setShowContent(true);
     }, 100);
-    
-    // Simulate resources loaded
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      clearInterval(interval);
-      
-      // Small delay before showing content to ensure smooth transition
-      setTimeout(() => {
-        setShowContent(true);
-      }, 500);
-    }, 2000);
-    
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
-    };
-  }, []);
-  
-  // Particles generator
-  const generateRandomParticles = (count: number) => {
-    return Array.from({ length: count }).map((_, index) => ({
-      id: index,
-      size: Math.random() * 4 + 1,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 2,
-      duration: Math.random() * 3 + 2
-    }));
   };
-  
-  const particles = generateRandomParticles(30);
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-inkyblack flex items-center justify-center z-50">
-        <div className="relative w-full max-w-md text-center px-4">
-          {/* Animated particles */}
-          {particles.map(particle => (
-            <motion.div
-              key={`loading-particle-${particle.id}`}
-              className="absolute w-1 h-1 rounded-full bg-lime"
-              style={{
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: [0, 0.8, 0],
-                scale: [0, 1, 0],
-                y: [0, -20, -40],
-              }}
-              transition={{
-                duration: particle.duration,
-                delay: particle.delay,
-                repeat: Infinity,
-                repeatDelay: Math.random(),
-              }}
-            />
-          ))}
-          
-          <motion.div 
-            className="mb-8 inline-block relative"
-            variants={titleVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <div className="relative w-20 h-20 mb-3 mx-auto">
-              <motion.div 
-                className="absolute w-full h-full border-4 border-t-lime border-r-teal border-b-orange border-l-purple rounded-full"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              />
-              
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-              >
-                <motion.span 
-                  className="text-2xl font-spaceGrotesk font-bold"
-                  animate={{ color: ['#ffffff', '#CCFF00', '#ffffff'] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <span className="inline-block">N</span>
-                  <span className="inline-block text-lime">J</span>
-                </motion.span>
-              </motion.div>
-            </div>
-            
-            <h2 className="text-2xl font-spaceGrotesk font-bold text-white mb-2">
-              <motion.span
-                className="inline-block"
-                animate={{ 
-                  color: ['#ffffff', '#005A66', '#D94F30', '#CCFF00', '#ffffff'] 
-                }}
-                transition={{ duration: 8, repeat: Infinity }}
-              >
-                Nikhil Jangid
-              </motion.span>
-            </h2>
-            <p className="text-gray-400 text-sm mb-6">Portfolio Experience</p>
-          </motion.div>
-          
-          <motion.div
-            className="w-full bg-charcoal/30 h-1.5 rounded-full overflow-hidden relative"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.div
-              className="absolute left-0 top-0 h-full bg-gradient-to-r from-teal via-lime to-orange"
-              style={{ width: `${loadingProgress}%` }}
-              initial={{ width: "0%" }}
-              animate={{ width: `${loadingProgress}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.div>
-          
-          <motion.p
-            className="mt-4 text-sm text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            Loading experience... {Math.round(loadingProgress)}%
-          </motion.p>
-        </div>
+      <div className="fixed inset-0 bg-background flex flex-col items-center justify-center z-50 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-2xl"
+        >
+          <TerminalBlock
+            lines={bootSequence}
+            onComplete={handleBootComplete}
+            title="portfolio_boot_loader"
+          />
+        </motion.div>
       </div>
     );
   }
@@ -187,8 +60,11 @@ const Index = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
+          className="bg-transparent"
         >
           <TooltipProvider>
+            <CustomCursor />
+            <div className="fixed inset-0 bg-grid-pattern pointer-events-none opacity-20 -z-10" />
             <Layout>
               <HeroSection />
               <AboutSection />
