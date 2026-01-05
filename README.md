@@ -1,22 +1,31 @@
-# 🌟 Welcome to My Awesome Project
- 
-## 🚀 Project Overview (Wait for more the updates)
+# 🌟 Welcome to My Awesome Project and wait for more things to come
+  
+## 🚀 Project Overview (Wait for more the updates)  
 
-This is a modern and powerful web application built using the latest web technologies including **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. The goal of this project is to deliver a fast, beautiful, and responsive user experience with clean design and smooth interactions.
+This is a modern and powerful web application built using the latest web technologies including **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. The goal of this project is to deliver a fast, beautiful, and responsive user experience with clean design and smooth interactions. 
 
+<<<<<<< HEAD
 ## 📦 Tech Stack 
  
 - ⚛ **React** – A powerful JavaScript library for building user interfaces
 - ⚡ **Vite** – Lightning-fast build tool for modern web development
 - 🟦 **TypeScript** – Typed JavaScript at scale
 - 💨 **Tailwind CSS** – Utility-first CSS framework for styling
+=======
+## 📦 Tech Stack
+  
+- ⚛ **React** – A powerful JavaScript library for building user interfaces 
+- ⚡ **Vite** – Lightning-fast build tool for modern web development 
+- 🟦 **TypeScript** – Typed JavaScript at scale 
+- 💨 **Tailwind CSS** – Utility-first CSS framework for styling  
+>>>>>>> ad81a3591d3cdb11caa426207c7e74d9600f85da
 - 🧩 **shadcn/ui** – Beautifully designed components for React
-
+  
 ---
 
 ## 🛠 How to Run This Project Locally
 
-To run this project on your local machine, follow the steps below:
+To run this project on your local machine, follow the steps below: 
 
 ### 1. Clone the Repository
 git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
@@ -25,7 +34,7 @@ git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
 cd *Nikhil Portfolio*
 
 ### 3. Install Dependencies
-Make sure you have Node.js and npm installed.
+Make sure you have Node.js and npm installed. 
 npm install
 
 ### 4. Start the Development Server
