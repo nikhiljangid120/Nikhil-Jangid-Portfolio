@@ -12,6 +12,8 @@ import BadgesCertificates from "@/components/BadgesCertificates";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import TerminalBlock from "@/components/TerminalBlock";
 import CustomCursor from "@/components/CustomCursor";
+import CommandPalette from "@/components/CommandPalette";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -64,6 +66,8 @@ const Index = () => {
         >
           <TooltipProvider>
             <CustomCursor />
+            <ScrollProgress />
+            <CommandPalette />
             <div className="fixed inset-0 bg-grid-pattern pointer-events-none opacity-20 -z-10" />
             <Layout>
               <HeroSection />
