@@ -76,7 +76,7 @@ const ResumeSection = () => {
 
             {/* Download Button */}
             <motion.a
-              href="/"
+              href="/Nikhil Jangid_ATS Friendly Resume.pdf"
               download
               className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium hover:opacity-90 transition-opacity"
               whileHover={{ scale: 1.02 }}
