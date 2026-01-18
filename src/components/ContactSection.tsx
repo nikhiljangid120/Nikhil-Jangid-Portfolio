@@ -10,34 +10,34 @@ const ContactSection = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const formRef = useRef(null);
   const sectionRef = useRef(null);
   const successButtonRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.2 });
-  
+
   const triggerConfetti = () => {
     if (successButtonRef.current) {
       const rect = successButtonRef.current.getBoundingClientRect();
       const x = rect.x + rect.width / 2;
       const y = rect.y + rect.height / 2;
-      
+
       confetti({
         particleCount: 100,
         spread: 70,
-        origin: { 
-          x: x / window.innerWidth, 
-          y: y / window.innerHeight 
+        origin: {
+          x: x / window.innerWidth,
+          y: y / window.innerHeight
         },
         colors: ['#10B981', '#A3E635', '#22D3EE', '#ffffff'],
         zIndex: 1000,
       });
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (!name || !email || !message) {
       toast({
@@ -47,7 +47,7 @@ const ContactSection = () => {
       });
       return;
     }
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -58,17 +58,17 @@ const ContactSection = () => {
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
-      
+
       // Trigger confetti effect
       triggerConfetti();
-      
+
       // Reset success state after animation completes
       setTimeout(() => {
         setIsSuccess(false);
@@ -77,14 +77,14 @@ const ContactSection = () => {
         setEmail('');
         setMessage('');
       }, 3000);
-      
+
       toast({
         title: "Message Sent",
         description: "Thanks for reaching out! I'll get back to you soon.",
       });
     }, 1500);
   };
-  
+
   const contactInfo = [
     {
       icon: Mail,
@@ -105,7 +105,7 @@ const ContactSection = () => {
       href: 'https://maps.google.com/?q=Jaipur,Rajasthan,India',
     },
   ];
-  
+
   const socialLinks = [
     {
       icon: Github,
@@ -128,7 +128,7 @@ const ContactSection = () => {
       href: 'https://www.geeksforgeeks.org/user/nikhiljals77/',
     },
   ];
-  
+
   const codingProfiles = [
     {
       label: 'CodeChef',
@@ -151,7 +151,7 @@ const ContactSection = () => {
       badge: 'Daily DSA Practice',
     },
   ];
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -162,7 +162,7 @@ const ContactSection = () => {
       },
     },
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -174,19 +174,19 @@ const ContactSection = () => {
 
   const successVariants = {
     hidden: { scale: 0.8, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
-      transition: { 
+      transition: {
         type: "spring",
         stiffness: 200,
         damping: 15
       }
     },
-    exit: { 
-      scale: 1.2, 
+    exit: {
+      scale: 1.2,
       opacity: 0,
-      transition: { duration: 0.3 } 
+      transition: { duration: 0.3 }
     }
   };
 
@@ -194,67 +194,53 @@ const ContactSection = () => {
     <section id="contact" ref={sectionRef} className="py-20 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal to-inkyblack -z-10" />
-      
-      <motion.div 
+
+      <motion.div
         className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-gradient-to-b from-lime/10 to-transparent blur-3xl z-0 opacity-30"
-        animate={{ 
+        animate={{
           x: [0, -30, 0],
           y: [0, 20, 0],
         }}
-        transition={{ 
-          duration: 15, 
+        transition={{
+          duration: 15,
           repeat: Infinity,
           repeatType: "mirror"
         }}
       />
-      
-      <motion.div 
+
+      <motion.div
         className="absolute bottom-20 left-12 w-96 h-96 rounded-full bg-gradient-to-t from-teal/10 to-purple/5 blur-3xl z-0 opacity-20"
-        animate={{ 
+        animate={{
           x: [0, 40, 0],
           y: [0, -30, 0],
         }}
-        transition={{ 
-          duration: 20, 
+        transition={{
+          duration: 20,
           repeat: Infinity,
           repeatType: "mirror"
         }}
       />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div 
-          className="text-center max-w-3xl mx-auto mb-16"
+        <motion.div
+          className="max-w-3xl mx-auto mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 relative inline-block">
-            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-teal via-lime to-teal">
-              Let's Connect
-            </span>
-            <motion.span 
-              className="absolute -inset-1 blur-lg opacity-30 bg-gradient-to-r from-teal via-lime to-teal rounded-lg -z-10"
-              animate={{ 
-                opacity: [0.2, 0.4, 0.2],
-                scale: [1, 1.05, 1]
-              }}
-              transition={{ duration: 4, repeat: Infinity, repeatType: "mirror" }}
-            />
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <Mail className="w-5 h-5" />
+            <span>~/contact</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">Let's</span> <span className="text-primary opacity-80">Connect</span>
           </h2>
-          
-          <motion.div 
-            className="w-20 h-1.5 bg-gradient-to-r from-teal to-lime mx-auto mb-6"
-            initial={{ width: 0, opacity: 0 }}
-            animate={inView ? { width: "5rem", opacity: 1 } : { width: 0, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          />
-          
-          <p className="text-lg text-gray-300">
+          <p className="text-muted-foreground text-lg max-w-2xl">
             Have a project in mind or want to discuss an opportunity? I'd love to hear from you.
           </p>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Contact Form */}
           <motion.div
@@ -266,11 +252,11 @@ const ContactSection = () => {
             <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center">
               <span className="text-lime mr-2">📝</span> Send a Message
             </motion.h3>
-            
+
             {/* Form */}
-            <motion.form 
-              ref={formRef} 
-              onSubmit={handleSubmit} 
+            <motion.form
+              ref={formRef}
+              onSubmit={handleSubmit}
               variants={containerVariants}
               className={isSuccess ? "opacity-0 pointer-events-none" : ""}
               animate={isSuccess ? { opacity: 0 } : { opacity: 1 }}
@@ -288,7 +274,7 @@ const ContactSection = () => {
                   required
                 />
               </motion.div>
-              
+
               <motion.div variants={itemVariants} className="mb-6">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
                 <input
@@ -301,7 +287,7 @@ const ContactSection = () => {
                   required
                 />
               </motion.div>
-              
+
               <motion.div variants={itemVariants} className="mb-6">
                 <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Message</label>
                 <textarea
@@ -313,7 +299,7 @@ const ContactSection = () => {
                   required
                 />
               </motion.div>
-              
+
               <motion.button
                 variants={itemVariants}
                 type="submit"
@@ -322,7 +308,7 @@ const ContactSection = () => {
               >
                 {isSubmitting ? (
                   <span className="flex items-center">
-                    <motion.div 
+                    <motion.div
                       className="mr-3 h-5 w-5"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -346,7 +332,7 @@ const ContactSection = () => {
                 )}
               </motion.button>
             </motion.form>
-            
+
             {/* Success Animation */}
             <AnimatePresence>
               {isSuccess && (
@@ -357,23 +343,23 @@ const ContactSection = () => {
                   exit="exit"
                   variants={successVariants}
                 >
-                  <motion.div 
+                  <motion.div
                     ref={successButtonRef}
                     className="relative flex flex-col items-center"
                     initial={{ scale: 0 }}
-                    animate={{ 
+                    animate={{
                       scale: 1,
-                      transition: { 
-                        type: "spring", 
-                        stiffness: 200, 
+                      transition: {
+                        type: "spring",
+                        stiffness: 200,
                         damping: 20,
                         delay: 0.1
-                      } 
+                      }
                     }}
                   >
                     <motion.div
                       className="w-20 h-20 rounded-full bg-gradient-to-r from-lime to-teal flex items-center justify-center mb-6"
-                      animate={{ 
+                      animate={{
                         boxShadow: ["0 0 0 0 rgba(163, 230, 53, 0.7)", "0 0 0 20px rgba(163, 230, 53, 0)"],
                       }}
                       transition={{
@@ -384,45 +370,45 @@ const ContactSection = () => {
                     >
                       <CheckCircle size={40} className="text-inkyblack" />
                     </motion.div>
-                    
+
                     <motion.h3
                       className="text-2xl font-bold text-white mb-2"
                       initial={{ opacity: 0, y: 10 }}
-                      animate={{ 
-                        opacity: 1, 
+                      animate={{
+                        opacity: 1,
                         y: 0,
-                        transition: { delay: 0.3 } 
+                        transition: { delay: 0.3 }
                       }}
                     >
                       Message Sent!
                     </motion.h3>
-                    
+
                     <motion.p
                       className="text-gray-300 text-center max-w-xs"
                       initial={{ opacity: 0, y: 10 }}
-                      animate={{ 
-                        opacity: 1, 
+                      animate={{
+                        opacity: 1,
                         y: 0,
-                        transition: { delay: 0.4 } 
+                        transition: { delay: 0.4 }
                       }}
                     >
                       Thanks for reaching out! I'll get back to you as soon as possible.
                     </motion.p>
                   </motion.div>
-                  
+
                   {/* Animated particles */}
                   <motion.div className="absolute inset-0 pointer-events-none">
                     {[...Array(20)].map((_, i) => (
                       <motion.div
                         key={i}
                         className="absolute w-2 h-2 rounded-full bg-lime"
-                        initial={{ 
-                          x: "50%", 
-                          y: "50%", 
+                        initial={{
+                          x: "50%",
+                          y: "50%",
                           opacity: 0,
-                          scale: 0 
+                          scale: 0
                         }}
-                        animate={{ 
+                        animate={{
                           x: `${Math.random() * 100}%`,
                           y: `${Math.random() * 100}%`,
                           opacity: [0, 1, 0],
@@ -439,13 +425,13 @@ const ContactSection = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-            
+
             {/* Background pulse animation */}
             {isSuccess && (
-              <motion.div 
+              <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-lime/20 to-teal/20 rounded-xl z-0"
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
+                animate={{
                   opacity: [0, 0.2, 0],
                   scale: [0.8, 1.2, 1.5],
                 }}
@@ -456,7 +442,7 @@ const ContactSection = () => {
               />
             )}
           </motion.div>
-          
+
           {/* Contact Information */}
           <motion.div
             variants={containerVariants}
@@ -469,7 +455,7 @@ const ContactSection = () => {
               <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center">
                 <span className="text-lime mr-2">📞</span> Contact Information
               </motion.h3>
-              
+
               <div className="space-y-4">
                 {contactInfo.map((contact, index) => (
                   <motion.a
@@ -492,13 +478,13 @@ const ContactSection = () => {
                 ))}
               </div>
             </motion.div>
-            
+
             {/* Social Links */}
             <motion.div variants={containerVariants} className="mb-10">
               <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center">
                 <span className="text-lime mr-2">🌐</span> Connect Online
               </motion.h3>
-              
+
               <div className="flex flex-wrap gap-3">
                 {socialLinks.map((social, index) => (
                   <motion.a
@@ -516,13 +502,13 @@ const ContactSection = () => {
                 ))}
               </div>
             </motion.div>
-            
+
             {/* Coding Profiles */}
             <motion.div variants={containerVariants}>
               <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center">
                 <span className="text-lime mr-2">💻</span> Coding Profiles & Achievements
               </motion.h3>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {codingProfiles.map((profile, index) => (
                   <motion.a

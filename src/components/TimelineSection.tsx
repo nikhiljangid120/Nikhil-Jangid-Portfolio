@@ -19,7 +19,7 @@ const TimelineSection = () => {
   const [selectedItem, setSelectedItem] = useState<TimelineItem | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -29,7 +29,7 @@ const TimelineSection = () => {
       }
     }
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -38,7 +38,7 @@ const TimelineSection = () => {
       transition: { duration: 0.6 }
     }
   };
-  
+
   const timelineItems: TimelineItem[] = [
     {
       year: "2022",
@@ -85,9 +85,9 @@ const TimelineSection = () => {
       details: "Graduated with top honors, achieving excellence in subjects like Mathematics, Physics, and Computer Science. Actively participated in extracurricular activities such as chess clubs and science fairs.",
       location: "Jaipur, Rajasthan"
     }
-      
+
   ];
-  
+
   const getIcon = (type: string) => {
     switch (type) {
       case 'education':
@@ -100,7 +100,7 @@ const TimelineSection = () => {
         return <Calendar className="w-4 h-4 text-white" />;
     }
   };
-  
+
   const getGradient = (type: string) => {
     switch (type) {
       case 'education':
@@ -113,7 +113,7 @@ const TimelineSection = () => {
         return 'from-teal to-lime';
     }
   };
-  
+
   const getBgColor = (type: string) => {
     switch (type) {
       case 'education':
@@ -126,7 +126,7 @@ const TimelineSection = () => {
         return 'bg-teal/10';
     }
   };
-  
+
   const getBorderColor = (type: string) => {
     switch (type) {
       case 'education':
@@ -139,7 +139,7 @@ const TimelineSection = () => {
         return 'border-teal/30';
     }
   };
-  
+
   const getTypeLabel = (type: string) => {
     switch (type) {
       case 'education':
@@ -152,91 +152,46 @@ const TimelineSection = () => {
         return 'Timeline';
     }
   };
-  
+
   const handlePrevItem = () => {
     setActiveIndex((prev) => (prev > 0 ? prev - 1 : timelineItems.length - 1));
   };
-  
+
   const handleNextItem = () => {
     setActiveIndex((prev) => (prev < timelineItems.length - 1 ? prev + 1 : 0));
   };
-  
+
   return (
     <section id="timeline" ref={ref} className="py-20 relative overflow-hidden bg-gradient-to-b from-charcoal/80 to-inkyblack/80">
       {/* Improved background effects */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,23,96,0.3),transparent_70%)] -z-10" />
-      
-      <motion.div 
+
+      <motion.div
         className="absolute top-20 left-0 w-full h-full mix-blend-overlay opacity-20"
         style={{
           backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.2"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
         }}
       />
-      
-      <motion.div 
+
+      <motion.div
         className="section-container relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
       >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <motion.h2 
-            className="text-3xl md:text-5xl font-bold mb-4 inline-block"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-                <motion.span 
-      className="text-3xl md:text-5xl font-bold relative inline-block font-['Montserrat']"
-      animate={{ 
-        backgroundPosition: ['0% center', '100% center', '0% center'],
-      }}
-      transition={{ 
-        duration: 4, 
-        repeat: Infinity,
-        ease: "linear",
-      }}
-    >
-      <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-400 to-pink-400 to-coral-400 px-3 py-1 rounded-lg shadow-[0_4px_14px_rgba(236,72,153,0.4)]">
-        My Journey
-      </span>
-      <motion.span 
-        className="absolute -inset-2 blur-2xl opacity-50 bg-gradient-to-r from-green-300 via-blue-400 to-pink-400 to-coral-400 rounded-xl -z-10"
-        animate={{ 
-          opacity: [0.4, 0.8, 0.4],
-          scale: [1, 1.06, 1],
-          boxShadow: [
-            '4px 4px 16px rgba(236,72,153,0.3)', 
-            '6px 6px 24px rgba(59,130,246,0.5)', 
-            '4px 4px 16px rgba(236,72,153,0.3)'
-          ],
-          backgroundPosition: ['0% center', '100% center', '0% center']
-        }}
-        transition={{ duration: 2.5, repeat: Infinity, repeatType: "mirror" }}
-      />
-    </motion.span>
-          </motion.h2>
-          
-          <motion.div 
-            className="w-20 h-1.5 bg-gradient-to-r from-purple to-teal mx-auto mb-8"
-            initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: "5rem", opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          />
-          
-          <motion.p 
-            className="text-lg text-gray-300 max-w-3xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
+        <motion.div variants={itemVariants} className="mb-16">
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <Calendar className="w-5 h-5" />
+            <span>~/timeline</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">My</span> <span className="text-primary opacity-80">Journey</span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl">
             The path that has shaped my skills and experiences in technology and development.
-          </motion.p>
+          </p>
         </motion.div>
-        
+
         {/* Mobile Timeline Carousel - Enhanced */}
         <div className="lg:hidden mb-16 relative">
           <motion.div
@@ -254,11 +209,11 @@ const TimelineSection = () => {
             >
               <ChevronLeft size={20} />
             </motion.button>
-            
+
             <div className="px-4 py-1.5 bg-charcoal/50 backdrop-blur-sm rounded-full text-sm border border-white/10">
               {activeIndex + 1} / {timelineItems.length}
             </div>
-            
+
             <motion.button
               onClick={handleNextItem}
               className="p-3 rounded-full bg-gradient-to-r from-teal/5 to-teal/20 text-white/70 hover:text-white transition-colors interactive border border-white/10"
@@ -269,7 +224,7 @@ const TimelineSection = () => {
               <ChevronRight size={20} />
             </motion.button>
           </motion.div>
-          
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -288,7 +243,7 @@ const TimelineSection = () => {
               >
                 {getTypeLabel(timelineItems[activeIndex].type)}
               </motion.div>
-              
+
               <div className="p-6">
                 <div className="flex flex-col mb-4">
                   <h3 className="text-xl font-bold text-white relative inline-block">
@@ -300,20 +255,20 @@ const TimelineSection = () => {
                     >
                       {timelineItems[activeIndex].title}
                     </motion.span>
-                    <motion.div 
+                    <motion.div
                       className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple/50 via-teal/50 to-purple/50"
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ duration: 0.5, delay: 0.2 }}
                     />
                   </h3>
-                  
+
                   <div className="flex items-center mt-4 text-sm space-x-4">
                     <div className="flex items-center text-lime">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{timelineItems[activeIndex].year}</span>
                     </div>
-                    
+
                     {timelineItems[activeIndex].location && (
                       <div className="flex items-center text-gray-400">
                         <MapPin className="w-4 h-4 mr-1" />
@@ -322,14 +277,14 @@ const TimelineSection = () => {
                     )}
                   </div>
                 </div>
-                
+
                 <h4 className="text-gray-300 font-medium mb-3 flex items-center">
                   {getIcon(timelineItems[activeIndex].type)}
                   <span className="ml-2">{timelineItems[activeIndex].organization}</span>
                 </h4>
-                
+
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed">{timelineItems[activeIndex].description}</p>
-                
+
                 <motion.button
                   onClick={() => setSelectedItem(timelineItems[activeIndex])}
                   className={`mt-2 text-sm flex items-center px-4 py-2 rounded-full bg-gradient-to-r ${getGradient(timelineItems[activeIndex].type)} bg-opacity-20 hover:bg-opacity-30 transition-all duration-300 interactive`}
@@ -340,19 +295,19 @@ const TimelineSection = () => {
                   <ChevronRight size={16} className="ml-1" />
                 </motion.button>
               </div>
-              
+
               {/* Visual flourish - animated corner */}
-              <motion.div 
+              <motion.div
                 className="absolute -bottom-10 -right-10 w-20 h-20 rounded-full"
                 style={{
                   background: `conic-gradient(from 225deg at 50% 50%, transparent 0deg, ${timelineItems[activeIndex].type === 'education' ? '#00CCA9' : timelineItems[activeIndex].type === 'experience' ? '#9B51E0' : '#F97316'} 360deg)`,
                   opacity: 0.2,
                 }}
-                animate={{ 
+                animate={{
                   rotate: [0, 360],
                   scale: [0.8, 1, 0.8],
                 }}
-                transition={{ 
+                transition={{
                   rotate: { duration: 10, repeat: Infinity, ease: "linear" },
                   scale: { duration: 3, repeat: Infinity, repeatType: "reverse" }
                 }}
@@ -360,18 +315,18 @@ const TimelineSection = () => {
             </motion.div>
           </AnimatePresence>
         </div>
-        
+
         {/* Desktop Timeline - Enhanced */}
         <div className="hidden lg:block relative max-w-4xl mx-auto">
           {/* Main timeline line */}
-          <motion.div 
+          <motion.div
             className="absolute left-[60px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple/50 via-teal/50 to-purple/50"
             initial={{ height: 0 }}
             whileInView={{ height: "100%" }}
             transition={{ duration: 1.5 }}
             viewport={{ once: true }}
           />
-          
+
           {timelineItems.map((item, index) => (
             <motion.div
               key={index}
@@ -385,37 +340,37 @@ const TimelineSection = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               {/* Animated circle for timeline dot */}
-              <motion.div 
+              <motion.div
                 className={`absolute left-[49px] bg-gradient-to-r ${getGradient(item.type)} w-[22px] h-[22px] rounded-full z-20 flex items-center justify-center`}
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
-                transition={{ 
-                  type: "spring", 
-                  stiffness: 300, 
-                  damping: 20, 
-                  delay: index * 0.1 
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                  delay: index * 0.1
                 }}
                 viewport={{ once: true }}
               >
                 {getIcon(item.type)}
-                
+
                 {/* Pulse animation */}
                 <motion.div
                   className={`absolute inset-0 rounded-full bg-gradient-to-r ${getGradient(item.type)}`}
-                  animate={{ 
+                  animate={{
                     opacity: [0, 0.2, 0],
                     scale: [1, 1.8, 1],
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 2,
                     repeat: Infinity,
                     delay: index * 0.2,
                   }}
                 />
               </motion.div>
-              
+
               {/* Year badge */}
-              <motion.div 
+              <motion.div
                 className="absolute left-0 top-0 w-[40px] text-center"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -426,8 +381,8 @@ const TimelineSection = () => {
                   {item.year.split(' - ')[0]}
                 </span>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className={`relative border border-white/10 rounded-xl overflow-hidden group interactive ${hoveredIndex === index ? 'ring-1 ring-offset-2 ring-offset-inkyblack' : ''} ${hoveredIndex === index ? (item.type === 'education' ? 'ring-teal/50' : item.type === 'experience' ? 'ring-purple/50' : 'ring-orange/50') : ''}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -438,38 +393,38 @@ const TimelineSection = () => {
                 onClick={() => setSelectedItem(item)}
               >
                 {/* Card background */}
-                <motion.div 
+                <motion.div
                   className={`absolute inset-0 ${getBgColor(item.type)} opacity-50 z-0`}
                   initial={{ opacity: 0.5 }}
                   whileHover={{ opacity: 0.7 }}
                   transition={{ duration: 0.3 }}
                 />
-                
+
                 {/* Shimmering effect */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full z-0"
                   animate={{ x: hoveredIndex === index ? ['0%', '200%'] : '-100%' }}
                   transition={{ duration: 1.5, ease: "easeInOut" }}
                 />
-                
+
                 {/* Type badge */}
                 <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium bg-gradient-to-r ${getGradient(item.type)} text-inkyblack rounded-bl-lg`}>
                   {getTypeLabel(item.type)}
                 </div>
-                
+
                 <div className="p-6 relative z-10">
                   <div className="flex flex-col sm:flex-row sm:items-start mb-3 justify-between">
                     <h3 className="text-xl font-bold text-white mb-2 sm:mb-0 group-hover:text-lime transition-colors duration-300">
                       {item.title}
                     </h3>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-4 mb-3 text-sm">
                     <div className="flex items-center text-lime">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{item.year}</span>
                     </div>
-                    
+
                     {item.location && (
                       <div className="flex items-center text-gray-400">
                         <MapPin className="w-4 h-4 mr-1" />
@@ -477,21 +432,21 @@ const TimelineSection = () => {
                       </div>
                     )}
                   </div>
-                  
+
                   <h4 className="text-gray-300 font-medium mb-3 flex items-center">
                     {getIcon(item.type)}
                     <span className="ml-2">{item.organization}</span>
                   </h4>
-                  
+
                   <p className="text-gray-400 text-sm">{item.description}</p>
-                  
-                  <motion.div 
+
+                  <motion.div
                     className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-transparent via-lime/30 to-transparent"
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.5 }}
                   />
-                  
+
                   <motion.div
                     className="absolute top-3 right-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     whileHover={{ rotate: 90 }}
@@ -500,10 +455,10 @@ const TimelineSection = () => {
                   </motion.div>
                 </div>
               </motion.div>
-              
+
               {/* Connecting line to the next item */}
               {index < timelineItems.length - 1 && (
-                <motion.div 
+                <motion.div
                   className="absolute left-[60px] top-0 w-0.5 h-24 z-0"
                   style={{
                     background: `linear-gradient(to bottom, 
@@ -519,18 +474,18 @@ const TimelineSection = () => {
             </motion.div>
           ))}
         </div>
-        
+
         {/* Timeline Item Modal - Enhanced */}
         <AnimatePresence>
           {selectedItem && (
-            <motion.div 
+            <motion.div
               className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedItem(null)}
             >
-              <motion.div 
+              <motion.div
                 className={`relative w-full max-w-2xl rounded-xl overflow-hidden border border-white/10`}
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -539,35 +494,35 @@ const TimelineSection = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal background */}
-                <motion.div 
+                <motion.div
                   className={`absolute inset-0 ${getBgColor(selectedItem.type)} opacity-80 z-0`}
-                  animate={{ 
-                    opacity: [0.7, 0.9, 0.7], 
+                  animate={{
+                    opacity: [0.7, 0.9, 0.7],
                   }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    repeatType: "mirror" 
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatType: "mirror"
                   }}
                 />
-                
+
                 {/* Decorative flourish */}
-                <motion.div 
+                <motion.div
                   className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30 z-0"
                   style={{
                     background: `radial-gradient(circle, ${selectedItem.type === 'education' ? 'rgba(0, 204, 169, 0.6)' : selectedItem.type === 'experience' ? 'rgba(155, 81, 224, 0.6)' : 'rgba(249, 115, 22, 0.6)'} 0%, transparent 70%)`,
                   }}
-                  animate={{ 
-                    scale: [1, 1.2, 1], 
-                    opacity: [0.2, 0.4, 0.2] 
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.2, 0.4, 0.2]
                   }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity, 
-                    repeatType: "mirror" 
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "mirror"
                   }}
                 />
-                
+
                 <motion.button
                   className="absolute top-4 right-4 p-2 rounded-full bg-charcoal/50 backdrop-blur-sm text-white/70 hover:text-white hover:bg-charcoal/80 transition-colors border border-white/10 z-10"
                   whileHover={{ scale: 1.1 }}
@@ -576,19 +531,19 @@ const TimelineSection = () => {
                 >
                   <X size={20} />
                 </motion.button>
-                
+
                 <div className="relative p-8 z-10">
                   <div className="flex items-start justify-between">
                     <div className={`p-3 rounded-lg bg-gradient-to-r ${getGradient(selectedItem.type)} mb-4`}>
                       {getIcon(selectedItem.type)}
                     </div>
-                    
+
                     <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${getGradient(selectedItem.type)} text-inkyblack`}>
                       {getTypeLabel(selectedItem.type)}
                     </span>
                   </div>
-                  
-                  <motion.h3 
+
+                  <motion.h3
                     className="text-2xl font-bold mb-2"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -596,13 +551,13 @@ const TimelineSection = () => {
                   >
                     {selectedItem.title}
                   </motion.h3>
-                  
+
                   <div className="flex flex-wrap gap-4 text-sm mb-4">
                     <div className="flex items-center text-lime">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{selectedItem.year}</span>
                     </div>
-                    
+
                     {selectedItem.location && (
                       <div className="flex items-center text-gray-400">
                         <MapPin className="w-4 h-4 mr-1" />
@@ -610,8 +565,8 @@ const TimelineSection = () => {
                       </div>
                     )}
                   </div>
-                  
-                  <motion.h4 
+
+                  <motion.h4
                     className="text-xl text-white/90 font-medium mb-4"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -619,8 +574,8 @@ const TimelineSection = () => {
                   >
                     {selectedItem.organization}
                   </motion.h4>
-                  
-                  <motion.div 
+
+                  <motion.div
                     className="space-y-4"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -628,7 +583,7 @@ const TimelineSection = () => {
                   >
                     <p className="text-white/80">{selectedItem.description}</p>
                     {selectedItem.details && (
-                      <motion.div 
+                      <motion.div
                         className="mt-4 p-5 bg-charcoal/50 backdrop-blur-sm rounded-xl border border-white/10"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
