@@ -269,7 +269,7 @@ const ContactSection = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 bg-inkyblack border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-lime/50 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 bg-card/50 border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors placeholder:text-muted-foreground"
                   placeholder="Your name"
                   required
                 />
@@ -282,7 +282,7 @@ const ContactSection = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-inkyblack border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-lime/50 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 bg-card/50 border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors placeholder:text-muted-foreground"
                   placeholder="your.email@example.com"
                   required
                 />
@@ -294,7 +294,7 @@ const ContactSection = () => {
                   id="message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-4 py-3 bg-inkyblack border border-white/10 rounded-lg text-white h-32 resize-none focus:outline-none focus:ring-2 focus:ring-lime/50 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 bg-card/50 border border-border rounded-lg text-foreground h-32 resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-colors placeholder:text-muted-foreground"
                   placeholder="Tell me about your project, question, or opportunity..."
                   required
                 />
