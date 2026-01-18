@@ -168,26 +168,19 @@ const ResumeSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 relative inline-block font-['Poppins']">
-            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-rose-500 to-amber-500 px-3 py-1 rounded-lg shadow-[0_4px_12px_rgba(244,63,94,0.3)]">
-              Resume & Projects
-            </span>
-            <motion.span
-              className="absolute -inset-2 blur-2xl opacity-50 bg-gradient-to-r from-red-400 via-rose-500 to-amber-500 rounded-xl -z-10"
-              animate={{
-                opacity: [0.4, 0.7, 0.4],
-                scale: [1, 1.05, 1],
-                backgroundPosition: ['0% center', '100% center', '0% center'],
-                boxShadow: ['0 8px 16px rgba(244,63,94,0.2)', '0 12px 24px rgba(244,63,94,0.4)', '0 8px 16px rgba(244,63,94,0.2)']
-              }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatType: "mirror" }}
-            />
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <BookOpen className="w-5 h-5" />
+            <span>~/resume</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">Resume &</span> <span className="text-primary opacity-80">Experience</span>
           </h2>
-          <div className="h-1 w-24 bg-gradient-to-r from-teal to-orange mx-auto mb-6" />
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg max-w-2xl">
             Final-year CSE student • CGPA: {resumeData.cgpa} • Building AI-powered products
+          </p>
+        </motion.div>
           </p>
         </motion.div>
 
@@ -584,8 +577,8 @@ const ResumeSection = () => {
             </motion.button>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
