@@ -20,6 +20,7 @@ const ResumeSection = () => {
     title: "Full Stack Developer",
     age: 21,
     status: "Final-year B.Tech student",
+    cgpa: "8.36+",
     education: {
       degree: "B.Tech in Computer Science and Engineering",
       institution: "Amity University Rajasthan",
@@ -36,14 +37,25 @@ const ResumeSection = () => {
       {
         name: "AI Resume Builder",
         tech: "Next.js, Gemini API, Tailwind CSS",
-        description: "AI-powered resume builder with ATS optimization and real-time suggestions"
+        description: "AI-powered resume builder with ATS optimization and real-time suggestions",
+        status: "live",
+        url: "https://ai-resume-builder-epbj.vercel.app/"
       },
       {
         name: "AI Fitness Platform",
         tech: "Next.js, React, Firebase, Gemini API",
-        description: "Comprehensive fitness platform with AI-driven workout and nutrition planning"
+        description: "Comprehensive fitness platform with AI-driven workout and nutrition planning",
+        status: "live",
+        url: "https://fitness-platform-zeta.vercel.app/"
       }
-    ]
+    ],
+    upcomingProject: {
+      name: "Flyeng Career",
+      tech: "Next.js, PostgreSQL, AI/LLM, Prisma",
+      description: "AI-powered career and portfolio platform helping students prepare for software engineering roles through structured learning, portfolio building, and AI-assisted tools.",
+      status: "in-development",
+      features: ["AI Career Guidance", "Portfolio Builder", "Interview Prep", "Learning Paths"]
+    }
   };
 
   useEffect(() => {
@@ -160,7 +172,7 @@ const ResumeSection = () => {
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 relative inline-block font-['Poppins']">
             <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-rose-500 to-amber-500 px-3 py-1 rounded-lg shadow-[0_4px_12px_rgba(244,63,94,0.3)]">
-              Resume
+              Resume & Projects
             </span>
             <motion.span
               className="absolute -inset-2 blur-2xl opacity-50 bg-gradient-to-r from-red-400 via-rose-500 to-amber-500 rounded-xl -z-10"
@@ -175,7 +187,7 @@ const ResumeSection = () => {
           </h2>
           <div className="h-1 w-24 bg-gradient-to-r from-teal to-orange mx-auto mb-6" />
           <p className="text-gray-300 max-w-2xl mx-auto">
-            My professional experience and technical qualifications
+            Final-year CSE student • CGPA: {resumeData.cgpa} • Building AI-powered products
           </p>
         </motion.div>
 
@@ -500,6 +512,55 @@ const ResumeSection = () => {
                   <span>AI/LLM Integration</span>
                 </li>
               </ul>
+            </motion.div>
+
+            {/* Upcoming Major Project - Flyeng Career */}
+            <motion.div
+              className="p-6 bg-gradient-to-br from-purple/20 via-teal/10 to-lime/10 border border-purple/30 rounded-xl relative overflow-hidden group"
+              whileHover={{ y: -5, boxShadow: "0 10px 30px -5px rgba(168, 85, 247, 0.4)" }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              {/* Animated background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple/20 via-teal/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 right-0 h-24 w-24 bg-gradient-to-bl from-lime/20 to-transparent rounded-bl-full" />
+
+              {/* Coming Soon Badge */}
+              <motion.div
+                className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center gap-1"
+                animate={{
+                  boxShadow: ['0 0 10px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.8)', '0 0 10px rgba(168,85,247,0.5)']
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <motion.div
+                  className="w-2 h-2 bg-white rounded-full"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                Coming Soon
+              </motion.div>
+
+              <h3 className="text-xl font-bold mb-2 text-white relative flex items-center gap-2">
+                🚀 {resumeData.upcomingProject.name}
+              </h3>
+              <p className="text-purple-300 text-sm mb-3">{resumeData.upcomingProject.tech}</p>
+              <div className="h-1 w-16 bg-gradient-to-r from-purple to-lime mb-4" />
+              <p className="text-gray-300 relative text-sm mb-4">
+                {resumeData.upcomingProject.description}
+              </p>
+
+              {/* Feature Tags */}
+              <div className="flex flex-wrap gap-2">
+                {resumeData.upcomingProject.features.map((feature, i) => (
+                  <motion.span
+                    key={i}
+                    className="px-2 py-1 text-xs bg-white/10 text-white/80 rounded-md border border-white/20"
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(168, 85, 247, 0.3)' }}
+                  >
+                    {feature}
+                  </motion.span>
+                ))}
+              </div>
             </motion.div>
 
             {/* Contact CTA Button */}
