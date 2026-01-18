@@ -1,582 +1,179 @@
-import { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { Download, Eye, Code, Server, Database, BookOpen, Github } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Download, FileText, GraduationCap, Code, Briefcase, Award, ExternalLink, Rocket } from 'lucide-react';
 
 const ResumeSection = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const controls = useAnimation();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.1 });
 
-  // Nikhil's resume data
-  const resumeData = {
-    name: "Nikhil Jangid",
-    title: "Full Stack Developer",
-    age: 21,
-    status: "Final-year B.Tech student",
-    cgpa: "8.36+",
-    education: {
-      degree: "B.Tech in Computer Science and Engineering",
-      institution: "Amity University Rajasthan",
-      year: "2022 - 2026",
-    },
-    skills: {
-      languages: ["JavaScript", "C++", "Python", "HTML/CSS"],
-      frameworks: ["React.js", "Node.js", "Next.js", "Express.js"],
-      databases: ["MongoDB", "Firebase"],
-      tools: ["Git", "GitHub", "VS Code"],
-      areas: ["Data Structures & Algorithms", "Web Development", "AI/LLM Integration", "Problem Solving"]
-    },
-    projects: [
-      {
-        name: "AI Resume Builder",
-        tech: "Next.js, Gemini API, Tailwind CSS",
-        description: "AI-powered resume builder with ATS optimization and real-time suggestions",
-        status: "live",
-        url: "https://ai-resume-builder-epbj.vercel.app/"
-      },
-      {
-        name: "AI Fitness Platform",
-        tech: "Next.js, React, Firebase, Gemini API",
-        description: "Comprehensive fitness platform with AI-driven workout and nutrition planning",
-        status: "live",
-        url: "https://fitness-platform-zeta.vercel.app/"
-      }
-    ],
-    upcomingProject: {
-      name: "Flyeng Career",
-      tech: "Next.js, PostgreSQL, AI/LLM, Prisma",
-      description: "AI-powered career and portfolio platform helping students prepare for software engineering roles through structured learning, portfolio building, and AI-assisted tools.",
-      status: "in-development",
-      features: ["AI Career Guidance", "Portfolio Builder", "Interview Prep", "Learning Paths"]
-    }
+  const highlights = [
+    { icon: GraduationCap, label: "B.Tech CSE", value: "2022 - 2026" },
+    { icon: Award, label: "CGPA", value: "8.36+" },
+    { icon: Code, label: "DSA Problems", value: "400+" },
+    { icon: Briefcase, label: "Projects", value: "4+ Live" },
+  ];
+
+  const skills = {
+    "Frontend": ["React.js", "Next.js", "Tailwind CSS", "TypeScript"],
+    "Backend": ["Node.js", "Express.js", "REST APIs", "Firebase"],
+    "AI/LLM": ["Gemini API", "OpenAI", "Prompt Engineering"],
+    "Tools": ["Git", "GitHub", "MongoDB", "PostgreSQL"],
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  const SkillIcon = ({ name }) => {
-    if (name.includes("React")) return <div className="text-blue-400">⚛️</div>;
-    if (name.includes("Node")) return <Server className="w-4 h-4 text-green-400" />;
-    if (name.includes("Mongo")) return <Database className="w-4 h-4 text-green-500" />;
-    if (name.includes("C++")) return <Code className="w-4 h-4 text-blue-500" />;
-    if (name.includes("Python")) return <div>🐍</div>;
-    if (name.includes("Git")) return <Github className="w-4 h-4 text-orange" />;
-    return <BookOpen className="w-4 h-4 text-gold" />;
-  };
+  const projects = [
+    { name: "AI Resume Builder", url: "https://ai-resume-builder-epbj.vercel.app/", status: "live" },
+    { name: "AI Fitness Platform", url: "https://fitness-platform-zeta.vercel.app/", status: "live" },
+    { name: "AI Code Analyzer", url: "https://code-analyzer-f7bq.vercel.app/", status: "live" },
+    { name: "Flyeng Career", url: null, status: "building" },
+  ];
 
   return (
-    <section id="resume" className="py-24 px-6 relative overflow-hidden">
-      {/* Background with neural network-like pattern */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal to-inky-black" />
+    <section id="resume" ref={ref} className="py-20 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
 
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="w-full h-full" style={{
-            backgroundImage: 'linear-gradient(#005A66 1px, transparent 1px), linear-gradient(90deg, #005A66 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        {/* Neural network nodes */}
-        {Array.from({ length: 15 }).map((_, index) => {
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-          return (
-            <motion.div
-              key={`node-${index}`}
-              className="absolute w-2 h-2 rounded-full"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                background: index % 3 === 0 ? '#CCFF00' : index % 3 === 1 ? '#D94F30' : '#FFB100',
-                boxShadow: `0 0 8px ${index % 3 === 0 ? '#CCFF00' : index % 3 === 1 ? '#D94F30' : '#FFB100'}`
-              }}
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.6, 0.9, 0.6],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                repeatType: "reverse",
-                delay: Math.random() * 2,
-              }}
-            />
-          );
-        })}
-
-        {/* Neural network connections */}
-        <svg className="absolute inset-0 w-full h-full opacity-20">
-          <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#005A66" />
-              <stop offset="50%" stopColor="#FFB100" />
-              <stop offset="100%" stopColor="#D94F30" />
-            </linearGradient>
-          </defs>
-          {Array.from({ length: 15 }).map((_, i) => {
-            const x1 = Math.random() * 100;
-            const y1 = Math.random() * 100;
-            const x2 = Math.random() * 100;
-            const y2 = Math.random() * 100;
-            return (
-              <motion.line
-                key={`line-${i}`}
-                x1={`${x1}%`}
-                y1={`${y1}%`}
-                x2={`${x2}%`}
-                y2={`${y2}%`}
-                stroke="url(#lineGradient)"
-                strokeWidth="0.5"
-                strokeOpacity="0.5"
-                animate={{
-                  strokeOpacity: [0.2, 0.5, 0.2],
-                  strokeDashoffset: [0, 100]
-                }}
-                transition={{
-                  duration: 10 + Math.random() * 5,
-                  repeat: Infinity,
-                  repeatType: "loop"
-                }}
-                strokeDasharray="5,5"
-              />
-            );
-          })}
-        </svg>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="section-container relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
           className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
         >
           <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <BookOpen className="w-5 h-5" />
+            <FileText className="w-5 h-5" />
             <span>~/resume</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Resume &</span> <span className="text-primary opacity-80">Experience</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Final-year CSE student • CGPA: {resumeData.cgpa} • Building AI-powered products
+            Final-year CSE student at Amity University, Rajasthan. Building AI-powered products.
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-8 justify-center items-stretch">
-          {/* Interactive Resume Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Quick Stats & Download */}
           <motion.div
-            className="relative w-full lg:w-3/5 bg-gradient-to-br from-teal/10 to-purple/10 rounded-2xl overflow-hidden border border-white/10"
-            whileHover={{ scale: 1.01 }}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            className="lg:col-span-1 space-y-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Dialog>
-              <DialogTrigger asChild>
-                <motion.button
-                  className="w-full h-full relative cursor-pointer group"
-                  onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    // Update the highlight position based on mouse
-                    controls.start({
-                      background: `radial-gradient(circle at ${x}px ${y}px, rgba(204, 255, 0, 0.15) 0%, rgba(0, 90, 102, 0.05) 50%, transparent 100%)`,
-                    });
-                  }}
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              {highlights.map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="p-4 bg-card/50 border border-border rounded-xl text-center group hover:border-primary/50 transition-colors"
+                  whileHover={{ y: -2 }}
                 >
-                  {/* Dynamic highlight effect */}
-                  <motion.div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    animate={controls}
-                  />
+                  <item.icon className="w-5 h-5 mx-auto mb-2 text-primary" />
+                  <div className="text-lg font-bold text-foreground">{item.value}</div>
+                  <div className="text-xs text-muted-foreground">{item.label}</div>
+                </motion.div>
+              ))}
+            </div>
 
-                  <div className="w-full h-full backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10 relative overflow-hidden">
-                    {/* Accent decorations */}
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-b from-orange/30 to-transparent rounded-bl-full opacity-50" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-t from-teal/30 to-transparent rounded-tr-full opacity-50" />
-
-                    {/* Resume Content Preview */}
-                    <div className="relative space-y-6 text-left">
-                      <div className="border-l-4 border-orange pl-4 mb-8">
-                        <h3 className="text-3xl font-bold text-white">{resumeData.name}</h3>
-                        <p className="text-lime text-lg">{resumeData.title}</p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="text-lg font-semibold text-gold mb-2 flex items-center">
-                              <BookOpen className="w-5 h-5 mr-2" /> Education
-                            </h4>
-                            <p className="text-white font-medium">
-                              {resumeData.education.degree}
-                            </p>
-                            <p className="text-gray-300">
-                              {resumeData.education.institution}
-                            </p>
-                            <p className="text-gray-400 text-sm">
-                              {resumeData.education.year}
-                            </p>
-                          </div>
-
-                          <div>
-                            <h4 className="text-lg font-semibold text-gold mb-2 flex items-center">
-                              <Code className="w-5 h-5 mr-2" /> Languages
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                              {resumeData.skills.languages.map((lang, i) => (
-                                <span key={i} className="px-3 py-1 text-xs bg-teal/20 text-white rounded-full border border-teal/30 flex items-center gap-1">
-                                  <SkillIcon name={lang} />
-                                  {lang}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="text-lg font-semibold text-gold mb-2 flex items-center">
-                              <Server className="w-5 h-5 mr-2" /> Frameworks & Tools
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                              {resumeData.skills.frameworks.slice(0, 4).map((fw, i) => (
-                                <span key={i} className="px-3 py-1 text-xs bg-orange/20 text-white rounded-full border border-orange/30 flex items-center gap-1">
-                                  <SkillIcon name={fw} />
-                                  {fw}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div>
-                            <h4 className="text-lg font-semibold text-gold mb-2 flex items-center">
-                              <Database className="w-5 h-5 mr-2" /> Areas of Expertise
-                            </h4>
-                            <p className="text-gray-300">
-                              {resumeData.skills.areas.slice(0, 2).join(" • ")}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple/80 to-teal/80 flex items-center justify-center opacity-0 group-hover:opacity-90 transition-opacity duration-500">
-                      <div className="bg-white/10 backdrop-blur-md p-4 rounded-full flex items-center gap-2 border border-white/30">
-                        <Eye className="w-6 h-6 text-white" />
-                        <span className="text-white font-medium">View Full Resume</span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.button>
-              </DialogTrigger>
-
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-inky-black border border-teal/30">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-white">Nikhil Jangid - Resume</DialogTitle>
-                </DialogHeader>
-                <div className="mt-4">
-                  {/* Full Resume Content */}
-                  <div className="bg-gradient-to-br from-charcoal/50 to-inky-black/70 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
-                    <div className="border-l-4 border-orange pl-6 mb-8">
-                      <h2 className="text-4xl font-bold text-white">{resumeData.name}</h2>
-                      <p className="text-lime text-xl">{resumeData.title}</p>
-                      <p className="text-gray-300 mt-2">Age: {resumeData.age} • {resumeData.status}</p>
-                    </div>
-
-                    <div className="space-y-10">
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gold mb-4 pb-2 border-b border-white/20 flex items-center gap-2">
-                          <BookOpen className="w-6 h-6" /> Education
-                        </h3>
-                        <div className="pl-2">
-                          <h4 className="text-xl font-medium text-white">{resumeData.education.degree}</h4>
-                          <p className="text-lg text-teal">{resumeData.education.institution}</p>
-                          <p className="text-gray-400">{resumeData.education.year}</p>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gold mb-4 pb-2 border-b border-white/20 flex items-center gap-2">
-                          <Code className="w-6 h-6" /> Technical Skills
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-2">
-                          <div>
-                            <h4 className="text-lg font-medium text-white mb-2">Programming Languages</h4>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {resumeData.skills.languages.map((lang, i) => (
-                                <span key={i} className="px-3 py-1 text-sm bg-teal/20 text-white rounded-full border border-teal/30 flex items-center gap-1">
-                                  <SkillIcon name={lang} />
-                                  {lang}
-                                </span>
-                              ))}
-                            </div>
-
-                            <h4 className="text-lg font-medium text-white mb-2">Databases</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {resumeData.skills.databases.map((db, i) => (
-                                <span key={i} className="px-3 py-1 text-sm bg-gold/20 text-white rounded-full border border-gold/30 flex items-center gap-1">
-                                  <Database className="w-4 h-4 mr-1" />
-                                  {db}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div>
-                            <h4 className="text-lg font-medium text-white mb-2">Frameworks & Libraries</h4>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {resumeData.skills.frameworks.map((fw, i) => (
-                                <span key={i} className="px-3 py-1 text-sm bg-orange/20 text-white rounded-full border border-orange/30 flex items-center gap-1">
-                                  <SkillIcon name={fw} />
-                                  {fw}
-                                </span>
-                              ))}
-                            </div>
-
-                            <h4 className="text-lg font-medium text-white mb-2">Tools & Platforms</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {resumeData.skills.tools.map((tool, i) => (
-                                <span key={i} className="px-3 py-1 text-sm bg-purple/20 text-white rounded-full border border-purple/30 flex items-center gap-1">
-                                  <SkillIcon name={tool} />
-                                  {tool}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gold mb-4 pb-2 border-b border-white/20 flex items-center gap-2">
-                          <Server className="w-6 h-6" /> Areas of Expertise
-                        </h3>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-2 pl-2">
-                          {resumeData.skills.areas.map((area, i) => (
-                            <li key={i} className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-lime rounded-full"></div>
-                              <span className="text-gray-200">{area}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-semibold text-gold mb-4 pb-2 border-b border-white/20 flex items-center gap-2">
-                          <Code className="w-6 h-6" /> Projects
-                        </h3>
-                        <div className="space-y-4 pl-2">
-                          {resumeData.projects.map((project, i) => (
-                            <div key={i} className="p-4 bg-white/5 rounded-lg border border-white/10 hover:border-teal/30 transition-colors">
-                              <h4 className="text-lg font-medium text-white">{project.name}</h4>
-                              <p className="text-lime text-sm mb-2">{project.tech}</p>
-                              <p className="text-gray-300">{project.description}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            {/* Neon glow effect on hover */}
-            <motion.div
-              className="absolute inset-0 rounded-2xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                boxShadow: "0 0 20px rgba(204, 255, 0, 0.3), 0 0 40px rgba(0, 90, 102, 0.2)",
-              }}
-            />
-
-            {/* Download button with hover effect */}
+            {/* Download Button */}
             <motion.a
               href="/Nikhil Jangid_ATS Friendly Resume.pdf"
               download
-              className="absolute bottom-6 right-6 p-3 rounded-full bg-orange text-inky-black flex items-center justify-center group overflow-hidden"
-              whileHover={{
-                scale: 1.1,
-                boxShadow: "0 0 15px rgba(204, 255, 0, 0.5)"
-              }}
-              whileTap={{ scale: 0.95 }}
+              className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium hover:opacity-90 transition-opacity"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              <div className="absolute inset-0 bg-lime opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
-              <Download className="w-5 h-5 relative z-10" />
+              <Download className="w-5 h-5" />
+              Download Resume
             </motion.a>
+
+            {/* Projects Quick List */}
+            <div className="p-4 bg-card/50 border border-border rounded-xl">
+              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Rocket className="w-4 h-4 text-primary" />
+                Featured Projects
+              </h3>
+              <div className="space-y-2">
+                {projects.map((project, i) => (
+                  <div key={i} className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">{project.name}</span>
+                    {project.status === "live" ? (
+                      <a href={project.url!} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline flex items-center gap-1">
+                        Live <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-orange-400 text-xs px-2 py-0.5 bg-orange-400/10 rounded">Building</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
-          {/* Resume Highlights */}
+          {/* Right Column - Skills Grid */}
           <motion.div
-            className="w-full lg:w-2/5 space-y-6"
+            className="lg:col-span-2"
             initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            {/* Tech Stack Card */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.entries(skills).map(([category, items], i) => (
+                <motion.div
+                  key={category}
+                  className="p-6 bg-card/50 border border-border rounded-xl hover:border-primary/50 transition-colors"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                >
+                  <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-primary rounded-full" />
+                    {category}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1.5 text-sm bg-primary/10 text-primary rounded-lg border border-primary/20"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Flyeng Career Highlight */}
             <motion.div
-              className="p-6 bg-gradient-to-r from-teal/10 to-transparent border border-teal/20 rounded-xl relative overflow-hidden group"
-              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 90, 102, 0.3)" }}
-              transition={{ type: "spring", stiffness: 300 }}
+              className="mt-6 p-6 bg-gradient-to-r from-purple-500/10 via-primary/5 to-orange-500/10 border border-purple-500/30 rounded-xl relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-teal/10 via-teal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute top-0 right-0 h-20 w-20 bg-teal/10 rounded-bl-full" />
-              <div className="absolute -bottom-10 -left-10 h-20 w-20 bg-lime/10 rounded-full" />
-
-              <h3 className="text-xl font-bold mb-3 text-white relative">Tech Stack</h3>
-              <div className="h-1 w-12 bg-teal mb-4" />
-              <p className="text-gray-300 mb-4 relative">
-                Specialized in MERN Stack Development (MongoDB, Express.js, React.js, Node.js) with a strong foundation in Data Structures and Algorithms.
-              </p>
-              <div className="flex flex-wrap gap-2 relative">
-                <span className="px-3 py-1 bg-teal/20 text-white text-xs rounded-full">React.js</span>
-                <span className="px-3 py-1 bg-teal/20 text-white text-xs rounded-full">Node.js</span>
-                <span className="px-3 py-1 bg-teal/20 text-white text-xs rounded-full">MongoDB</span>
-              </div>
-            </motion.div>
-
-            {/* Education Card */}
-            <motion.div
-              className="p-6 bg-gradient-to-r from-orange/10 to-transparent border border-orange/20 rounded-xl relative overflow-hidden group"
-              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(217, 79, 48, 0.3)" }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-orange/10 via-orange/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute top-0 right-0 h-20 w-20 bg-orange/10 rounded-bl-full" />
-
-              <h3 className="text-xl font-bold mb-3 text-white relative">Education</h3>
-              <div className="h-1 w-12 bg-orange mb-4" />
-              <p className="text-gray-300 relative">
-                Final-year B.Tech in Computer Science and Engineering at Amity University Rajasthan, focused on building practical development skills alongside academic excellence (CGPA: ~8.36).
-              </p>
-            </motion.div>
-
-            {/* Specialization Card */}
-            <motion.div
-              className="p-6 bg-gradient-to-r from-gold/10 to-transparent border border-gold/20 rounded-xl relative overflow-hidden group"
-              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(255, 177, 0, 0.3)" }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-gold/10 via-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute top-0 right-0 h-20 w-20 bg-gold/10 rounded-bl-full" />
-
-              <h3 className="text-xl font-bold mb-3 text-white relative">Specializations</h3>
-              <div className="h-1 w-12 bg-gold mb-4" />
-              <ul className="text-gray-300 space-y-2 relative">
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-lime rounded-full"></div>
-                  <span>Data Structures & Algorithms</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-lime rounded-full"></div>
-                  <span>Full Stack Web Development</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-lime rounded-full"></div>
-                  <span>AI/LLM Integration</span>
-                </li>
-              </ul>
-            </motion.div>
-
-            {/* Upcoming Major Project - Flyeng Career */}
-            <motion.div
-              className="p-6 bg-gradient-to-br from-purple/20 via-teal/10 to-lime/10 border border-purple/30 rounded-xl relative overflow-hidden group"
-              whileHover={{ y: -5, boxShadow: "0 10px 30px -5px rgba(168, 85, 247, 0.4)" }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              {/* Animated background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple/20 via-teal/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute top-0 right-0 h-24 w-24 bg-gradient-to-bl from-lime/20 to-transparent rounded-bl-full" />
-
-              {/* Coming Soon Badge */}
               <motion.div
-                className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center gap-1"
-                animate={{
-                  boxShadow: ['0 0 10px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.8)', '0 0 10px rgba(168,85,247,0.5)']
-                }}
+                className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center gap-1"
+                animate={{ boxShadow: ['0 0 10px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.8)', '0 0 10px rgba(168,85,247,0.5)'] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <motion.div
-                  className="w-2 h-2 bg-white rounded-full"
-                  animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-                Coming Soon
+                🚀 Coming Soon
               </motion.div>
 
-              <h3 className="text-xl font-bold mb-2 text-white relative flex items-center gap-2">
-                🚀 {resumeData.upcomingProject.name}
-              </h3>
-              <p className="text-purple-300 text-sm mb-3">{resumeData.upcomingProject.tech}</p>
-              <div className="h-1 w-16 bg-gradient-to-r from-purple to-lime mb-4" />
-              <p className="text-gray-300 relative text-sm mb-4">
-                {resumeData.upcomingProject.description}
+              <h3 className="text-xl font-bold text-foreground mb-2">Flyeng Career</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                AI-powered career platform with portfolio building, interview prep, and structured learning paths for aspiring software engineers.
               </p>
-
-              {/* Feature Tags */}
               <div className="flex flex-wrap gap-2">
-                {resumeData.upcomingProject.features.map((feature, i) => (
-                  <motion.span
-                    key={i}
-                    className="px-2 py-1 text-xs bg-white/10 text-white/80 rounded-md border border-white/20"
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(168, 85, 247, 0.3)' }}
-                  >
-                    {feature}
-                  </motion.span>
+                {["Next.js", "PostgreSQL", "AI/LLM", "Prisma"].map((tech) => (
+                  <span key={tech} className="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded border border-purple-500/30">
+                    {tech}
+                  </span>
                 ))}
               </div>
             </motion.div>
-
-            {/* Contact CTA Button */}
-            <motion.button
-              className="w-full py-4 mt-4 bg-gradient-to-r from-orange to-teal rounded-xl font-medium text-white group flex items-center justify-center gap-2 relative overflow-hidden"
-              whileHover={{ scale: 1.02, boxShadow: "0 0 25px rgba(0, 90, 102, 0.5)" }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {/* Animated gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-orange via-purple to-teal bg-size-200 animate-gradient-x opacity-0 group-hover:opacity-20" />
-
-              <span className="relative z-10">Contact Me</span>
-              <motion.span
-                className="relative z-10"
-                initial={{ x: 0 }}
-                animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, repeatType: "loop", duration: 1.5 }}
-              >
-                →
-              </motion.span>
-            </motion.button>
           </motion.div>
         </div>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 
