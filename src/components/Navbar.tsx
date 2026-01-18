@@ -16,7 +16,7 @@ const Navbar = () => {
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
-    { id: 'badges-certificates', label: 'Badges' },
+    { id: 'resume', label: 'Resume' },
     { id: 'timeline', label: 'Timeline' },
     { id: 'contact', label: 'Contact' },
   ];
@@ -31,7 +31,7 @@ const Navbar = () => {
       // Use getBoundingClientRect to get accurate header height
       const header = document.querySelector('header');
       const navbarHeight = header?.getBoundingClientRect().height || 0;
-      
+
       // Adjust offset for mobile (extra space for browser toolbars)
       const mobileOffset = isMobile() ? 20 : 20; // Increased for mobile toolbar
       const elementPosition = element.getBoundingClientRect().top;
@@ -150,9 +150,8 @@ const Navbar = () => {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-inkyblack/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-inkyblack/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        }`}
       variants={navbarVariants}
       initial="visible"
       animate={visible ? 'visible' : 'hidden'}
@@ -189,11 +188,10 @@ const Navbar = () => {
               <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`nav-link font-medium text-sm ${
-                  activeSection === item.id
+                className={`nav-link font-medium text-sm ${activeSection === item.id
                     ? 'text-lime border-b-2 border-lime'
                     : 'text-white hover:text-lime'
-                }`}
+                  }`}
                 variants={navItemVariants}
                 custom={index}
                 initial="initial"
@@ -203,17 +201,6 @@ const Navbar = () => {
                 {item.label}
               </motion.button>
             ))}
-            <motion.button
-              variants={navItemVariants}
-              custom={navItems.length}
-              initial="initial"
-              animate="animate"
-              whileHover={{ scale: 1.05 }}
-              className="bg-lime text-inkyblack px-4 py-2 rounded-full font-medium text-sm shadow-glow-sm hover:shadow-glow-md transition-all duration-300"
-              onClick={() => window.open('/Nikhil Jangid_ATS Friendly Resume.pdf', '_blank')}
-            >
-              Resume
-            </motion.button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -245,11 +232,10 @@ const Navbar = () => {
                 <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`nav-link py-3 text-left font-medium text-sm ${
-                    activeSection === item.id
+                  className={`nav-link py-3 text-left font-medium text-sm ${activeSection === item.id
                       ? 'text-lime'
                       : 'text-white hover:text-lime'
-                  }`}
+                    }`}
                   variants={navItemVariants}
                   custom={index}
                   initial="initial"
