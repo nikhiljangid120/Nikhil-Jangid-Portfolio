@@ -204,7 +204,7 @@ const ProjectsSection = () => {
             upcoming_major_project
           </h3>
 
-          <div className="relative p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 via-card/50 to-orange-500/10 border-2 border-purple-500/30">
+          <div className="relative p-4 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 via-card/50 to-orange-500/10 border-2 border-purple-500/30">
             {/* Animated glow effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-orange-500/5"
@@ -214,21 +214,21 @@ const ProjectsSection = () => {
 
             {/* Coming Soon Badge */}
             <motion.div
-              className="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-sm font-bold text-white flex items-center gap-2 shadow-lg shadow-purple-500/30"
+              className="absolute top-2 right-2 md:top-4 md:right-4 px-2 md:px-4 py-1 md:py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs md:text-sm font-bold text-white flex items-center gap-1 md:gap-2 shadow-lg shadow-purple-500/30"
               animate={{ boxShadow: ['0 0 20px rgba(168,85,247,0.3)', '0 0 40px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.3)'] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <motion.span
-                className="w-2 h-2 bg-white rounded-full"
+                className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full"
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
               🚀 COMING SOON
             </motion.div>
 
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-8 md:pt-0">
               {/* Image */}
-              <div className="relative h-64 lg:h-80 rounded-xl overflow-hidden border border-purple-500/20">
+              <div className="relative h-48 md:h-64 lg:h-80 rounded-xl overflow-hidden border border-purple-500/20">
                 <img
                   src={upcomingProject.image}
                   alt={upcomingProject.title}
