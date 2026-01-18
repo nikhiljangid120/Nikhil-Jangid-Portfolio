@@ -686,29 +686,18 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-12"
+          className="mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 relative inline-block font-['Inter']">
-            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-rose-400 to-amber-400 px-3 py-1 rounded-lg shadow-[0_4px_12px_rgba(251,191,36,0.3)]">
-              About me
-            </span>
-            <motion.span
-              className="absolute -inset-2 blur-2xl opacity-50 bg-gradient-to-r from-emerald-400 via-rose-400 to-amber-400 rounded-xl -z-10"
-              animate={{
-                opacity: [0.4, 0.6, 0.4],
-                scale: [1, 1.03, 1],
-              }}
-              transition={{ duration: 2.5, repeat: Infinity, repeatType: 'mirror' }}
-            />
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <Code className="w-5 h-5" />
+            <span>~/about</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">About</span> <span className="text-primary opacity-80">Me</span>
           </h2>
-          <motion.p
-            className="text-lg text-gray-300 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 10 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            I'm a 21-year-old Final Year B.Tech CSE student from Jaipur, building AI-powered products with React, Next.js, and LLM integrations. Passionate about shipping real, usable solutions—explore my journey through JARVIS 2.0.
-          </motion.p>
+          <p className="text-muted-foreground text-lg max-w-2xl">
+            21-year-old Final Year B.Tech CSE student building AI-powered products with React, Next.js, and LLM integrations.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
