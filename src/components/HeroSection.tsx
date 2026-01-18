@@ -134,7 +134,7 @@ const HeroSection = () => {
           >
             <div className="flex items-center space-x-2 text-xs font-mono text-muted-foreground border border-border rounded px-3 py-1 bg-muted/20">
               <Terminal size={12} />
-              <span>Stacks: MERN, Next.js, Java</span>
+              <span>Stacks: MERN, Next.js, AI</span>
             </div>
             <div className="flex items-center space-x-2 text-xs font-mono text-muted-foreground border border-border rounded px-3 py-1 bg-muted/20">
               <Code size={12} />
