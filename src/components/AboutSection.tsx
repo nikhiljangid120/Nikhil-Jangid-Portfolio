@@ -104,6 +104,23 @@ const TypingEffect = memo(({ text, messageId, dispatch }: { text: string; messag
   );
 });
 
+// Thinking Indicator Component
+const ThinkingIndicator = memo(() => (
+  <div className="flex items-center gap-1.5 px-3 py-2">
+    <span className="text-gray-400 text-sm">Thinking</span>
+    <div className="flex gap-1">
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          className="w-1.5 h-1.5 bg-lime rounded-full"
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
+          transition={{ duration: 0.6, delay: i * 0.15, repeat: Infinity }}
+        />
+      ))}
+    </div>
+  </div>
+));
+
 // Gemini API Key (hardcoded as requested)
 const GEMINI_API_KEY = 'AIzaSyD7Gw3UWDbWe0BxXhUk9oM56dc13VLLGVM';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
@@ -117,6 +134,7 @@ const AboutSection = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [showBadge, setShowBadge] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [chatState, dispatch] = useReducer(chatReducer, { messages: [], input: '', responseHistory: {} });
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -146,6 +164,35 @@ const AboutSection = () => {
   const fetchGeminiResponse = useCallback(async (query: string, isHumorous: boolean): Promise<string> => {
     try {
       const tone = isHumorous ? 'witty and humorous' : 'professional and concise';
+      const systemContext = `You are JARVIS 2.0, Nikhil Jangid's AI assistant for his portfolio website.
+
+About Nikhil:
+- 21-year-old Final-year B.Tech CSE student at Amity University, Rajasthan
+- CGPA: ~8.36-8.39, Graduation Year: 2026
+- Location: Jaipur, Rajasthan
+- Focus: Frontend & Full-Stack Development with AI-powered product building
+- Self-driven, project-first developer who prioritizes building real, usable products
+
+Core Skills:
+- JavaScript (ES6+), React.js, Next.js (App Router, SSR/SSG)
+- HTML, CSS, Tailwind CSS, REST API integration
+- LLM API integration (Gemini, OpenAI), Prompt engineering
+- MongoDB, MySQL, Firebase, Basic Node.js, Python (basic)
+- Git & GitHub, 400+ DSA problems solved
+
+Key Projects:
+- AI Resume Builder: Next.js + Gemini API, ATS-focused resume optimization
+- AI Fitness Platform: AI-powered fitness & nutrition planning
+- AI Code Analyzer: LLM-based code analysis and visualization
+- Flyeng Career (ongoing): AI-powered career and portfolio platform
+
+Achievements:
+- Solved 400+ DSA problems, Top 10% rankings in coding contests
+- 22-week continuous coding challenge (160+ days)
+- Multiple AI and technology certifications
+
+Work Style: Prefers ownership over instructions, thrives in fast-moving environments, learns by building.`;
+
       const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -154,7 +201,7 @@ const AboutSection = () => {
             {
               parts: [
                 {
-                  text: `You are JARVIS 2.0, Nikhil Jangid’s AI assistant. Nikhil is a 21-year-old (as of 2026) Final Year B.Tech CSE student from Shahpura, Jaipur. He is an expert in MERN Stack, AI/ML, DSA, Java, and Python. His key projects include ResumeRocket (AI Resume Builder), Flyeng Career, FlexForge, and NJ Careers. Respond to the query "${query}" in a ${tone} tone. Keep it under 80 words, highly relevant to his portfolio, and end with an engaging question. Avoid generic filler.`,
+                  text: `${systemContext}\n\nRespond to the query "${query}" in a ${tone} tone. Keep it under 80 words, highly relevant to his portfolio, and end with an engaging question. Avoid generic filler.`,
                 },
               ],
             },
@@ -163,7 +210,7 @@ const AboutSection = () => {
       });
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || `System busy. Try asking about ResumeRocket or his MERN skills via local database.`;
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || `System busy. Try asking about his AI Resume Builder or React skills!`;
     } catch (error) {
       console.error('Gemini API error:', error);
       return `Connection interrupted. Want to explore his projects manually?`;
@@ -179,6 +226,9 @@ const AboutSection = () => {
         dispatch({ type: 'ADD_MESSAGE', payload: { text: query, isUser: true } });
       });
 
+      // Show thinking indicator immediately
+      setIsThinking(true);
+
       const lowerQuery = query.toLowerCase().trim();
       dispatch({ type: 'INCREMENT_RESPONSE', payload: lowerQuery });
 
@@ -186,22 +236,35 @@ const AboutSection = () => {
       const responseCount = chatState.responseHistory[lowerQuery] || 0;
 
       const responses: { [key: string]: string[] } = {
-        'who are you|what’s your name|who’s the human': [
-          `${getTimeGreeting()} I’m JARVIS 2.0. Nikhil Jangid is a 21-year-old Final Year CSE undergrad from Shahpura, Jaipur. He builds things like ResumeRocket. What can I show you?`,
-          `Nikhil Jangid is a 21-year-old Full Stack dev and AI enthusiast in his final year at Amity University. I’m his digital assistant. Want to see his latest work?`,
-          `I’m JARVIS 2.0. Nikhil is a 21-year-old coder from Jaipur, crushing it in his final year with projects like FlexForge. Check out his GitHub?`,
+        'who are you|what\'s your name|who\'s the human': [
+          `${getTimeGreeting()} I'm JARVIS 2.0. Nikhil Jangid is a 21-year-old Final Year CSE undergrad from Jaipur with a CGPA of 8.36+. He builds AI-powered products like the AI Resume Builder. What can I show you?`,
+          `Nikhil Jangid is a 21-year-old Full Stack dev and AI enthusiast in his final year at Amity University (2026). I'm his digital assistant. Want to see his AI projects?`,
+          `I'm JARVIS 2.0. Nikhil is a 21-year-old coder from Jaipur, crushing it in his final year with 400+ DSA problems solved and projects like AI Fitness Platform. Check out his GitHub?`,
         ],
-        // ... (other query responses remain the same for brevity)
+        'skills|what can you do|technologies': [
+          `Nikhil's core stack: React.js, Next.js, JavaScript, Tailwind CSS. He builds AI-powered products using Gemini & OpenAI APIs. Also solid in MongoDB, Firebase, and has 400+ DSA problems under his belt. Want details on any specific skill?`,
+          `Frontend wizard with React & Next.js, AI integration expert (LLMs, prompt engineering), and a consistent problem solver. No fluff - just real, deployed projects. Which area interests you?`,
+        ],
+        'projects|work|portfolio': [
+          `Top projects: AI Resume Builder (ATS optimization), AI Fitness Platform (nutrition planning), AI Code Analyzer (code visualization). All deployed and live! Which one would you like to explore?`,
+          `Nikhil ships real products, not tutorials. His AI Resume Builder helps job seekers, the Fitness Platform plans workouts, and the Code Analyzer helps devs. Interested in the tech behind any of these?`,
+        ],
+        'contact|hire|email': [
+          `Want to connect? Email: nikhiljangid343@gmail.com. LinkedIn: linkedin.com/in/nikhil-jangid-b84360264. He's actively looking for Frontend/Full-Stack intern roles. Shall I show you his resume?`,
+        ],
       };
 
       let responseText: string;
       const matchedKey = Object.keys(responses).find((key) => new RegExp(key).test(lowerQuery));
       if (matchedKey) {
+        // Small delay to make thinking indicator visible
+        await new Promise(resolve => setTimeout(resolve, 500));
         responseText = responses[matchedKey][responseCount % responses[matchedKey].length];
       } else {
         responseText = await fetchGeminiResponse(lowerQuery, isHumorous);
       }
 
+      setIsThinking(false);
       dispatch({ type: 'ADD_MESSAGE', payload: { text: responseText, isUser: false, isTyping: true } });
       dispatch({ type: 'CLEAR_INPUT' });
     },
@@ -635,7 +698,7 @@ const AboutSection = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            I'm a 20-year-old B.Tech CSE innovator from Shahpura, Jaipur, building impactful solutions with MERN, DSA, and backend technologies. Passionate about turning ideas into reality—explore my journey through JARVIS 2.0.
+            I'm a 21-year-old Final Year B.Tech CSE student from Jaipur, building AI-powered products with React, Next.js, and LLM integrations. Passionate about shipping real, usable solutions—explore my journey through JARVIS 2.0.
           </motion.p>
         </motion.div>
 
