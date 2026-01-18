@@ -17,21 +17,9 @@ interface Project {
   status: 'live' | 'in-progress';
 }
 
-// Project data - 4 Capstone AI Projects + Small Showpiece Projects
+// Project data - 3 Live AI Projects + Small Projects
 const projects: Project[] = [
-  // Capstone AI Projects (Featured)
-  {
-    id: "flyeng-career",
-    title: "Flyeng Career",
-    description: "AI-powered career & portfolio platform for students.",
-    longDescription: "A comprehensive platform helping students prepare for software engineering roles through AI career guidance, portfolio building, interview prep, and structured learning paths.",
-    image: "/FlyEng.png",
-    technologies: ["Next.js", "PostgreSQL", "AI/LLM", "Prisma"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: true,
-    status: 'in-progress'
-  },
+  // Live AI Projects (Featured)
   {
     id: "ai-resume-builder",
     title: "AI Resume Builder",
@@ -85,6 +73,18 @@ const projects: Project[] = [
     status: 'live'
   },
 ];
+
+// Flyeng Career - Major Upcoming Project
+const upcomingProject = {
+  id: "flyeng-career",
+  title: "Flyeng Career",
+  description: "AI-powered career & portfolio platform helping students prepare for software engineering roles.",
+  longDescription: "A comprehensive platform with AI career guidance, portfolio building, interview prep, and structured learning paths.",
+  image: "/FlyEng.png",
+  technologies: ["Next.js", "PostgreSQL", "AI/LLM", "Prisma"],
+  features: ["AI Career Guidance", "Portfolio Builder", "Interview Prep", "Learning Paths"],
+  githubUrl: "https://github.com/nikhiljangid120",
+};
 
 const ProjectsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -191,6 +191,100 @@ const ProjectsSection = () => {
             ))}
           </div>
         </div>
+
+        {/* Flyeng Career - Premium Upcoming Project Section */}
+        <motion.div
+          className="mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <h3 className="text-xl font-mono text-secondary mb-6 flex items-center">
+            <Lightbulb className="mr-2" size={20} />
+            upcoming_major_project
+          </h3>
+
+          <div className="relative p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 via-card/50 to-orange-500/10 border-2 border-purple-500/30">
+            {/* Animated glow effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-orange-500/5"
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+
+            {/* Coming Soon Badge */}
+            <motion.div
+              className="absolute top-4 right-4 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-sm font-bold text-white flex items-center gap-2 shadow-lg shadow-purple-500/30"
+              animate={{ boxShadow: ['0 0 20px rgba(168,85,247,0.3)', '0 0 40px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.3)'] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <motion.span
+                className="w-2 h-2 bg-white rounded-full"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              🚀 COMING SOON
+            </motion.div>
+
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* Image */}
+              <div className="relative h-64 lg:h-80 rounded-xl overflow-hidden border border-purple-500/20">
+                <img
+                  src={upcomingProject.image}
+                  alt={upcomingProject.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+              </div>
+
+              {/* Content */}
+              <div className="space-y-4">
+                <h4 className="text-3xl font-bold text-foreground">
+                  {upcomingProject.title}
+                </h4>
+                <p className="text-muted-foreground text-lg">
+                  {upcomingProject.description}
+                </p>
+
+                {/* Tech Stack */}
+                <div className="flex flex-wrap gap-2">
+                  {upcomingProject.technologies.map(tech => (
+                    <span key={tech} className="px-3 py-1 text-sm bg-purple-500/20 text-purple-300 rounded-lg border border-purple-500/30">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Features */}
+                <div className="grid grid-cols-2 gap-3 pt-4">
+                  {upcomingProject.features.map((feature, i) => (
+                    <motion.div
+                      key={feature}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={inView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ delay: 0.7 + i * 0.1 }}
+                    >
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                      {feature}
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* GitHub Link */}
+                <a
+                  href={upcomingProject.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-card border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
+                >
+                  <Github size={16} />
+                  View on GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Archive / Library */}
         <div>

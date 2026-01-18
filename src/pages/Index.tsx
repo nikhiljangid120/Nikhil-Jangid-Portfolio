@@ -8,7 +8,6 @@ import ProjectsSection from "@/components/ProjectsSection";
 import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeSection from "@/components/ResumeSection";
-import BadgesCertificates from "@/components/BadgesCertificates";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import TerminalBlock from "@/components/TerminalBlock";
 import CustomCursor from "@/components/CustomCursor";
@@ -34,7 +33,6 @@ const Index = () => {
             <AboutSection />
             <SkillsSection />
             <ProjectsSection />
-            <BadgesCertificates />
             <ResumeSection />
             <TimelineSection />
             <ContactSection />
