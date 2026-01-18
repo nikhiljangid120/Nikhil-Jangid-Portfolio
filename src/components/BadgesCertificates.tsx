@@ -1,6 +1,6 @@
-import { useState, useMemo, useCallback, memo, useRef, useEffect } from 'react';
-import { Award, X, ExternalLink, FileText, CheckCircle, Eye, Zap, Star, Globe, Code, Database, Cloud, Brain } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { Award, ExternalLink, Code, Brain, Globe, Database, Cloud, GraduationCap } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
 
 interface Badge {
   id: number;
@@ -9,12 +9,7 @@ interface Badge {
   category: string;
   issueDate: string;
   credentialUrl: string;
-  logo: string;
-  image?: string;
-  pdf?: string;
-  level?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
   skills?: string[];
-  color?: string;
 }
 
 const categoryIcons = {
@@ -24,530 +19,60 @@ const categoryIcons = {
   'Web Dev': Globe,
   'DSA': Database,
   'Cloud': Cloud,
-  'Data Science': Database
+  'Academic': GraduationCap,
 };
 
-const categoryColors = {
-  'AI': 'from-purple-500/20 to-pink-500/20',
-  'Coding': 'from-green-500/20 to-blue-500/20',
-  'Programming': 'from-blue-500/20 to-cyan-500/20',
-  'Web Dev': 'from-orange-500/20 to-red-500/20',
-  'DSA': 'from-yellow-500/20 to-orange-500/20',
-  'Cloud': 'from-cyan-500/20 to-blue-500/20',
-  'Data Science': 'from-indigo-500/20 to-purple-500/20'
-};
-
-// Enhanced Badge Card with glassmorphism design
-const BadgeCard = memo(({ badge, index, onClick }: { badge: Badge; index: number; onClick: () => void }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = (y - centerY) / 20;
-    const rotateY = (centerX - x) / 20;
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    if (cardRef.current) {
-      cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-    }
-    setIsHovered(false);
-  }, []);
-
-  const CategoryIcon = categoryIcons[badge.category as keyof typeof categoryIcons] || Star;
-
-  return (
-    <div
-      ref={cardRef}
-      className={`group relative overflow-hidden rounded-2xl transition-all duration-500 ease-out cursor-pointer
-        ${isHovered ? 'scale-105' : 'scale-100'}
-        before:absolute before:inset-0 before:bg-gradient-to-br ${categoryColors[badge.category as keyof typeof categoryColors] || 'from-gray-500/20 to-gray-600/20'}
-        before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100`}
-      style={{
-        background: 'rgba(255, 255, 255, 0.03)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        animationDelay: `${index * 50}ms`
-      }}
-      onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Floating particles effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
-            style={{
-              left: `${20 + i * 30}%`,
-              top: `${10 + i * 20}%`,
-              animationDelay: `${i * 0.5}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative p-6 h-full flex flex-col">
-        {/* Header with logo and level */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="relative">
-            <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <img
-                src={badge.logo || '/api/placeholder/40/40'}
-                alt={`${badge.platform} logo`}
-                className="w-8 h-8 object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  target.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              <CategoryIcon className="w-8 h-8 text-white/80 hidden" />
-            </div>
-            {badge.level && (
-              <div className="absolute -top-2 -right-2 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-xs font-bold text-black">
-                {badge.level[0]}
-              </div>
-            )}
-          </div>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <Eye className="w-5 h-5 text-white/60" />
-          </div>
-        </div>
-
-        {/* Badge info */}
-        <div className="flex-1">
-          <h3 className="text-white font-semibold text-lg mb-1 line-clamp-2 group-hover:text-yellow-300 transition-colors duration-300">
-            {badge.name}
-          </h3>
-          <p className="text-white/60 text-sm mb-3">{badge.platform}</p>
-          <p className="text-white/40 text-xs mb-4">{badge.issueDate}</p>
-        </div>
-
-        {/* Skills tags */}
-        {badge.skills && badge.skills.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
-            {badge.skills.slice(0, 3).map((skill, i) => (
-              <span
-                key={skill}
-                className="px-2 py-1 bg-white/10 text-white/80 rounded-md text-xs border border-white/20 
-                  hover:bg-white/20 transition-colors duration-200"
-                style={{ animationDelay: `${(index * 50) + (i * 100)}ms` }}
-              >
-                {skill}
-              </span>
-            ))}
-            {badge.skills.length > 3 && (
-              <span className="px-2 py-1 bg-white/5 text-white/60 rounded-md text-xs">
-                +{badge.skills.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Action indicator */}
-        <div className="flex items-center justify-between text-xs text-white/40 group-hover:text-white/80 transition-colors duration-300">
-          <span>Click to view</span>
-          <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center group-hover:border-yellow-400 transition-colors duration-300">
-            <div className="w-2 h-2 bg-white/40 rounded-full group-hover:bg-yellow-400 transition-colors duration-300" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// Enhanced Popup with 3D toggle
-const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: boolean; closePopup: () => void }) => {
-  const [is3DEnabled, setIs3DEnabled] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const previewRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!is3DEnabled || !previewRef.current) return;
-    const rect = previewRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / 10;
-    const y = (e.clientY - rect.top - rect.height / 2) / 10;
-    setMousePos({ x, y });
-  }, [is3DEnabled]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-xl"
-        onClick={closePopup}
-      />
-
-      {/* Modal */}
-      <div
-        className="relative w-full max-w-4xl max-h-[90vh] bg-white/5 backdrop-blur-2xl rounded-3xl border border-white/10 overflow-hidden"
-        style={{
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-        }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-              <img
-                src={badge.logo || '/api/placeholder/32/32'}
-                alt={`${badge.platform} logo`}
-                className="w-8 h-8 object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
-              />
-            </div>
-            <div>
-              <h2 className="text-white text-xl font-bold">{badge.name}</h2>
-              <p className="text-white/60">{badge.platform}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* 3D Toggle */}
-            <button
-              onClick={() => setIs3DEnabled(!is3DEnabled)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${is3DEnabled
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                : 'bg-white/10 text-white/80 hover:bg-white/20'
-                }`}
-            >
-              <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">3D View</span>
-            </button>
-
-            {/* External link */}
-            <a
-              href={badge.credentialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors duration-300"
-            >
-              <ExternalLink className="w-5 h-5 text-white" />
-            </a>
-
-            {/* Close button */}
-            <button
-              onClick={closePopup}
-              className="p-2 bg-white/10 hover:bg-red-500/20 rounded-xl transition-colors duration-300"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 max-h-[calc(90vh-120px)] overflow-y-auto">
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Preview Section */}
-            <div className="lg:col-span-2">
-              <div
-                ref={previewRef}
-                className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-white/10 rounded-2xl overflow-hidden border border-white/10"
-                onMouseMove={handleMouseMove}
-                onMouseLeave={() => setMousePos({ x: 0, y: 0 })}
-                style={is3DEnabled ? {
-                  transform: `perspective(1000px) rotateX(${-mousePos.y}deg) rotateY(${mousePos.x}deg)`,
-                  transformStyle: 'preserve-3d',
-                  transition: 'transform 0.1s ease-out'
-                } : {}}
-              >
-                {badge.image ? (
-                  <img
-                    src={badge.image}
-                    alt={`${badge.name} certificate`}
-                    className="w-full h-full object-contain p-4"
-                    style={is3DEnabled ? {
-                      transform: 'translateZ(50px)',
-                      filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))'
-                    } : {}}
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center">
-                    <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center mb-4">
-                      <Award className="w-10 h-10 text-white/60" />
-                    </div>
-                    <h3 className="text-white text-xl font-semibold mb-2">{badge.name}</h3>
-                    <p className="text-white/60">{badge.platform}</p>
-                  </div>
-                )}
-
-                {/* 3D indicator */}
-                {is3DEnabled && (
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-medium text-white">
-                    3D Active
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Info Section */}
-            <div className="space-y-6">
-              {/* Details */}
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  Verification Details
-                </h3>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <span className="text-white/60">Issue Date:</span>
-                    <span className="text-white ml-2">{badge.issueDate}</span>
-                  </div>
-                  <div>
-                    <span className="text-white/60">Category:</span>
-                    <span className="text-white ml-2">{badge.category}</span>
-                  </div>
-                  {badge.level && (
-                    <div>
-                      <span className="text-white/60">Level:</span>
-                      <span className="text-white ml-2">{badge.level}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Skills */}
-              {badge.skills && badge.skills.length > 0 && (
-                <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                  <h3 className="text-white font-semibold mb-4">Skills Covered</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {badge.skills.map((skill, i) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white/90 rounded-lg text-sm border border-white/20"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="space-y-3">
-                <a
-                  href={badge.credentialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl transition-all duration-300 font-medium"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  View Credential
-                </a>
-
-                {badge.pdf && (
-                  <a
-                    href={badge.pdf}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-300 border border-white/20"
-                  >
-                    <FileText className="w-4 h-4" />
-                    Download PDF
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// Main Component
 const BadgesCertificates = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.1 });
 
-  const badges: Badge[] = useMemo(() => [
-    {
-      id: 1,
-      name: 'Google AI Essentials',
-      platform: 'Google',
-      category: 'AI',
-      issueDate: 'Jun 2024',
-      credentialUrl: 'https://grow.google/certificates/ai-essentials',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      pdf: '#',
-      level: 'Beginner',
-      skills: ['AI Fundamentals', 'Machine Learning', 'Python'],
-    },
-    {
-      id: 2,
-      name: '100 Days Badge',
-      platform: 'LeetCode',
-      category: 'Coding',
-      issueDate: 'Apr 2024',
-      credentialUrl: 'https://leetcode.com/profile',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      level: 'Intermediate',
-      skills: ['Algorithms', 'Data Structures', 'Problem Solving'],
-    },
-    {
-      id: 3,
-      name: '100 Days Coding Streak',
-      platform: 'CodeChef',
-      category: 'Coding',
-      issueDate: 'Mar 2024',
-      credentialUrl: 'https://codechef.com/certificates',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      level: 'Intermediate',
-      skills: ['Competitive Programming', 'C++', 'Algorithms'],
-    },
-    {
-      id: 4,
-      name: 'C++ Skills Certification',
-      platform: 'HackerRank',
-      category: 'Programming',
-      issueDate: 'Feb 2024',
-      credentialUrl: 'https://hackerrank.com/certificates/cpp',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      pdf: '#',
-      level: 'Advanced',
-      skills: ['C++', 'STL', 'OOP'],
-    },
-    {
-      id: 5,
-      name: 'Full Stack Development',
-      platform: 'freeCodeCamp',
-      category: 'Web Dev',
-      issueDate: 'Jan 2024',
-      credentialUrl: 'https://freecodecamp.org/certification/full-stack',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      level: 'Intermediate',
-      skills: ['React', 'Node.js', 'MongoDB', 'Express'],
-    },
-    {
-      id: 6,
-      name: 'MERN Stack Developer',
-      platform: 'Udemy',
-      category: 'Web Dev',
-      issueDate: 'Dec 2023',
-      credentialUrl: 'https://udemy.com/certificate/mern',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      pdf: '#',
-      level: 'Intermediate',
-      skills: ['MongoDB', 'Express', 'React', 'Node.js'],
-    },
-    {
-      id: 7,
-      name: 'JavaScript Algorithms and Data Structures',
-      platform: 'freeCodeCamp',
-      category: 'Programming',
-      issueDate: 'Nov 2023',
-      credentialUrl: 'https://freecodecamp.org/certification/javascript',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      level: 'Intermediate',
-      skills: ['JavaScript', 'Algorithms', 'ES6'],
-    },
-    {
-      id: 8,
-      name: 'Data Structures and Algorithms',
-      platform: 'CodeChef',
-      category: 'DSA',
-      issueDate: 'Oct 2023',
-      credentialUrl: 'https://codechef.com/certifications/dsa',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      level: 'Advanced',
-      skills: ['Linked Lists', 'Trees', 'Dynamic Programming'],
-    },
-    {
-      id: 9,
-      name: 'AWS Certified Developer',
-      platform: 'Amazon',
-      category: 'Cloud',
-      issueDate: 'Sep 2023',
-      credentialUrl: 'https://aws.amazon.com/certification/developer',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      pdf: '#',
-      level: 'Intermediate',
-      skills: ['AWS', 'Lambda', 'DynamoDB'],
-    },
-    {
-      id: 10,
-      name: 'Python for Data Science',
-      platform: 'Coursera',
-      category: 'Data Science',
-      issueDate: 'Aug 2023',
-      credentialUrl: 'https://coursera.org/certificate/python-data-science',
-      logo: '/api/placeholder/40/40',
-      image: '/api/placeholder/400/300',
-      pdf: '#',
-      level: 'Beginner',
-      skills: ['Python', 'Pandas', 'NumPy'],
-    },
-  ], []);
+  const badges: Badge[] = [
+    // AI & Technology
+    { id: 1, name: 'Google AI Essentials', platform: 'Google', category: 'AI', issueDate: 'Jun 2024', credentialUrl: '#', skills: ['AI Fundamentals', 'Machine Learning'] },
+    { id: 2, name: 'Prompt Engineering', platform: 'DeepLearning.AI', category: 'AI', issueDate: 'May 2024', credentialUrl: '#', skills: ['LLM', 'Prompt Design'] },
 
-  const categories = ['All', 'AI', 'Coding', 'Programming', 'Web Dev', 'DSA', 'Cloud', 'Data Science'];
-  const filteredBadges = useMemo(() =>
-    badges.filter(b => activeCategory === 'All' || b.category === activeCategory),
-    [badges, activeCategory]
-  );
+    // Coding Achievements
+    { id: 3, name: '100 Days Badge', platform: 'LeetCode', category: 'Coding', issueDate: 'Apr 2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['DSA', 'Problem Solving'] },
+    { id: 4, name: '100 Days Coding Streak', platform: 'CodeChef', category: 'Coding', issueDate: 'Mar 2024', credentialUrl: 'https://www.codechef.com/users/nikhil_139/', skills: ['Competitive Programming'] },
+    { id: 5, name: '3⭐ Coder', platform: 'CodeChef', category: 'Coding', issueDate: '2024', credentialUrl: 'https://www.codechef.com/users/nikhil_139/', skills: ['Algorithms'] },
+    { id: 6, name: 'Top 10% Ranking', platform: 'GeeksforGeeks', category: 'Coding', issueDate: '2024', credentialUrl: 'https://www.geeksforgeeks.org/user/nikhiljals77/', skills: ['DSA'] },
 
-  const openPopup = useCallback((badge: Badge) => {
-    setSelectedBadge(badge);
-    setIsPopupOpen(true);
-  }, []);
+    // Programming Certifications
+    { id: 7, name: 'C++ Skills Certification', platform: 'HackerRank', category: 'Programming', issueDate: 'Feb 2024', credentialUrl: '#', skills: ['C++', 'OOP'] },
+    { id: 8, name: 'JavaScript Algorithms', platform: 'freeCodeCamp', category: 'Programming', issueDate: 'Nov 2023', credentialUrl: '#', skills: ['JavaScript', 'ES6'] },
+    { id: 9, name: 'Python Basics', platform: 'HackerRank', category: 'Programming', issueDate: '2023', credentialUrl: '#', skills: ['Python'] },
 
-  const closePopup = useCallback(() => {
-    setIsPopupOpen(false);
-    setSelectedBadge(null);
-  }, []);
+    // Web Development
+    { id: 10, name: 'Full Stack Development', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: 'Jan 2024', credentialUrl: '#', skills: ['React', 'Node.js'] },
+    { id: 11, name: 'MERN Stack Developer', platform: 'Udemy', category: 'Web Dev', issueDate: 'Dec 2023', credentialUrl: '#', skills: ['MongoDB', 'Express', 'React'] },
+    { id: 12, name: 'Responsive Web Design', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: '2023', credentialUrl: '#', skills: ['HTML', 'CSS'] },
+
+    // DSA
+    { id: 13, name: 'Data Structures & Algorithms', platform: 'CodeChef', category: 'DSA', issueDate: 'Oct 2023', credentialUrl: '#', skills: ['Trees', 'Graphs', 'DP'] },
+    { id: 14, name: 'Problem Solving (Intermediate)', platform: 'HackerRank', category: 'DSA', issueDate: '2023', credentialUrl: '#', skills: ['Algorithms'] },
+
+    // Cloud
+    { id: 15, name: 'AWS Cloud Fundamentals', platform: 'AWS', category: 'Cloud', issueDate: 'Sep 2023', credentialUrl: '#', skills: ['AWS', 'Cloud'] },
+  ];
+
+  const categories = ['All', 'Coding', 'Programming', 'AI', 'Web Dev', 'DSA', 'Cloud'];
+  const filteredBadges = activeCategory === 'All'
+    ? badges
+    : badges.filter(b => b.category === activeCategory);
 
   return (
-    <section className="min-h-screen bg-background py-20 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
-      </div>
+    <section id="badges" ref={ref} className="py-20 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="section-container relative z-10">
         {/* Header */}
-        <div className="mb-16">
+        <motion.div
+          className="mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+        >
           <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
             <Award className="w-5 h-5" />
             <span>~/badges</span>
@@ -556,60 +81,87 @@ const BadgesCertificates = () => {
             <span className="text-foreground">Badges &</span> <span className="text-primary opacity-80">Certifications</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Professional certifications and achievements across various technologies and platforms.
+            {badges.length}+ certifications across coding platforms, AI, and web development.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <motion.div
+          className="flex flex-wrap gap-2 mb-10"
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           {categories.map((category) => {
-            const CategoryIcon = categoryIcons[category as keyof typeof categoryIcons] || Star;
+            const CategoryIcon = categoryIcons[category as keyof typeof categoryIcons] || Award;
             return (
               <button
                 key={category}
-                className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${activeCategory === category
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all
+                  ${activeCategory === category
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card/50 text-muted-foreground hover:bg-card border border-border'
                   }`}
                 onClick={() => setActiveCategory(category)}
               >
                 {category !== 'All' && <CategoryIcon className="w-4 h-4" />}
                 {category}
+                {category === 'All' && <span className="text-xs opacity-70">({badges.length})</span>}
               </button>
+            );
+          })}
+        </motion.div>
+
+        {/* Badges Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredBadges.map((badge, index) => {
+            const CategoryIcon = categoryIcons[badge.category as keyof typeof categoryIcons] || Award;
+            return (
+              <motion.a
+                key={badge.id}
+                href={badge.credentialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group p-4 bg-card/50 border border-border rounded-xl hover:border-primary/50 hover:bg-card transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                whileHover={{ y: -3 }}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <CategoryIcon className="w-4 h-4 text-primary" />
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+
+                <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                  {badge.name}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">{badge.platform}</p>
+                <p className="text-xs text-muted-foreground/70">{badge.issueDate}</p>
+
+                {badge.skills && (
+                  <div className="flex flex-wrap gap-1 mt-3">
+                    {badge.skills.slice(0, 2).map((skill) => (
+                      <span key={skill} className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.a>
             );
           })}
         </div>
 
-        {/* Badges Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredBadges.map((badge, index) => (
-            <BadgeCard
-              key={badge.id}
-              badge={badge}
-              index={index}
-              onClick={() => openPopup(badge)}
-            />
-          ))}
-        </div>
-
         {filteredBadges.length === 0 && (
-          <div className="text-center py-20">
-            <div className="w-24 h-24 mx-auto mb-6 bg-white/5 rounded-2xl flex items-center justify-center">
-              <Award className="w-12 h-12 text-white/40" />
-            </div>
-            <p className="text-white/60 text-lg">No badges found in this category</p>
+          <div className="text-center py-12">
+            <Award className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+            <p className="text-muted-foreground">No badges found in this category</p>
           </div>
         )}
       </div>
-
-      {/* Enhanced Popup */}
-      {selectedBadge && (
-        <BadgePopup
-          badge={selectedBadge}
-          isOpen={isPopupOpen}
-          closePopup={closePopup}
-        />
-      )}
     </section>
   );
 };
