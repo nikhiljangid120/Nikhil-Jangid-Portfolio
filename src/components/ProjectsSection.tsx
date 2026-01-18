@@ -161,6 +161,11 @@ const ProjectsSection = () => {
                           LIVE
                         </span>
                       )}
+                      {project.status === 'in-progress' && (
+                        <span className="px-2 py-0.5 text-xs font-mono bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-300 border border-purple-500/40 rounded animate-pulse">
+                          🚀 COMING SOON
+                        </span>
+                      )}
                       <span className="px-2 py-0.5 text-xs font-mono bg-muted text-foreground border border-border rounded uppercase">
                         {project.category}
                       </span>
