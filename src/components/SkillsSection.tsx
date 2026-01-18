@@ -105,31 +105,16 @@ const SkillsSection = () => {
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
       >
-        <motion.div variants={skillVariants} className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 relative inline-block font-['Inter']">
-            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-600 px-4 py-2 rounded-xl shadow-[0_6px_16px_rgba(59,130,246,0.5)]">
-              Technical Skills
-            </span>
-            <motion.span
-              className="absolute -inset-3 blur-3xl opacity-60 bg-gradient-to-r from-emerald-400 via-blue-500 to-indigo-600 rounded-xl -z-10"
-              animate={{
-                opacity: [0.5, 0.9, 0.5],
-                scale: [1, 1.08, 1],
-                rotate: [0, 2, -2, 0],
-                boxShadow: [
-                  '6px 6px 20px rgba(59,130,246,0.4)',
-                  '8px 8px 28px rgba(79,70,229,0.6)',
-                  '6px 6px 20px rgba(16,185,129,0.4)',
-                  '6px 6px 20px rgba(59,130,246,0.4)'
-                ],
-                backgroundPosition: ['0% center', '100% center', '0% center']
-              }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
-            />
+        <motion.div variants={skillVariants} className="mb-16">
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <Zap className="w-5 h-5" />
+            <span>~/skills</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">Technical</span> <span className="text-primary opacity-80">Skills</span>
           </h2>
-          <div className="w-20 h-1.5 bg-gradient-to-r from-emerald-400 to-indigo-600 mx-auto mb-8" />
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            My technical toolkit spans multiple domains, from low-level programming to modern web development frameworks.
+          <p className="text-muted-foreground text-lg max-w-2xl">
+            My technical toolkit spanning multiple domains, from programming to modern web frameworks.
           </p>
         </motion.div>
 
@@ -144,8 +129,8 @@ const SkillsSection = () => {
             <motion.button
               key={category.id}
               className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 interactive ${activeCategory === category.id
-                  ? 'bg-lime text-inkyblack'
-                  : 'bg-charcoal/60 text-white/70 hover:bg-charcoal/80'
+                ? 'bg-lime text-inkyblack'
+                : 'bg-charcoal/60 text-white/70 hover:bg-charcoal/80'
                 }`}
               onClick={() => setActiveCategory(category.id)}
               whileHover={{ scale: 1.05 }}
