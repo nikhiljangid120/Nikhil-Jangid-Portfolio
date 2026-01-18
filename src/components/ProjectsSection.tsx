@@ -17,9 +17,21 @@ interface Project {
   status: 'live' | 'in-progress';
 }
 
-// Project data - 3 Capstone AI Projects + Small Showpiece Projects
+// Project data - 4 Capstone AI Projects + Small Showpiece Projects
 const projects: Project[] = [
   // Capstone AI Projects (Featured)
+  {
+    id: "flyeng-career",
+    title: "Flyeng Career",
+    description: "AI-powered career & portfolio platform for students.",
+    longDescription: "A comprehensive platform helping students prepare for software engineering roles through AI career guidance, portfolio building, interview prep, and structured learning paths.",
+    image: "/FlyEng.png",
+    technologies: ["Next.js", "PostgreSQL", "AI/LLM", "Prisma"],
+    category: 'ai',
+    githubUrl: "https://github.com/nikhiljangid120",
+    featured: true,
+    status: 'in-progress'
+  },
   {
     id: "ai-resume-builder",
     title: "AI Resume Builder",
@@ -60,28 +72,6 @@ const projects: Project[] = [
     status: 'live'
   },
   // Small Showpiece Projects (Non-Featured)
-  {
-    id: "todo-app",
-    title: "Todo Application",
-    description: "A clean and intuitive task management app.",
-    image: "/placeholder.svg",
-    technologies: ["React", "CSS", "LocalStorage"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: false,
-    status: 'live'
-  },
-  {
-    id: "sudoku-game",
-    title: "Sudoku Game",
-    description: "Interactive Sudoku puzzle with difficulty levels.",
-    image: "/placeholder.svg",
-    technologies: ["JavaScript", "HTML", "CSS"],
-    category: 'tool',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: false,
-    status: 'live'
-  },
   {
     id: "social-media-app",
     title: "Social Media App",
