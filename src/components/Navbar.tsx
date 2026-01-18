@@ -189,8 +189,8 @@ const Navbar = () => {
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={`nav-link font-medium text-sm ${activeSection === item.id
-                    ? 'text-lime border-b-2 border-lime'
-                    : 'text-white hover:text-lime'
+                  ? 'text-lime border-b-2 border-lime'
+                  : 'text-white hover:text-lime'
                   }`}
                 variants={navItemVariants}
                 custom={index}
@@ -233,8 +233,8 @@ const Navbar = () => {
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`nav-link py-3 text-left font-medium text-sm ${activeSection === item.id
-                      ? 'text-lime'
-                      : 'text-white hover:text-lime'
+                    ? 'text-lime'
+                    : 'text-white hover:text-lime'
                     }`}
                   variants={navItemVariants}
                   custom={index}
@@ -245,20 +245,6 @@ const Navbar = () => {
                   {item.label}
                 </motion.button>
               ))}
-              <motion.button
-                variants={navItemVariants}
-                custom={navItems.length}
-                initial="initial"
-                animate="animate"
-                className="mt-4 bg-lime text-inkyblack py-3 rounded-md font-medium text-sm flex items-center justify-center"
-                onClick={() => {
-                  window.open('/Nikhil Jangid_ATS Friendly Resume.pdf', '_blank');
-                  setIsOpen(false);
-                }}
-              >
-                View Resume
-                <ChevronRight size={16} className="ml-2" />
-              </motion.button>
             </nav>
           </motion.div>
         )}
