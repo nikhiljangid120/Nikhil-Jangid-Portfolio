@@ -9,7 +9,7 @@ const ResumeSection = () => {
   const highlights = [
     { icon: GraduationCap, label: "B.Tech CSE", value: "2022 - 2026" },
     { icon: Award, label: "CGPA", value: "8.36+" },
-    { icon: Code, label: "DSA Problems", value: "400+" },
+    { icon: Code, label: "DSA Problems", value: "800+" },
     { icon: Briefcase, label: "Projects", value: "4+ Live" },
   ];
 
