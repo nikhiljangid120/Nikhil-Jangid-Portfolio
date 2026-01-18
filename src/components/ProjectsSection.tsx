@@ -17,126 +17,82 @@ interface Project {
   status: 'live' | 'in-progress';
 }
 
-// Project data (Same data, cleaned up for display)
+// Project data - 3 Capstone AI Projects + Small Showpiece Projects
 const projects: Project[] = [
+  // Capstone AI Projects (Featured)
   {
-    id: "nj-careers",
-    title: "NJ Careers",
-    description: "Career roadmaps & skill analysis platform.",
-    longDescription: "A comprehensive platform offering structured career roadmaps, interactive skill assessments, and personalized learning paths for tech professionals.",
-    image: "/Careers.png",
-    technologies: ["React", "Node.js", "MongoDB", "ML"],
-    category: 'featured',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/njcareers",
-    featured: true,
-    status: 'in-progress'
-  },
-  {
-    id: "resume-rocket",
-    title: "ResumeRocket",
-    description: "AI-powered resume builder & optimizer.",
-    longDescription: "An intelligent resume builder that leverages NLP & APIs to analyze and optimize resumes with real-time feedback.",
+    id: "ai-resume-builder",
+    title: "AI Resume Builder",
+    description: "AI-powered resume builder with ATS optimization.",
+    longDescription: "An intelligent resume builder leveraging Gemini API for ATS-focused resume optimization, real-time suggestions, and professional formatting.",
     image: "/Resume.jpeg",
-    technologies: ["Next.js", "OpenAI", "Firebase"],
+    technologies: ["Next.js", "Gemini API", "Tailwind CSS", "TypeScript"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
-    liveUrl: "https://ai-resume-builder-five-pi.vercel.app/",
+    liveUrl: "https://ai-resume-builder-epbj.vercel.app/",
     featured: true,
     status: 'live'
   },
   {
-    id: "one-note",
-    title: "OneNote",
-    description: "LinkTree alternative with analytics.",
-    image: "Tree.png",
-    technologies: ["Next.js", "Supabase", "Analytics"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/onenote",
-    featured: true,
-    status: 'in-progress'
-  },
-  {
-    id: "flex-forge",
-    title: "FlexForge",
-    description: "AI fitness & nutrition planner.",
-    image: "Fitness.png",
-    technologies: ["Next.js", "React", "Firebase"],
+    id: "ai-fitness-platform",
+    title: "AI Fitness Platform",
+    description: "AI-powered fitness & nutrition planning.",
+    longDescription: "A comprehensive fitness platform with AI-driven workout plans, nutrition tracking, and personalized health recommendations.",
+    image: "/Fitness.png",
+    technologies: ["Next.js", "React", "Firebase", "Gemini API"],
     category: 'ai',
     githubUrl: "https://github.com/nikhiljangid120/Fitness-Platform",
-    liveUrl: "https://flex-forge.vercel.app/",
+    liveUrl: "https://fitness-platform-zeta.vercel.app/",
     featured: true,
     status: 'live'
   },
   {
-    id: "nexicon",
-    title: "Nexicon",
-    description: "Interest-based social media platform.",
-    image: "Media.png",
-    technologies: ["React", "Node.js", "Socket.IO"],
+    id: "ai-code-analyzer",
+    title: "AI Code Analyzer & Visualizer",
+    description: "LLM-based code analysis and visualization tool.",
+    longDescription: "An AI-powered tool for analyzing code quality, complexity metrics, and providing optimization suggestions with interactive visualizations.",
+    image: "/Analyzer.png",
+    technologies: ["Next.js", "Groq API", "D3.js", "TypeScript"],
+    category: 'ai',
+    githubUrl: "https://github.com/nikhiljangid120/Code-Analyzer",
+    liveUrl: "https://code-analyzer-f7bq.vercel.app/",
+    featured: true,
+    status: 'live'
+  },
+  // Small Showpiece Projects (Non-Featured)
+  {
+    id: "todo-app",
+    title: "Todo Application",
+    description: "A clean and intuitive task management app.",
+    image: "/placeholder.svg",
+    technologies: ["React", "CSS", "LocalStorage"],
+    category: 'web',
+    githubUrl: "https://github.com/nikhiljangid120",
+    featured: false,
+    status: 'live'
+  },
+  {
+    id: "sudoku-game",
+    title: "Sudoku Game",
+    description: "Interactive Sudoku puzzle with difficulty levels.",
+    image: "/placeholder.svg",
+    technologies: ["JavaScript", "HTML", "CSS"],
+    category: 'tool',
+    githubUrl: "https://github.com/nikhiljangid120",
+    featured: false,
+    status: 'live'
+  },
+  {
+    id: "social-media-app",
+    title: "Social Media App",
+    description: "Interest-based social networking platform.",
+    image: "/Media.png",
+    technologies: ["React", "Node.js", "MongoDB"],
     category: 'web',
     githubUrl: "https://github.com/nikhiljangid120/Social-Media-Platform",
     liveUrl: "https://nexicon.vercel.app/",
     featured: false,
     status: 'live'
-  },
-  {
-    id: "ai-code-analyzer",
-    title: "AI Code Analyzer",
-    description: "Code quality & complexity analysis tool.",
-    image: "Analyzer.png",
-    technologies: ["Next.js", "GPT-4", "D3.js"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120/Code-Analyzer",
-    liveUrl: "https://code-analyzer-5v1c.onrender.com/Code-Analyzer",
-    featured: false,
-    status: 'live'
-  },
-  {
-    id: "ai-website-builder",
-    title: "AI Website Builder",
-    description: "No-code AI website generator.",
-    image: "Website.png",
-    technologies: ["Next.js", "Gemini 2.0", "AWS"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: false,
-    status: 'in-progress'
-  },
-  {
-    id: "flyeng-career",
-    title: "Flyeng Career",
-    description: "Compiler design & coding platform.",
-    image: "FlyEng.png",
-    technologies: ["Next.js", "PostgreSQL", "Docker"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    liveUrl: "https://example.com/flyeng",
-    featured: false,
-    status: 'in-progress'
-  },
-  {
-    id: "quiz-website",
-    title: "Quiz Platform",
-    description: "Real-time quiz & leaderboard system.",
-    image: "/Quiz.png",
-    technologies: ["React", "Firebase", "JS"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: false,
-    status: 'in-progress'
-  },
-  {
-    id: "hospital-management",
-    title: "Hospital System",
-    description: "Comprehensive HMS portal.",
-    image: "/Hospital.png",
-    technologies: ["Java", "JSP", "MySQL"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120",
-    featured: false,
-    status: 'in-progress'
   },
 ];
 
@@ -254,8 +210,8 @@ const ProjectsSection = () => {
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-3 py-1 text-sm font-mono rounded border transition-all ${activeCategory === cat.id
-                      ? 'border-primary text-primary bg-primary/10'
-                      : 'border-border text-muted-foreground hover:border-gray-500'
+                    ? 'border-primary text-primary bg-primary/10'
+                    : 'border-border text-muted-foreground hover:border-gray-500'
                     }`}
                 >
                   {cat.name}

@@ -655,6 +655,15 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
                   )}
                 </motion.div>
               ))}
+              {isThinking && (
+                <motion.div
+                  className="message message-bot"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  <ThinkingIndicator />
+                </motion.div>
+              )}
             </div>
             <div className="chat-input">
               <form onSubmit={handleSubmit}>
