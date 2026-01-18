@@ -238,8 +238,8 @@ const BadgePopup = memo(({ badge, isOpen, closePopup }: { badge: Badge; isOpen: 
             <button
               onClick={() => setIs3DEnabled(!is3DEnabled)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${is3DEnabled
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                : 'bg-white/10 text-white/80 hover:bg-white/20'
                 }`}
             >
               <Zap className="w-4 h-4" />
@@ -547,31 +547,16 @@ const BadgesCertificates = () => {
 
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-5xl font-bold mb-6 relative inline-block font-['Inter']">
-            <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 px-4 py-2 rounded-xl shadow-[0_6px_16px_rgba(168,85,247,0.5)]">
-              Badges & Certifications
-            </span>
-            <motion.span
-              className="absolute -inset-3 blur-3xl opacity-60 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-cyan-400 rounded-xl -z-10"
-              animate={{
-                opacity: [0.4, 0.9, 0.4],
-                scale: [1, 1.08, 1],
-                rotate: [0, 2, -2, 0],
-                boxShadow: [
-                  '6px 6px 20px rgba(168,85,247,0.4)',     // purple-500
-                  '8px 8px 28px rgba(232,121,249,0.6)',    // fuchsia-500
-                  '6px 6px 20px rgba(34,211,238,0.4)',     // cyan-400
-                  '6px 6px 20px rgba(168,85,247,0.4)'
-                ],
-                backgroundPosition: ['0% center', '100% center', '0% center']
-              }}
-              transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
-            />
-          </h1>
-
-          <p className="text-xl text-white/60 max-w-2xl mx-auto">
-            Explore my professional certifications and achievements across various technologies and platforms
+        <div className="mb-16">
+          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
+            <Award className="w-5 h-5" />
+            <span>~/badges</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-foreground">Badges &</span> <span className="text-primary opacity-80">Certifications</span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl">
+            Professional certifications and achievements across various technologies and platforms.
           </p>
         </div>
 
@@ -583,8 +568,8 @@ const BadgesCertificates = () => {
               <button
                 key={category}
                 className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${activeCategory === category
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
                   }`}
                 onClick={() => setActiveCategory(category)}
               >

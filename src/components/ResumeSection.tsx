@@ -181,8 +181,6 @@ const ResumeSection = () => {
             Final-year CSE student • CGPA: {resumeData.cgpa} • Building AI-powered products
           </p>
         </motion.div>
-          </p>
-        </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-8 justify-center items-stretch">
           {/* Interactive Resume Preview */}
