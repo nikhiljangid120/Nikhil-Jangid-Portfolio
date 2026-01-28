@@ -9,7 +9,6 @@ This is a modern and powerful web application built using the latest web technol
 - ⚡ **Vite** – Lightning-fast build tool for modern web development
 - 🟦 **TypeScript** – Typed JavaScript at scale
 - 💨 **Tailwind CSS** – Utility-first CSS framework for styling
-=======
 ## 📦 Tech Stack
   
 - ⚛ **React** – A powerful JavaScript library for building user interfaces 
