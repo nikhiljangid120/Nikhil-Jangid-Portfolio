@@ -1,39 +1,63 @@
-# 🌟 Welcome to My Awesome Project and wait for more things to come
-  
-## 🚀 Project Overview (Wait for more the updates)  
+# 💻 Nikhil Jangid — Developer Console v2.0
+> **Software Engineer | Backend Developer | Full-Stack Developer | AI Systems Engineer**
 
-This is a modern and powerful web application built using the latest web technologies including **React**, **Vite**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**. The goal of this project is to deliver a fast, beautiful, and responsive user experience with clean design and smooth interactions. 
-## 📦 Tech Stack 
- 
-- ⚛ **React** – A powerful JavaScript library for building user interfaces
-- ⚡ **Vite** – Lightning-fast build tool for modern web development
-- 🟦 **TypeScript** – Typed JavaScript at scale
-- 💨 **Tailwind CSS** – Utility-first CSS framework for styling
-## 📦 Tech Stack
-  
-- ⚛ **React** – A powerful JavaScript library for building user interfaces 
-- ⚡ **Vite** – Lightning-fast build tool for modern web development 
-- 🟦 **TypeScript** – Typed JavaScript at scale 
-- 💨 **Tailwind CSS** – Utility-first CSS framework for styling  
-- 🧩 **shadcn/ui** – Beautifully designed components for React
-  
+Welcome to my portfolio! This is a premium, command-line/terminal-themed interactive developer dashboard built to showcase my backend systems architecture, full-stack applications, and AI integrations.
+
+Live Site: [http://flyeng-career.vercel.app/](http://flyeng-career.vercel.app/)
+
 ---
 
-## 🛠 How to Run This Project Locally
+## ⚡ Key Features
 
-To run this project on your local machine, follow the steps below: 
+- **Terminal Console Theme**: A fully custom command-line interface aesthetic reflecting a clean developer environment.
+- **JARVIS 2.0 AI Assistant**: A context-aware chatbot helper integrated with Google's Gemini API to query project facts, stats, work history, or respond to custom prompts with smart offline fallbacks.
+- **Interactive Command Palette**: Open with `Ctrl + K` or `Cmd + K` to search and jump to sections instantly.
+- **Core Pillars Grid**: Floating animation cards showcasing backend concurrency solutions, RAG pipelines, monorepo architectures, and system security.
+- **Categorized Arsenal**: Custom filterable skills panel covering Languages, Front-end, Back-end, Databases, AI Engineering, and DevOps.
+- **Detailed Deployed Solutions**: Highlighted flagship project (Flyeng Career) and production builds featuring expandable problem, solution, and system architecture deep-dives.
+
+---
+
+## 🛠 Tech Stack
+
+- **Core**: React.js, Vite, TypeScript
+- **Styling & UI**: Tailwind CSS, Framer Motion (for smooth micro-animations and entrance transitions), lucide-react
+- **AI Integrations**: Gemini API (Flash 1.5), pgvector, OpenRouter API
+- **State & Layout**: shadcn/ui components, custom hooks
+
+---
+
+## 🚀 Getting Started Locally
+
+To spin up this portfolio on your local machine, follow these steps:
 
 ### 1. Clone the Repository
-git clone https://github.com/nikhiljangid120/Nikhil_Portfolio.git
+```bash
+git clone https://github.com/nikhiljangid120/Nikhil-Jangid-Portfolio.git
+```
 
-### 2. Navigate into the Project Directory
-cd *Nikhil Portfolio*
+### 2. Enter the Directory
+```bash
+cd Nikhil-Jangid-Portfolio
+```
 
 ### 3. Install Dependencies
-Make sure you have Node.js and npm installed. 
+```bash
 npm install
+```
 
-### 4. Start the Development Server
+### 4. Run the Dev Server
+```bash
 npm run dev
+```
+The app will run locally at [http://localhost:8080/](http://localhost:8080/).
 
-The app will be available at http://localhost:5173 (or the port shown in the terminal).
+---
+
+## 📦 Build for Production
+
+To bundle the application for production:
+```bash
+npm run build
+```
+The built assets will be generated in the `dist` directory.
