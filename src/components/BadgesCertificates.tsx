@@ -28,32 +28,25 @@ const BadgesCertificates = () => {
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   const badges: Badge[] = [
+    // Achievements & Milestones
+    { id: 1, name: 'First Prize – College Hackathon', platform: 'Amity University', category: 'Coding', issueDate: '2024', credentialUrl: '#', skills: ['Innovation', 'Teamwork'] },
+    { id: 2, name: '250+ DSA Problems Solved', platform: 'LeetCode + GFG + CodeChef', category: 'Coding', issueDate: '2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['Algorithms', 'Problem Solving'] },
+    { id: 3, name: '4,500+ GitHub Contributions', platform: 'GitHub', category: 'Coding', issueDate: '2024-2026', credentialUrl: 'https://github.com/nikhiljangid120', skills: ['Open Source', 'Consistency'] },
+    { id: 4, name: 'GirlScript Summer of Code', platform: 'GSSoC', category: 'Coding', issueDate: '2024', credentialUrl: '#', skills: ['Open Source', 'Collaboration'] },
     // AI & Technology
-    { id: 1, name: 'Google AI Essentials', platform: 'Google', category: 'AI', issueDate: 'Jun 2024', credentialUrl: '#', skills: ['AI Fundamentals', 'Machine Learning'] },
-    { id: 2, name: 'Prompt Engineering', platform: 'DeepLearning.AI', category: 'AI', issueDate: 'May 2024', credentialUrl: '#', skills: ['LLM', 'Prompt Design'] },
-
+    { id: 5, name: 'IBM SkillsBuild AI', platform: 'IBM', category: 'AI', issueDate: '2024', credentialUrl: '#', skills: ['AI Fundamentals', 'Machine Learning'] },
+    { id: 6, name: 'McKinsey Forward Program', platform: 'McKinsey & Company', category: 'Academic', issueDate: '2024', credentialUrl: '#', skills: ['Business Thinking', 'Leadership'] },
+    { id: 7, name: 'Google AI Essentials', platform: 'Google', category: 'AI', issueDate: 'Jun 2024', credentialUrl: '#', skills: ['AI Fundamentals', 'Machine Learning'] },
+    { id: 8, name: 'Prompt Engineering', platform: 'DeepLearning.AI', category: 'AI', issueDate: 'May 2024', credentialUrl: '#', skills: ['LLM', 'Prompt Design'] },
     // Coding Achievements
-    { id: 3, name: '100 Days Badge', platform: 'LeetCode', category: 'Coding', issueDate: 'Apr 2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['DSA', 'Problem Solving'] },
-    { id: 4, name: '100 Days Coding Streak', platform: 'CodeChef', category: 'Coding', issueDate: 'Mar 2024', credentialUrl: 'https://www.codechef.com/users/nikhil_139/', skills: ['Competitive Programming'] },
-    { id: 5, name: '3⭐ Coder', platform: 'CodeChef', category: 'Coding', issueDate: '2024', credentialUrl: 'https://www.codechef.com/users/nikhil_139/', skills: ['Algorithms'] },
-    { id: 6, name: 'Top 10% Ranking', platform: 'GeeksforGeeks', category: 'Coding', issueDate: '2024', credentialUrl: 'https://www.geeksforgeeks.org/user/nikhiljals77/', skills: ['DSA'] },
-
+    { id: 9, name: '100 Days Badge', platform: 'LeetCode', category: 'Coding', issueDate: 'Apr 2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['DSA', 'Problem Solving'] },
+    { id: 10, name: '3⭐ Coder', platform: 'CodeChef', category: 'Coding', issueDate: '2024', credentialUrl: 'https://www.codechef.com/users/nikhil_139/', skills: ['Algorithms'] },
     // Programming Certifications
-    { id: 7, name: 'C++ Skills Certification', platform: 'HackerRank', category: 'Programming', issueDate: 'Feb 2024', credentialUrl: '#', skills: ['C++', 'OOP'] },
-    { id: 8, name: 'JavaScript Algorithms', platform: 'freeCodeCamp', category: 'Programming', issueDate: 'Nov 2023', credentialUrl: '#', skills: ['JavaScript', 'ES6'] },
-    { id: 9, name: 'Python Basics', platform: 'HackerRank', category: 'Programming', issueDate: '2023', credentialUrl: '#', skills: ['Python'] },
-
+    { id: 11, name: 'C++ Skills Certification', platform: 'HackerRank', category: 'Programming', issueDate: 'Feb 2024', credentialUrl: '#', skills: ['C++', 'OOP'] },
+    { id: 12, name: 'JavaScript Algorithms', platform: 'freeCodeCamp', category: 'Programming', issueDate: 'Nov 2023', credentialUrl: '#', skills: ['JavaScript', 'ES6'] },
     // Web Development
-    { id: 10, name: 'Full Stack Development', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: 'Jan 2024', credentialUrl: '#', skills: ['React', 'Node.js'] },
-    { id: 11, name: 'MERN Stack Developer', platform: 'Udemy', category: 'Web Dev', issueDate: 'Dec 2023', credentialUrl: '#', skills: ['MongoDB', 'Express', 'React'] },
-    { id: 12, name: 'Responsive Web Design', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: '2023', credentialUrl: '#', skills: ['HTML', 'CSS'] },
-
-    // DSA
-    { id: 13, name: 'Data Structures & Algorithms', platform: 'CodeChef', category: 'DSA', issueDate: 'Oct 2023', credentialUrl: '#', skills: ['Trees', 'Graphs', 'DP'] },
-    { id: 14, name: 'Problem Solving (Intermediate)', platform: 'HackerRank', category: 'DSA', issueDate: '2023', credentialUrl: '#', skills: ['Algorithms'] },
-
-    // Cloud
-    { id: 15, name: 'AWS Cloud Fundamentals', platform: 'AWS', category: 'Cloud', issueDate: 'Sep 2023', credentialUrl: '#', skills: ['AWS', 'Cloud'] },
+    { id: 13, name: 'Full Stack Development', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: 'Jan 2024', credentialUrl: '#', skills: ['React', 'Node.js'] },
+    { id: 14, name: 'Three Software Engineering Internships', platform: 'InternPe · Celebal · Wisflux', category: 'Academic', issueDate: '2024-2026', credentialUrl: '#', skills: ['Backend', 'Full Stack'] },
   ];
 
   const categories = ['All', 'Coding', 'Programming', 'AI', 'Web Dev', 'DSA', 'Cloud'];
@@ -75,13 +68,13 @@ const BadgesCertificates = () => {
         >
           <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
             <Award className="w-5 h-5" />
-            <span>~/badges</span>
+            <span>~/achievements</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-foreground">Badges &</span> <span className="text-primary opacity-80">Certifications</span>
+            <span className="text-foreground">Achievements &</span> <span className="text-primary opacity-80">Certifications</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            {badges.length}+ certifications across coding platforms, AI, and web development.
+          <p className="text-muted-foreground text-base max-w-2xl">
+            Milestones, certifications, and recognitions earned throughout the engineering journey.
           </p>
         </motion.div>
 

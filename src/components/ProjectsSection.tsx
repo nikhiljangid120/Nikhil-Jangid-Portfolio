@@ -1,108 +1,262 @@
 import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { ExternalLink, Github, Code, Plus, Link, Brain, Lightbulb, BookOpen, Terminal } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Github, Terminal, Star, ChevronDown, ChevronUp, Layers, Zap } from 'lucide-react';
 
-// Define project structure
 interface Project {
   id: string;
   title: string;
-  description: string;
-  longDescription?: string;
-  image: string;
-  technologies: string[];
-  category: 'web' | 'mobile' | 'ai' | 'tool' | 'featured';
+  flagship?: boolean;
+  status: 'live' | 'in-progress';
+  overview: string;
+  problem: string;
+  solution: string;
+  highlights: string[];
+  tech: string[];
+  image?: string;
   githubUrl?: string;
   liveUrl?: string;
-  featured: boolean;
-  status: 'live' | 'in-progress';
+  architecture?: string;
 }
 
-// Project data - 3 Live AI Projects + Small Projects
 const projects: Project[] = [
-  // Live AI Projects (Featured)
   {
-    id: "ai-resume-builder",
-    title: "AI Resume Builder",
-    description: "AI-powered resume builder with ATS optimization.",
-    longDescription: "An intelligent resume builder leveraging Gemini API for ATS-focused resume optimization, real-time suggestions, and professional formatting.",
-    image: "/Resume.jpeg",
-    technologies: ["Next.js", "Gemini API", "Tailwind CSS", "TypeScript"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120/AI-Resume-Builder",
-    liveUrl: "https://ai-resume-builder-epbj.vercel.app/",
-    featured: true,
-    status: 'live'
+    id: 'flyeng-career',
+    title: 'Flyeng Career',
+    flagship: true,
+    status: 'live',
+    overview: 'AI-powered career development platform helping aspiring software engineers prepare for placements through personalized roadmaps, portfolio building, interview preparation, resume enhancement, and AI-assisted career guidance.',
+    problem: 'Students lack a unified platform that combines AI-driven career guidance, portfolio building, and interview preparation in one experience.',
+    solution: 'Built a comprehensive platform with AI/LLM integration, structured learning paths, resume optimization, and progress tracking — all within a production-grade Next.js + PostgreSQL architecture.',
+    highlights: ['AI Career Guidance', 'Portfolio Builder', 'Resume Optimization', 'Learning Roadmaps', 'Interview Preparation', 'Progress Tracking'],
+    tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Tailwind CSS', 'AI/LLM'],
+    image: '/FlyEng.png',
+    githubUrl: 'https://github.com/nikhiljangid120',
+    liveUrl: 'http://flyeng-career.vercel.app/',
+    architecture: 'Next.js App Router with server components, PostgreSQL database via Prisma ORM, AI integration through OpenRouter API',
   },
   {
-    id: "ai-fitness-platform",
-    title: "AI Fitness Platform",
-    description: "AI-powered fitness & nutrition planning.",
-    longDescription: "A comprehensive fitness platform with AI-driven workout plans, nutrition tracking, and personalized health recommendations.",
-    image: "/Fitness.png",
-    technologies: ["Next.js", "React", "Firebase", "Gemini API"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120/Fitness-Platform",
-    liveUrl: "https://fitness-platform-zeta.vercel.app/",
-    featured: true,
-    status: 'live'
+    id: 'hotel-booking',
+    title: 'Hotel Booking Management System',
+    status: 'in-progress',
+    overview: 'Enterprise-style booking backend built using NestJS with transactional workflows, concurrency-safe reservations, availability management, JWT authentication, and PostgreSQL.',
+    problem: 'Race conditions and double-booking in concurrent reservation scenarios require database-level locking and transactional integrity.',
+    solution: 'Implemented pessimistic locking with TypeORM transactions, JWT-secured endpoints, availability engine with scheduled jobs, and Docker Compose for deployment.',
+    highlights: ['Booking Lifecycle', 'Availability Engine', 'Swagger Documentation', 'DTO Validation', 'Dockerized Deployment', 'Pessimistic Locking', 'Scheduled Jobs'],
+    tech: ['NestJS', 'PostgreSQL', 'TypeORM', 'Docker', 'JWT', 'Swagger', 'Nx Monorepo'],
+    githubUrl: 'https://github.com/nikhiljangid120',
+    architecture: 'Modular NestJS architecture within Nx monorepo, PostgreSQL with TypeORM pessimistic locking, Docker Compose orchestration',
   },
   {
-    id: "ai-code-analyzer",
-    title: "AI Code Analyzer & Visualizer",
-    description: "LLM-based code analysis and visualization tool.",
-    longDescription: "An AI-powered tool for analyzing code quality, complexity metrics, and providing optimization suggestions with interactive visualizations.",
-    image: "/Analyzer.png",
-    technologies: ["Next.js", "Groq API", "D3.js", "TypeScript"],
-    category: 'ai',
-    githubUrl: "https://github.com/nikhiljangid120/Code-Analyzer",
-    liveUrl: "https://code-analyzer-f7bq.vercel.app/",
-    featured: true,
-    status: 'live'
+    id: 'doc-intelligence',
+    title: 'AI Document Intelligence Platform',
+    status: 'in-progress',
+    overview: 'Intelligent document processing platform capable of ingesting PDFs, generating vector embeddings, performing semantic search, and answering questions using Retrieval-Augmented Generation (RAG).',
+    problem: 'Large document collections are difficult to query efficiently — keyword search misses semantic meaning and context.',
+    solution: 'Built a full RAG pipeline: PDF ingestion → text chunking → MiniLM vector embeddings stored in pgvector → semantic retrieval → Llama-based response generation via OpenRouter with source attribution.',
+    highlights: ['PDF Upload & Chunking', 'pgvector Storage', 'MiniLM Embeddings', 'Semantic Search', 'OpenRouter + Llama', 'Source Attribution'],
+    tech: ['NestJS', 'PostgreSQL', 'pgvector', 'MiniLM', 'OpenRouter', 'Llama', 'TypeScript'],
+    githubUrl: 'https://github.com/nikhiljangid120',
+    architecture: 'NestJS backend with pgvector extension for PostgreSQL, sentence-transformers/MiniLM for embedding generation, OpenRouter for LLM inference',
   },
-  // Small Showpiece Projects (Non-Featured)
   {
-    id: "social-media-app",
-    title: "Social Media App",
-    description: "Interest-based social networking platform.",
-    image: "/Media.png",
-    technologies: ["React", "Node.js", "MongoDB"],
-    category: 'web',
-    githubUrl: "https://github.com/nikhiljangid120/Social-Media-Platform",
-    liveUrl: "https://nexicon.vercel.app/",
-    featured: false,
-    status: 'live'
+    id: 'ai-resume',
+    title: 'AI Resume Builder',
+    status: 'live',
+    overview: 'AI-powered resume builder with ATS optimization, real-time suggestions, and professional formatting using Gemini API.',
+    problem: 'Job seekers struggle to format ATS-friendly resumes that pass automated screening systems.',
+    solution: 'Integrated Gemini API for context-aware resume suggestions, ATS score analysis, and content optimization with live preview.',
+    highlights: ['ATS Optimization', 'Gemini API Integration', 'Live Preview', 'Multiple Templates', 'PDF Export'],
+    tech: ['Next.js', 'TypeScript', 'Gemini API', 'Tailwind CSS'],
+    image: '/Resume.jpeg',
+    githubUrl: 'https://github.com/nikhiljangid120/AI-Resume-Builder',
+    liveUrl: 'https://ai-resume-builder-epbj.vercel.app/',
+    architecture: 'Next.js with server actions, Gemini 1.5 Flash for AI suggestions, client-side PDF generation',
+  },
+  {
+    id: 'ai-code-analyzer',
+    title: 'AI Code Analyzer',
+    status: 'live',
+    overview: 'LLM-based code analysis and visualization tool providing code quality metrics, complexity analysis, and optimization suggestions.',
+    problem: 'Developers need quick, actionable feedback on code quality without setting up heavyweight analysis tools.',
+    solution: 'Built a browser-based analyzer using Groq API with Llama for fast inference, D3.js for complexity visualization, and structured output parsing.',
+    highlights: ['Code Quality Metrics', 'Complexity Visualization', 'Groq API', 'D3.js Charts', 'Multi-Language Support'],
+    tech: ['Next.js', 'TypeScript', 'Groq API', 'D3.js'],
+    image: '/Analyzer.png',
+    githubUrl: 'https://github.com/nikhiljangid120/Code-Analyzer',
+    liveUrl: 'https://code-analyzer-f7bq.vercel.app/',
+    architecture: 'Next.js frontend with Groq API for ultra-fast LLM inference, D3.js for interactive visualizations',
+  },
+  {
+    id: 'ai-fitness',
+    title: 'AI Fitness Platform',
+    status: 'live',
+    overview: 'AI-powered fitness and nutrition planning platform with personalized workout plans, nutrition tracking, and health recommendations.',
+    problem: 'Generic fitness apps don\'t adapt to individual body composition, goals, or dietary preferences.',
+    solution: 'Integrated Firebase for real-time data sync, Gemini API for personalized plan generation, and comprehensive progress tracking dashboards.',
+    highlights: ['Personalized Workout Plans', 'Nutrition Tracking', 'AI Recommendations', 'Progress Dashboard', 'Firebase Sync'],
+    tech: ['Next.js', 'React', 'Firebase', 'Gemini API', 'Tailwind CSS'],
+    image: '/Fitness.png',
+    githubUrl: 'https://github.com/nikhiljangid120/Fitness-Platform',
+    liveUrl: 'https://fitness-platform-zeta.vercel.app/',
+    architecture: 'Next.js with Firebase Realtime Database, Gemini API for AI recommendations, responsive dashboard UI',
   },
 ];
 
-// Flyeng Career - Major Upcoming Project
-const upcomingProject = {
-  id: "flyeng-career",
-  title: "Flyeng Career",
-  description: "AI-powered career & portfolio platform helping students prepare for software engineering roles.",
-  longDescription: "A comprehensive platform with AI career guidance, portfolio building, interview prep, and structured learning paths.",
-  image: "/FlyEng.png",
-  technologies: ["Next.js", "PostgreSQL", "AI/LLM", "Prisma"],
-  features: ["AI Career Guidance", "Portfolio Builder", "Interview Prep", "Learning Paths"],
-  githubUrl: "https://github.com/nikhiljangid120",
+const SkillBadge = ({ tech }: { tech: string }) => (
+  <span className="px-2.5 py-1 text-xs font-mono bg-primary/10 text-primary border border-primary/20 rounded-md">
+    {tech}
+  </span>
+);
+
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ delay: index * 0.08 }}
+      className={`relative rounded-2xl border overflow-hidden hover-lift gradient-border card-glow transition-all duration-300 ${
+        project.flagship
+          ? 'border-primary/40 bg-gradient-to-br from-primary/5 via-charcoal/50 to-teal/5'
+          : 'border-white/10 bg-charcoal/30'
+      }`}
+    >
+      {/* Project Image */}
+      {project.image && (
+        <div className="relative h-48 overflow-hidden border-b border-white/5">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent" />
+          <div className="absolute bottom-3 left-4 flex gap-2">
+            {project.flagship && (
+              <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-primary/80 text-black rounded font-semibold">
+                <Star size={10} />
+                FLAGSHIP
+              </span>
+            )}
+            <span className={`px-2 py-0.5 text-xs font-mono rounded font-semibold ${
+              project.status === 'live'
+                ? 'bg-green-500/80 text-black'
+                : 'bg-purple-500/60 text-white animate-pulse'
+            }`}>
+              {project.status === 'live' ? 'LIVE' : 'IN PROGRESS'}
+            </span>
+          </div>
+        </div>
+      )}
+
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1">
+            {!project.image && (
+              <div className="flex gap-2 mb-2">
+                {project.flagship && (
+                  <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-primary/20 text-primary border border-primary/30 rounded font-semibold">
+                    <Star size={10} />
+                    FLAGSHIP
+                  </span>
+                )}
+                <span className={`px-2 py-0.5 text-xs font-mono rounded font-semibold border ${
+                  project.status === 'live'
+                    ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                    : 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+                }`}>
+                  {project.status === 'live' ? '● LIVE' : '◎ IN PROGRESS'}
+                </span>
+              </div>
+            )}
+            <h3 className="text-xl font-bold text-white hover:text-primary transition-colors">
+              {project.title}
+            </h3>
+          </div>
+          <div className="flex gap-2 ml-4 shrink-0">
+            {project.liveUrl && (
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 transition-colors">
+                <ExternalLink size={15} />
+              </a>
+            )}
+            {project.githubUrl && (
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                <Github size={15} />
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Overview */}
+        <p className="text-gray-400 text-sm mb-4 leading-relaxed">{project.overview}</p>
+
+        {/* Highlights */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.highlights.map((h) => (
+            <span key={h} className="flex items-center gap-1 text-xs text-muted-foreground font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/50" />
+              {h}
+            </span>
+          ))}
+        </div>
+
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.tech.map((t) => <SkillBadge key={t} tech={t} />)}
+        </div>
+
+        {/* Expand Toggle */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-primary transition-colors"
+        >
+          {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          {expanded ? 'Less details' : 'Architecture & Details'}
+        </button>
+
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 pt-4 border-t border-white/5 space-y-3">
+                <div>
+                  <p className="text-xs font-mono text-primary/70 mb-1">// Problem</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{project.problem}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-primary/70 mb-1">// Solution</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{project.solution}</p>
+                </div>
+                {project.architecture && (
+                  <div>
+                    <p className="text-xs font-mono text-primary/70 mb-1">// Architecture</p>
+                    <p className="text-xs text-gray-400 leading-relaxed">{project.architecture}</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
 };
 
 const ProjectsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.1 });
-  const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  const featuredProjects = projects.filter(project => project.featured);
-  const filteredProjects = activeCategory === 'all'
-    ? projects.filter(project => !project.featured)
-    : projects.filter(project => !project.featured && project.category === activeCategory);
-
-  const categories = [
-    { id: 'all', name: 'All Modules', icon: Code },
-    { id: 'web', name: 'Web', icon: Link },
-    { id: 'ai', name: 'AI/ML', icon: Brain },
-    { id: 'mobile', name: 'Mobile', icon: Plus },
-    { id: 'tool', name: 'Tools', icon: Lightbulb },
-  ];
+  const flagship = projects.find((p) => p.flagship)!;
+  const rest = projects.filter((p) => !p.flagship);
 
   return (
     <section id="projects" ref={ref} className="py-20 relative overflow-hidden bg-background">
@@ -120,183 +274,49 @@ const ProjectsSection = () => {
             <span>~/projects</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-foreground">Deployed</span> <span className="text-primary opacity-80">Solutions</span>
+            <span className="text-foreground">Deployed</span>{' '}
+            <span className="text-primary opacity-80">Solutions</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            A repository of deployed applications, experiments, and system architectures.
+          <p className="text-muted-foreground text-base max-w-2xl">
+            Production systems, AI-powered platforms, and backend engineering — each built to solve real problems.
           </p>
         </motion.div>
 
-        {/* Featured Grid */}
-        <div className="mb-20">
-          <h3 className="text-xl font-mono text-secondary mb-6 flex items-center">
-            <BookOpen className="mr-2" size={20} />
-            featured_builds.json
+        {/* Flagship Project */}
+        <div className="mb-12">
+          <h3 className="text-sm font-mono text-primary/60 mb-4 flex items-center gap-2">
+            <Star size={14} />
+            flagship_project.json
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {featuredProjects.map((project, idx) => (
-              <a
-                href={project.liveUrl || project.githubUrl}
-                key={project.id}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative h-full"
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="tech-card h-full flex flex-col p-0"
-                >
-                  <div className="relative h-56 overflow-hidden border-b border-border">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] to-transparent opacity-60" />
-                    <div className="absolute top-3 right-3 flex space-x-2">
-                      {project.status === 'live' && (
-                        <span className="px-2 py-0.5 text-xs font-mono bg-green-500/20 text-green-400 border border-green-500/30 rounded">
-                          LIVE
-                        </span>
-                      )}
-                      {project.status === 'in-progress' && (
-                        <span className="px-2 py-0.5 text-xs font-mono bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-purple-300 border border-purple-500/40 rounded animate-pulse">
-                          🚀 COMING SOON
-                        </span>
-                      )}
-                      <span className="px-2 py-0.5 text-xs font-mono bg-muted text-foreground border border-border rounded uppercase">
-                        {project.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h4 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h4>
-                    <p className="text-muted-foreground mb-4 text-sm flex-1">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-auto">
-                      {project.technologies.slice(0, 4).map(tech => (
-                        <span key={tech} className="tech-badge">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </a>
+          <ProjectCard project={flagship} index={0} />
+        </div>
+
+        {/* Other Projects Grid */}
+        <div>
+          <h3 className="text-sm font-mono text-muted-foreground mb-4 flex items-center gap-2">
+            <Layers size={14} />
+            production_builds.json
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {rest.map((project, idx) => (
+              <ProjectCard key={project.id} project={project} index={idx + 1} />
             ))}
           </div>
         </div>
 
-        {/* Flyeng Career - Premium Upcoming Project Section */}
-        <motion.div
-          className="mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <h3 className="text-xl font-mono text-secondary mb-6 flex items-center">
-            <Lightbulb className="mr-2" size={20} />
-            upcoming_major_project
-          </h3>
-
-          <div className="relative p-4 md:p-8 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 via-card/50 to-orange-500/10 border-2 border-purple-500/30">
-            {/* Animated glow effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-orange-500/5"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-
-            {/* Coming Soon Badge */}
-            <motion.div
-              className="absolute top-2 right-2 md:top-4 md:right-4 px-2 md:px-4 py-1 md:py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs md:text-sm font-bold text-white flex items-center gap-1 md:gap-2 shadow-lg shadow-purple-500/30"
-              animate={{ boxShadow: ['0 0 20px rgba(168,85,247,0.3)', '0 0 40px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.3)'] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <motion.span
-                className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full"
-                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              🚀 COMING SOON
-            </motion.div>
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center pt-8 md:pt-0">
-              {/* Image */}
-              <div className="relative h-48 md:h-64 lg:h-80 rounded-xl overflow-hidden border border-purple-500/20">
-                <img
-                  src={upcomingProject.image}
-                  alt={upcomingProject.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-              </div>
-
-              {/* Content */}
-              <div className="space-y-4">
-                <h4 className="text-3xl font-bold text-foreground">
-                  {upcomingProject.title}
-                </h4>
-                <p className="text-muted-foreground text-lg">
-                  {upcomingProject.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2">
-                  {upcomingProject.technologies.map(tech => (
-                    <span key={tech} className="px-3 py-1 text-sm bg-purple-500/20 text-purple-300 rounded-lg border border-purple-500/30">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Features */}
-                <div className="grid grid-cols-2 gap-3 pt-4">
-                  {upcomingProject.features.map((feature, i) => (
-                    <motion.div
-                      key={feature}
-                      className="flex items-center gap-2 text-sm text-muted-foreground"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={inView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ delay: 0.7 + i * 0.1 }}
-                    >
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                      {feature}
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* GitHub Link */}
-                <a
-                  href={upcomingProject.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-card border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
-                >
-                  <Github size={16} />
-                  View on GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* GitHub Stats / CTA */}
-        <div className="mt-24 text-center">
-          <a
+        {/* GitHub CTA */}
+        <div className="mt-16 text-center">
+          <motion.a
             href="https://github.com/nikhiljangid120"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-6 py-3 border border-border bg-card rounded hover:bg-muted transition-colors font-mono text-sm"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-border bg-card rounded-lg hover:bg-muted transition-colors font-mono text-sm"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
           >
-            <Github className="mr-2" size={18} />
-            view_full_repository_on_github()
-          </a>
+            <Github size={18} />
+            view_all_repositories_on_github()
+          </motion.a>
         </div>
       </div>
     </section>

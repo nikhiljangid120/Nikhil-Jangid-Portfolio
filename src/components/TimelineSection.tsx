@@ -44,49 +44,49 @@ const TimelineSection = () => {
       year: "2022",
       title: "B.Tech in Computer Science & Engineering",
       organization: "Amity University, Rajasthan",
-      description: "Currently pursuing my bachelor's degree with a focus on algorithms, data structures, and web development technologies (2022-2026).",
+      description: "Started my B.Tech journey, diving deep into algorithms, data structures, operating systems, computer networks, and web development. Actively built personal projects and contributed to open source.",
       type: "education",
-      details: "Coursework includes Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Actively participating in coding clubs, hackathons, and academic projects while maintaining a strong academic record.",
+      details: "Coursework: Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Participated in coding clubs, hackathons, and academic projects. Solved 250+ DSA problems across LeetCode, GeeksForGeeks, and CodeChef throughout the degree.",
       location: "Jaipur, Rajasthan"
     },
     {
       year: "2024",
       title: "Web Development Intern",
-      organization: "Internpe",
-      description: "Worked on developing responsive web applications using React.js and Node.js, implementing RESTful APIs and user authentication systems.",
+      organization: "InternPe",
+      description: "Built responsive web applications using React.js and Node.js, implemented RESTful APIs and authentication features. Strengthened core full-stack development skills in a professional environment.",
       type: "experience",
-      details: "Built and deployed a full-stack e-commerce platform with features like user authentication, product catalog, and payment integration. Collaborated with design and backend teams to ensure seamless integration. Improved website performance by 40% through code optimization and image compression techniques.",
+      details: "Developed and deployed full-stack web applications with user authentication, REST API integration, and responsive design. Gained foundational experience in collaborative software development workflows using Git and agile practices.",
       location: "Remote"
     },
     {
-      year: "2023",
-      title: "2nd Runner-Up – Whack Hackathon 2.0",
+      year: "2025",
+      title: "Frontend Developer Intern",
+      organization: "Celebal Technologies",
+      description: "Developed a shipment delivery application using React.js and Tailwind CSS. Integrated REST APIs and implemented responsive interfaces. Collaborated using Git within an Agile development workflow.",
+      type: "experience",
+      details: "Built a production-grade shipment tracking application with real-time status updates, responsive UI components, and clean REST API integration. Worked in an Agile environment with sprint planning, code reviews, and version-controlled deployments.",
+      location: "Jaipur, Rajasthan (Hybrid)"
+    },
+    {
+      year: "2026",
+      title: "B.Tech CSE — Graduated",
       organization: "Amity University, Rajasthan",
-      description: "Secured the 2nd runner-up position in Whack Hackathon 2.0, a college-level hackathon, by developing an innovative solution in the field of web development and AI.",
-      type: "achievement",
-      details: "Worked with a team to design and implement a web-based solution that combined AI with user experience design to improve customer engagement for local businesses. The project was recognized for its creativity, technical execution, and real-world applicability.",
+      description: "Graduated with a CGPA of 8.48. Completed 4 years of Computer Science engineering with hands-on project experience, internships, and a strong foundation in software engineering principles.",
+      type: "education",
+      details: "Final CGPA: 8.48. Key achievements during degree: 3 software engineering internships, 250+ DSA problems solved, 4500+ GitHub contributions, First Prize in college hackathon, and built 6+ production-grade projects.",
       location: "Jaipur, Rajasthan"
     },
     {
-      year: "2021",
-      title: "Senior Secondary Education (12th Grade)",
-      organization: "Spectrum Global Academy",
-      description: "Completed senior secondary education with a focus on Physics, Chemistry, and Mathematics (PCM), graduating with high honors.",
-      type: "education",
-      details: "Graduated with distinction, achieving exceptional marks in Mathematics, Physics, and Chemistry. Developed a solid foundation in logical reasoning, analytical thinking, and problem-solving, which laid the groundwork for future computer science studies.",
-      location: "Jaipur, Rajasthan"
-    },
-    {
-      year: "2019",
-      title: "Secondary School Graduation (10th Grade)",
-      organization: "Emmanuel Mission Secondary School",
-      description: "Completed secondary education with a focus on science and mathematics subjects, excelling in mathematics and science along with other subjects too.",
-      type: "education",
-      details: "Graduated with top honors, achieving excellence in subjects like Mathematics, Physics, and Computer Science. Actively participated in extracurricular activities such as chess clubs and science fairs.",
+      year: "2026",
+      title: "SDE Intern",
+      organization: "Wisflux Tech Labs",
+      description: "Developing production-grade backend services using NestJS, PostgreSQL, TypeORM, and Docker Compose. Built RAG-based document intelligence systems, concurrency-safe booking workflows, and modular Nx monorepo architecture.",
+      type: "experience",
+      details: "Backend Engineering: Developed transactional workflows secured with JWT auth, designed for consistency under concurrent requests using pessimistic locking. Implemented modular NestJS architecture within an Nx monorepo.\n\nAI Engineering: Designed and developed a RAG system for document Q&A — PDF ingestion pipelines, vector embeddings with pgvector + MiniLM, and OpenRouter with Llama models for context-aware responses.",
       location: "Jaipur, Rajasthan"
     }
-
   ];
+
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -185,10 +185,11 @@ const TimelineSection = () => {
             <span>~/timeline</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-foreground">My</span> <span className="text-primary opacity-80">Journey</span>
+            <span className="text-foreground">My</span>{' '}
+            <span className="text-primary opacity-80">Journey</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            The path that has shaped my skills and experiences in technology and development.
+          <p className="text-muted-foreground text-base max-w-2xl">
+            From a curious CS student to a production-grade backend engineer — 3 internships, 6+ projects, and a CGPA of 8.48.
           </p>
         </motion.div>
 

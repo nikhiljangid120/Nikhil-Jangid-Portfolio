@@ -7,24 +7,26 @@ const ResumeSection = () => {
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   const highlights = [
-    { icon: GraduationCap, label: "B.Tech CSE", value: "2022 - 2026" },
-    { icon: Award, label: "CGPA", value: "8.36+" },
-    { icon: Code, label: "DSA Problems", value: "800+" },
-    { icon: Briefcase, label: "Projects", value: "4+ Live" },
+    { icon: GraduationCap, label: "B.Tech CSE", value: "2026" },
+    { icon: Award, label: "CGPA", value: "8.48" },
+    { icon: Code, label: "DSA Problems", value: "250+" },
+    { icon: Briefcase, label: "Internships", value: "3" },
   ];
 
   const skills = {
-    "Frontend": ["React.js", "Next.js", "Tailwind CSS", "TypeScript"],
-    "Backend": ["Node.js", "Express.js", "REST APIs", "Firebase"],
-    "AI/LLM": ["Gemini API", "OpenAI", "Prompt Engineering"],
-    "Tools": ["Git", "GitHub", "MongoDB", "PostgreSQL"],
+    "Backend": ["NestJS", "Node.js", "Express.js", "TypeORM", "Prisma", "Docker"],
+    "Frontend": ["React.js", "Next.js", "TypeScript", "Tailwind CSS"],
+    "Databases": ["PostgreSQL", "MongoDB", "pgvector", "Firebase"],
+    "AI Engineering": ["RAG", "MiniLM", "OpenRouter", "Gemini API", "Llama"],
   };
 
   const projects = [
+    { name: "Flyeng Career", url: "http://flyeng-career.vercel.app/", status: "live" },
     { name: "AI Resume Builder", url: "https://ai-resume-builder-epbj.vercel.app/", status: "live" },
     { name: "AI Fitness Platform", url: "https://fitness-platform-zeta.vercel.app/", status: "live" },
     { name: "AI Code Analyzer", url: "https://code-analyzer-f7bq.vercel.app/", status: "live" },
-    { name: "Flyeng Career", url: null, status: "building" },
+    { name: "Hotel Booking System", url: null, status: "building" },
+    { name: "AI Document Intelligence", url: null, status: "building" },
   ];
 
   return (
@@ -46,8 +48,8 @@ const ResumeSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Resume &</span> <span className="text-primary opacity-80">Experience</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Final-year CSE student at Amity University, Rajasthan. Building AI-powered products.
+          <p className="text-muted-foreground text-base max-w-2xl">
+            B.Tech CSE Graduate (2026) · SDE Intern @ Wisflux Tech Labs · Backend · Full Stack · AI Engineering
           </p>
         </motion.div>
 
@@ -143,28 +145,26 @@ const ResumeSection = () => {
               ))}
             </div>
 
-            {/* Flyeng Career Highlight */}
+            {/* Experience Highlight */}
             <motion.div
-              className="mt-6 p-6 bg-gradient-to-r from-purple-500/10 via-primary/5 to-orange-500/10 border border-purple-500/30 rounded-xl relative overflow-hidden"
+              className="mt-6 p-6 bg-gradient-to-r from-primary/5 via-card/50 to-teal/5 border border-primary/20 rounded-xl relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <motion.div
-                className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center gap-1"
-                animate={{ boxShadow: ['0 0 10px rgba(168,85,247,0.5)', '0 0 20px rgba(168,85,247,0.8)', '0 0 10px rgba(168,85,247,0.5)'] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                🚀 Coming Soon
-              </motion.div>
+              <div className="absolute top-3 right-3 px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs font-bold text-green-400 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                Currently Active
+              </div>
 
-              <h3 className="text-xl font-bold text-foreground mb-2">Flyeng Career</h3>
+              <h3 className="text-xl font-bold text-foreground mb-1">Wisflux Tech Labs</h3>
+              <p className="text-sm text-primary/70 font-mono mb-2">SDE Intern · June 2026 – Present</p>
               <p className="text-sm text-muted-foreground mb-4">
-                AI-powered career platform with portfolio building, interview prep, and structured learning paths for aspiring software engineers.
+                Building production-grade backend services with NestJS, PostgreSQL, and Docker. Developed RAG-based document intelligence pipelines using pgvector and OpenRouter.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Next.js", "PostgreSQL", "AI/LLM", "Prisma"].map((tech) => (
-                  <span key={tech} className="px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded border border-purple-500/30">
+                {["NestJS", "PostgreSQL", "TypeORM", "Docker", "RAG", "pgvector"].map((tech) => (
+                  <span key={tech} className="px-2 py-1 text-xs bg-primary/10 text-primary rounded border border-primary/20">
                     {tech}
                   </span>
                 ))}

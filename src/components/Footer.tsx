@@ -79,7 +79,7 @@ const Footer = () => {
               <span className="text-[#CCFF00] ml-1">Jangid</span>
             </div>
             <p className="text-[#E0E0E0] text-sm mt-2 font-medium">
-              <span className="text-[#D94F30]">Full Stack Developer</span> & Problem Solver
+              <span className="text-[#CCFF00]">Software Engineer</span> · Backend · Full Stack · AI
             </p>
           </motion.div>
 
@@ -91,7 +91,7 @@ const Footer = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              © {currentYear} Nikhil Jangid. All rights reserved.
+              Building reliable software, one commit at a time.
             </motion.div>
             <motion.button
               onClick={scrollToTop}

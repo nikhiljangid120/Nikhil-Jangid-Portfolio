@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo, useCallback, useReducer, memo } from 'react';
 import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
-import { Code, ShieldCheck, Database, Lightbulb, Github, Linkedin, Mail, MessageCircle } from 'lucide-react';
+import { Code, ShieldCheck, Database, Lightbulb, Github, Linkedin, Mail, MessageCircle, Brain } from 'lucide-react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 import { throttle } from 'lodash';
 import { flushSync } from 'react-dom';
@@ -25,6 +25,7 @@ interface PhilosophyPoint {
   title: string;
   description: string;
   color: string;
+  colorClass: string;
 }
 
 interface ChatMessage {
@@ -163,35 +164,91 @@ const AboutSection = () => {
   // Gemini API call
   const fetchGeminiResponse = useCallback(async (query: string, isHumorous: boolean): Promise<string> => {
     try {
-      const tone = isHumorous ? 'witty and humorous' : 'professional and concise';
-      const systemContext = `You are JARVIS 2.0, Nikhil Jangid's AI assistant for his portfolio website.
+      const tone = isHumorous ? 'witty, humorous and clever' : 'professional, direct and concise';
+      const systemContext = `You are JARVIS 2.0, the AI assistant embedded in Nikhil Jangid's software engineering portfolio.
 
-About Nikhil:
-- 21-year-old Final-year B.Tech CSE student at Amity University, Rajasthan
-- CGPA: ~8.36-8.39, Graduation Year: 2026
-- Location: Jaipur, Rajasthan
-- Focus: Frontend & Full-Stack Development with AI-powered product building
-- Self-driven, project-first developer who prioritizes building real, usable products
+Your personality: Sharp, confident, helpful. You know everything about Nikhil and represent him well. Never make up facts.
 
-Core Skills:
-- JavaScript (ES6+), React.js, Next.js (App Router, SSR/SSG)
-- HTML, CSS, Tailwind CSS, REST API integration
-- LLM API integration (Gemini, OpenAI), Prompt engineering
-- MongoDB, MySQL, Firebase, Basic Node.js, Python (basic)
-- Git & GitHub, 400+ DSA problems solved
+=== IDENTITY ===
+Name: Nikhil Jangid
+Age: 21
+Location: Jaipur, Rajasthan, India
+Degree: B.Tech Computer Science & Engineering, Amity University Rajasthan (Batch 2022–2026)
+CGPA: 8.48
+Email: nikhiljangid343@gmail.com
+GitHub: https://github.com/nikhiljangid120
+LinkedIn: https://linkedin.com/in/nikhil-jangid-b84360264
+LeetCode: https://leetcode.com/u/nikhil_888/
+Portfolio: Live on browser
 
-Key Projects:
-- AI Resume Builder: Next.js + Gemini API, ATS-focused resume optimization
-- AI Fitness Platform: AI-powered fitness & nutrition planning
-- AI Code Analyzer: LLM-based code analysis and visualization
-- Flyeng Career (ongoing): AI-powered career and portfolio platform
+=== CURRENT ROLE ===
+SDE Intern @ Wisflux Tech Labs (June 2026 – Present) — Full-time internship
+Work: NestJS backend services, PostgreSQL, TypeORM, Docker Compose, Nx Monorepo
+Built: Transactional hotel booking backend with pessimistic locking and JWT auth
+Built: RAG-based document intelligence platform (PDF ingestion → pgvector → MiniLM → OpenRouter + Llama)
 
-Achievements:
-- Solved 400+ DSA problems, Top 10% rankings in coding contests
-- 22-week continuous coding challenge (160+ days)
-- Multiple AI and technology certifications
+=== PAST EXPERIENCE ===
+1. Frontend Developer Intern @ Celebal Technologies (May–Jul 2025)
+   - Built shipment tracking web app using React.js and Tailwind CSS
+   - Integrated REST APIs, worked in Agile team with Git workflows
 
-Work Style: Prefers ownership over instructions, thrives in fast-moving environments, learns by building.`;
+2. Web Development Intern @ InternPe (2024)
+   - Built full-stack React.js + Node.js applications
+   - Implemented RESTful APIs and authentication
+
+=== TECHNICAL SKILLS ===
+Languages: JavaScript (ES6+), TypeScript, C++, Python, SQL, HTML5, CSS3
+Backend: NestJS, Node.js, Express.js, TypeORM, Prisma, REST APIs, JWT, Swagger, Nx Monorepo
+Frontend: React.js, Next.js 14 (App Router), Tailwind CSS, Zustand, Framer Motion
+Databases: PostgreSQL, MongoDB, MySQL, pgvector, Firebase, Supabase, SQLite
+AI/ML: RAG pipelines, pgvector, MiniLM embeddings, OpenRouter, Llama, Gemini API, Groq API, Prompt Engineering
+DevOps: Docker, Docker Compose, Git, GitHub, Vercel, Postman
+DSA: 250+ problems solved on LeetCode, GFG, CodeChef
+
+=== PROJECTS ===
+1. Flyeng Career (FLAGSHIP - LIVE)
+   URL: http://flyeng-career.vercel.app/
+   Stack: Next.js 14, TypeScript, PostgreSQL, Prisma, AI/LLM
+   What: AI-powered career development platform — personalized roadmaps, resume optimization, interview prep, portfolio builder for aspiring software engineers
+
+2. Hotel Booking Management System (In Progress)
+   Stack: NestJS, PostgreSQL, TypeORM, Docker, JWT, Swagger, Nx Monorepo
+   What: Enterprise-grade booking backend with pessimistic locking, transactional workflows, availability engine, Swagger docs
+
+3. AI Document Intelligence Platform (In Progress)
+   Stack: NestJS, PostgreSQL, pgvector, MiniLM, OpenRouter, Llama
+   What: Full RAG pipeline — PDF ingestion, vector embeddings, semantic search, context-aware Q&A with source attribution
+
+4. AI Resume Builder (LIVE)
+   URL: https://ai-resume-builder-epbj.vercel.app/
+   Stack: Next.js, Gemini 1.5 Flash, TypeScript, Tailwind CSS
+   What: ATS-optimized resume builder with AI suggestions, live preview, PDF export, multiple templates
+
+5. AI Code Analyzer (LIVE)
+   URL: https://code-analyzer-f7bq.vercel.app/
+   Stack: Next.js, Groq API, D3.js
+   What: LLM-powered code quality analyzer with complexity visualization, multi-language support
+
+6. AI Fitness Platform (LIVE)
+   URL: https://fitness-platform-zeta.vercel.app/
+   Stack: Next.js, Firebase, Gemini API, Tailwind CSS
+   What: AI fitness & nutrition planner with personalized workout plans, progress tracking
+
+=== ACHIEVEMENTS ===
+- First Prize — College Hackathon (Amity University)
+- 250+ DSA problems solved (LeetCode, GFG, CodeChef)
+- 4,500+ GitHub contributions
+- GirlScript Summer of Code (GSSoC) contributor
+- IBM SkillsBuild AI certification
+- McKinsey Forward Program graduate
+- 3⭐ CodeChef, Top 10% GFG ranking
+
+=== PERSONALITY & GOALS ===
+- Passionate about backend systems, distributed architecture, and AI engineering
+- Believes in building production-grade, reliable software — not just demos
+- Currently looking for Software Engineer / Backend Developer / Full-Stack roles
+- Thrives in engineering-focused environments that value technical depth
+- Open to work: Full-time SWE, Backend Dev, Full-Stack Dev positions`;
 
       const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
         method: 'POST',
@@ -201,21 +258,108 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
             {
               parts: [
                 {
-                  text: `${systemContext}\n\nRespond to the query "${query}" in a ${tone} tone. Keep it under 80 words, highly relevant to his portfolio, and end with an engaging question. Avoid generic filler.`,
+                  text: `${systemContext}\n\nUser asked: "${query}"\n\nRespond as JARVIS 2.0 in a ${tone} tone. Rules:\n- Keep it under 90 words\n- Be specific and factual (use real project names, tech stacks, URLs when relevant)\n- End with a relevant question or call-to-action\n- Never make up info not in the context above\n- If asked about contact/hiring, give his email and LinkedIn`,
                 },
               ],
             },
           ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 200,
+          },
         }),
       });
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || `System busy. Try asking about his AI Resume Builder or React skills!`;
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || `Nikhil Jangid is a Software Engineer specializing in backend systems (NestJS, PostgreSQL, Docker) and AI applications (RAG pipelines, pgvector). He is currently an SDE Intern at Wisflux Tech Labs, holding an 8.48 CGPA. You can email him at nikhiljangid343@gmail.com or check out his projects like Flyeng Career or the Hotel Booking backend. What details would you like to explore?`;
     } catch (error) {
       console.error('Gemini API error:', error);
-      return `Connection interrupted. Want to explore his projects manually?`;
+      return `Connection interrupted. Nikhil is a Software Engineer SDE Intern @ Wisflux Tech Labs specializing in NestJS backends, PostgreSQL, and RAG architectures. You can reach him directly at nikhiljangid343@gmail.com or explore his GitHub at github.com/nikhiljangid120!`;
     }
   }, []);
+
+  // Local parser to handle queries reliably without depending on API limits
+  const getLocalResponse = useCallback((query: string): string | null => {
+    const q = query.toLowerCase().trim();
+    
+    // 1. Specific Internship Roles
+    if (q.includes('wisflux')) {
+      return `At Wisflux Tech Labs (June 2026 – Present), Nikhil is an SDE Intern building production NestJS backends. He designed a concurrency-safe booking database with TypeORM pessimistic locking, built RAG-based document intelligence systems (PDF ingestion, pgvector embeddings, Llama models), and structured applications within an Nx monorepo. Want details on his other internships?`;
+    }
+    if (q.includes('celebal')) {
+      return `At Celebal Technologies (May – July 2025), Nikhil was a Frontend Developer Intern. He engineered a shipment delivery tracking application using React.js and Tailwind CSS, integrating RESTful APIs and coordinating within an Agile development workflow. Want to know about his Web Dev internship?`;
+    }
+    if (q.includes('internpe') || q.includes('intern pe')) {
+      return `During his Web Development Internship at InternPe (2024), Nikhil built responsive full-stack applications with React.js and Node.js. He designed user authentication and integrated RESTful APIs to deliver clean user flows. Want details on his current SDE role?`;
+    }
+
+    // 2. Specific Projects
+    if (q.includes('flyeng') || q.includes('fly eng')) {
+      return `Flyeng Career (flagship project) is an AI-powered career development platform. It uses Next.js 14, PostgreSQL, and Prisma. It generates personalized learning roadmaps, does ATS resume score analysis, has an interview prep terminal, and a portfolio builder. Live at http://flyeng-career.vercel.app/. Would you like to check out his NestJS booking backend?`;
+    }
+    if (q.includes('hotel') || q.includes('booking')) {
+      return `Nikhil built a Hotel Booking Management System backend with NestJS, PostgreSQL, and TypeORM. It implements transactional workflows with pessimistic locking to prevent race conditions during concurrent reservations. It features JWT auth, Swagger documentation, and a Docker environment. Would you like to discuss his RAG database instead?`;
+    }
+    if (q.includes('rag') || q.includes('document intelligence') || q.includes('pgvector') || q.includes('vector')) {
+      return `The AI Document Intelligence Platform is a full RAG pipeline. It handles PDF uploading, text chunking, and generates vector embeddings using MiniLM. Embeddings are stored in pgvector (PostgreSQL), permitting fast semantic search. Responses are generated via Llama on OpenRouter with source attribution. Want to explore his AI Resume Builder?`;
+    }
+    if (q.includes('resume builder')) {
+      return `Nikhil's AI Resume Builder is a Next.js app integrated with Gemini 1.5 Flash. It optimizes resume text for ATS engines, offers live templates, and exports to PDF. Live at https://ai-resume-builder-epbj.vercel.app/`;
+    }
+    if (q.includes('code analyzer')) {
+      return `The AI Code Analyzer is built with Next.js and Groq API (Llama models) for fast inference. It parses code files, computes complexity, and renders interactive graphs with D3.js. Live at https://code-analyzer-f7bq.vercel.app/`;
+    }
+    if (q.includes('fitness') || q.includes('nutrition')) {
+      return `The AI Fitness Platform uses Next.js, Firebase, and Gemini API to generate personalized diet plans and exercise routines. Live at https://fitness-platform-zeta.vercel.app/`;
+    }
+
+    // 3. Ownership / Website creation
+    if (q.includes('owner') || q.includes('who made') || q.includes('who created') || q.includes('who built') || q.includes('whose site') || q.includes('who owns')) {
+      return `Nikhil Jangid is the owner, developer, and creator of this website. He is a Software Engineer who built this developer dashboard using React, Tailwind CSS, TypeScript, and Framer Motion. Would you like to connect with him or download his resume?`;
+    }
+
+    // 4. Identity / Bot identity
+    if (q.includes('who are you') || q.includes('your name') || q.includes('who is jarvis') || q.includes('what is jarvis') || q.includes('chatbot')) {
+      return `I am JARVIS 2.0, Nikhil's digital AI assistant. I'm equipped with comprehensive knowledge of Nikhil's 3 internships, 6 production projects, and core backend/AI skills. What would you like to explore?`;
+    }
+
+    // 5. Contact / Hire info
+    if (q.includes('contact') || q.includes('email') || q.includes('hire') || q.includes('reach') || q.includes('connect') || q.includes('phone') || q.includes('mail')) {
+      return `You can connect with Nikhil at nikhiljangid343@gmail.com, or view his LinkedIn at linkedin.com/in/nikhil-jangid-b84360264. He is open to Software Engineer, Backend, and Full-Stack positions!`;
+    }
+
+    // 6. Experience Summary
+    if (q.includes('experience') || q.includes('job') || q.includes('work') || q.includes('internship') || q.includes('intern')) {
+      return `Nikhil has completed 3 internships: 1️⃣ SDE Intern at Wisflux Tech Labs (NestJS backend, RAG, pgvector); 2️⃣ Frontend Developer Intern at Celebal Technologies (React, Tailwind, shipment app); 3️⃣ Web Dev Intern at InternPe (React, Node). Which internship would you like to know more about?`;
+    }
+
+    // 7. Tech Stack / Skills
+    if (q.includes('skills') || q.includes('tech stack') || q.includes('technologies') || q.includes('languages') || q.includes('databases') || q.includes('frameworks')) {
+      return `Nikhil's core stack is NestJS, Node.js, PostgreSQL (TypeORM/Prisma), Docker, and React/Next.js. He also specializes in AI Engineering (RAG, pgvector, LLM APIs). Which section of his stack interests you?`;
+    }
+
+    // 8. Coding Stats / DSA
+    if (q.includes('dsa') || q.includes('leetcode') || q.includes('gfg') || q.includes('codechef') || q.includes('problems') || q.includes('coding')) {
+      return `Nikhil has solved 250+ data structures and algorithms problems across LeetCode, GFG, and CodeChef. He has a 3⭐ rating on CodeChef, top 10% ranking on GFG, and 4,500+ GitHub contributions. Shall I give you his GitHub link?`;
+    }
+
+    // 9. Achievements
+    if (q.includes('achievement') || q.includes('award') || q.includes('hackathon') || q.includes('certification')) {
+      return `Nikhil won First Prize in a College Hackathon at Amity University. He contributed to the GirlScript Summer of Code (GSSoC) and completed IBM SkillsBuild AI and McKinsey Forward certifications. What project details should we check?`;
+    }
+
+    // 10. Resume
+    if (q.includes('resume') || q.includes('cv') || q.includes('download')) {
+      return `You can download Nikhil's ATS-friendly resume from the Resume section, or click the download button in the Hero section. Do you want me to give you his contact details?`;
+    }
+
+    // 11. Jokes / Humorous
+    if (q.includes('joke') || q.includes('funny') || q.includes('haha') || q.includes('humor')) {
+      return `Why did the NestJS route go to therapy? Because it had too many dependencies injected! 😄 Want to hear about Nikhil's concurrency-safe booking database instead?`;
+    }
+
+    return null;
+  }, [getTimeGreeting]);
 
   // Handle query with optimized submission
   const handleQuery = useCallback(
@@ -233,34 +377,17 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
       dispatch({ type: 'INCREMENT_RESPONSE', payload: lowerQuery });
 
       const isHumorous = lowerQuery.includes('joke') || lowerQuery.includes('funny') || lowerQuery.includes('haha') || lowerQuery.includes('tease');
-      const responseCount = chatState.responseHistory[lowerQuery] || 0;
 
-      const responses: { [key: string]: string[] } = {
-        'who are you|what\'s your name|who\'s the human': [
-          `${getTimeGreeting()} I'm JARVIS 2.0. Nikhil Jangid is a 21-year-old Final Year CSE undergrad from Jaipur with a CGPA of 8.36+. He builds AI-powered products like the AI Resume Builder. What can I show you?`,
-          `Nikhil Jangid is a 21-year-old Full Stack dev and AI enthusiast in his final year at Amity University (2026). I'm his digital assistant. Want to see his AI projects?`,
-          `I'm JARVIS 2.0. Nikhil is a 21-year-old coder from Jaipur, crushing it in his final year with 400+ DSA problems solved and projects like AI Fitness Platform. Check out his GitHub?`,
-        ],
-        'skills|what can you do|technologies': [
-          `Nikhil's core stack: React.js, Next.js, JavaScript, Tailwind CSS. He builds AI-powered products using Gemini & OpenAI APIs. Also solid in MongoDB, Firebase, and has 400+ DSA problems under his belt. Want details on any specific skill?`,
-          `Frontend wizard with React & Next.js, AI integration expert (LLMs, prompt engineering), and a consistent problem solver. No fluff - just real, deployed projects. Which area interests you?`,
-        ],
-        'projects|work|portfolio': [
-          `Top projects: AI Resume Builder (ATS optimization), AI Fitness Platform (nutrition planning), AI Code Analyzer (code visualization). All deployed and live! Which one would you like to explore?`,
-          `Nikhil ships real products, not tutorials. His AI Resume Builder helps job seekers, the Fitness Platform plans workouts, and the Code Analyzer helps devs. Interested in the tech behind any of these?`,
-        ],
-        'contact|hire|email': [
-          `Want to connect? Email: nikhiljangid343@gmail.com. LinkedIn: linkedin.com/in/nikhil-jangid-b84360264. He's actively looking for Frontend/Full-Stack intern roles. Shall I show you his resume?`,
-        ],
-      };
-
+      // 1. Try local response parser first to handle specific queries cleanly
+      const localResponse = getLocalResponse(lowerQuery);
       let responseText: string;
-      const matchedKey = Object.keys(responses).find((key) => new RegExp(key).test(lowerQuery));
-      if (matchedKey) {
-        // Small delay to make thinking indicator visible
-        await new Promise(resolve => setTimeout(resolve, 500));
-        responseText = responses[matchedKey][responseCount % responses[matchedKey].length];
+
+      if (localResponse) {
+        // Small delay to make thinking indicator visible and feel like AI response
+        await new Promise(resolve => setTimeout(resolve, 600));
+        responseText = localResponse;
       } else {
+        // 2. Fallback to Gemini LLM for complex queries
         responseText = await fetchGeminiResponse(lowerQuery, isHumorous);
       }
 
@@ -268,7 +395,7 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
       dispatch({ type: 'ADD_MESSAGE', payload: { text: responseText, isUser: false, isTyping: true } });
       dispatch({ type: 'CLEAR_INPUT' });
     },
-    [chatState.responseHistory, getTimeGreeting, fetchGeminiResponse]
+    [getLocalResponse, fetchGeminiResponse]
   );
 
   // Handle form submission
@@ -312,10 +439,10 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
 
   const philosophyPoints: PhilosophyPoint[] = useMemo(
     () => [
-      { icon: <Code className="w-5 h-5" />, title: "Clean Code", description: "Writing maintainable and scalable solutions", color: "lime" },
-      { icon: <ShieldCheck className="w-5 h-5" />, title: "Best Practices", description: "Following industry standards", color: "teal" },
-      { icon: <Database className="w-5 h-5" />, title: "Optimization", description: "Building performant apps", color: "purple" },
-      { icon: <Lightbulb className="w-5 h-5" />, title: "Innovation", description: "Pushing tech boundaries", color: "gold" },
+      { icon: <Database className="w-5 h-5" />, title: "Scalable Backend", description: "NestJS, PostgreSQL & clean APIs with concurrency safety.", color: "lime", colorClass: "bg-[#CCFF00]/10 border-[#CCFF00]/20 text-[#CCFF00]" },
+      { icon: <Brain className="w-5 h-5" />, title: "AI & RAG Systems", description: "Contextual embeddings, pgvector & Llama models.", color: "teal", colorClass: "bg-[#005A66]/20 border-[#005A66]/30 text-[#00E5FF]" },
+      { icon: <Code className="w-5 h-5" />, title: "Clean Architecture", description: "Structured TypeScript, modular Nx monorepos & clean patterns.", color: "purple", colorClass: "bg-[#2E1760]/20 border-[#2E1760]/30 text-[#D94F30]" },
+      { icon: <ShieldCheck className="w-5 h-5" />, title: "System Reliability", description: "Docker environments, robust unit tests & secure JWT auth.", color: "gold", colorClass: "bg-[#FFB100]/10 border-[#FFB100]/20 text-[#FFB100]" },
     ],
     []
   );
@@ -695,8 +822,9 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">About</span> <span className="text-primary opacity-80">Me</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            21-year-old Final Year B.Tech CSE student building AI-powered products with React, Next.js, and LLM integrations.
+          <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
+            I'm a <span className="text-primary font-semibold">Software Engineer</span> with a strong interest in backend development, distributed systems, and AI-powered applications.
+            My experience spans production backend engineering with NestJS and PostgreSQL, full-stack development using React and Next.js, and intelligent systems built around RAG and modern LLMs.
           </p>
         </motion.div>
 
@@ -723,7 +851,7 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
                     : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)',
                 }}
               >
-                <img src="/profile.jpg" alt="Nikhil Jangid" className="w-full h-full object-cover" />
+                <img src="/profile.jpg" alt="Nikhil Jangid - Software Engineer" className="w-full h-full object-cover object-center" />
                 <div className="neon-glow" />
                 <div className="spark-cascade">
                   {isHovered && (
@@ -758,7 +886,8 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  <span className="text-black">Portfolio Pro</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-lime">Open to Work</span>
                 </motion.div>
               )}
             </motion.div>
@@ -795,30 +924,69 @@ Work Style: Prefers ownership over instructions, thrives in fast-moving environm
           </motion.div>
 
           <motion.div className="space-y-6" variants={containerVariants} initial="hidden" animate={controls}>
-            {philosophyPoints.map((point, index) => (
-              <motion.div
-                key={index}
-                className="bg-charcoal/30 backdrop-blur-md rounded-lg p-5 border border-white/10 hover:border-lime/20 transition-all duration-200"
-                variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
-                onHoverStart={() => setActiveCard(index)}
-                onHoverEnd={() => setActiveCard(null)}
-              >
-                <div className="flex items-start gap-3">
-                  <motion.div
-                    className={`p-2 rounded-md bg-gradient-to-r from-${point.color}/20 to-charcoal/30`}
-                    animate={{ rotate: activeCard === index ? [0, 3, -3, 0] : 0 }}
-                    transition={{ repeat: activeCard === index ? Infinity : 0, duration: 1.5 }}
-                  >
-                    {point.icon}
-                  </motion.div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{point.title}</h3>
-                    <p className="text-gray-400 text-sm">{point.description}</p>
-                  </div>
+            {/* About narrative */}
+            <motion.p variants={itemVariants} className="text-gray-300 text-sm leading-relaxed">
+              During my internship at <span className="text-lime font-semibold">Wisflux Tech Labs</span>, I developed transactional backend services, implemented concurrency-safe booking workflows, built document intelligence pipelines using vector embeddings and pgvector, and worked within an Nx monorepo to build modular, scalable applications.
+            </motion.p>
+            <motion.p variants={itemVariants} className="text-gray-400 text-sm leading-relaxed">
+              I enjoy designing reliable software, learning system architecture, and transforming complex problems into maintainable engineering solutions.
+            </motion.p>
+
+            {/* Grid layout containing Snapshot and Pillars */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Professional Snapshot */}
+              <motion.div variants={itemVariants} className="bg-charcoal/30 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden flex flex-col h-full">
+                <div className="px-4 py-2.5 border-b border-white/5 flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                  <span className="ml-2 text-xs font-mono text-muted-foreground">~/snapshot</span>
+                </div>
+                <div className="p-4 flex-1 flex flex-col justify-between">
+                  {[
+                    { field: 'Name', value: 'Nikhil Jangid' },
+                    { field: 'Current Role', value: 'SDE Intern @ Wisflux Tech Labs' },
+                    { field: 'Degree', value: 'B.Tech CSE' },
+                    { field: 'Graduation', value: '2026' },
+                    { field: 'CGPA', value: '8.48' },
+                    { field: 'Location', value: 'Jaipur, Rajasthan' },
+                    { field: 'Looking For', value: 'SWE | Backend | Full Stack' },
+                    { field: 'Interests', value: 'Backend Systems · AI Engineering · System Design' },
+                  ].map(({ field, value }, i) => (
+                    <div key={field} className={`flex text-xs font-mono py-1.5 ${i < 7 ? 'border-b border-white/5' : ''}`}>
+                      <span className="text-primary/70 w-28 shrink-0">{field}</span>
+                      <span className="text-gray-200">{value}</span>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
-            ))}
+
+              {/* Core Pillars */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {philosophyPoints.map((point, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-charcoal/30 backdrop-blur-md rounded-xl p-4 border border-white/10 hover:border-lime/30 hover-lift gradient-border card-glow flex flex-col justify-between transition-all duration-300"
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.03 }}
+                    onHoverStart={() => setActiveCard(index)}
+                    onHoverEnd={() => setActiveCard(null)}
+                  >
+                    <div className="flex flex-col gap-2">
+                      <motion.div
+                        className={`p-2 rounded-md ${point.colorClass} w-fit`}
+                        animate={{ rotate: activeCard === index ? [0, 5, -5, 0] : 0 }}
+                        transition={{ repeat: activeCard === index ? Infinity : 0, duration: 1.5 }}
+                      >
+                        {point.icon}
+                      </motion.div>
+                      <h4 className="text-sm font-semibold text-white mt-1">{point.title}</h4>
+                      <p className="text-gray-400 text-xs leading-relaxed">{point.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

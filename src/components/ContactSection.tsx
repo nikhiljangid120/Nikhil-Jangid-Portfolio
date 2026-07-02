@@ -236,8 +236,9 @@ const ContactSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Let's</span> <span className="text-primary opacity-80">Connect</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Have a project in mind or want to discuss an opportunity? I'd love to hear from you.
+          <p className="text-muted-foreground text-base max-w-2xl">
+            I'm actively seeking <span className="text-primary">Software Engineer</span>, <span className="text-primary">Backend Developer</span>, and <span className="text-primary">Full-Stack Developer</span> opportunities.
+            If you're hiring or would like to collaborate on building scalable software, I'd be happy to connect.
           </p>
         </motion.div>
 
