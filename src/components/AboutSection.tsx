@@ -278,112 +278,204 @@ DSA: 250+ problems solved on LeetCode, GFG, CodeChef
     }
   }, []);
 
-  // Local parser to handle queries reliably without depending on API limits
+  // Local parser to handle queries reliably with multiple dynamic variations
   const getLocalResponse = useCallback((query: string): string | null => {
     const q = query.toLowerCase().trim();
     
-    // 0. Conversational greetings, affirmations, and help feedback
+    // Helper to randomly pick a variation
+    const pick = (vars: string[]) => vars[Math.floor(Math.random() * vars.length)];
+
+    // 0. Conversational greetings and feedback
     if (q === 'hi' || q === 'hello' || q === 'hey' || q === 'hola' || q === 'yo' || q.startsWith('greeting')) {
-      return `Hello! I'm JARVIS 2.0, Nikhil's digital assistant. How can I help you explore his backend systems, RAG pipelines, or full-stack work?`;
+      return pick([
+        `Hey there! I am JARVIS 2.0, Nikhil's digital assistant. What would you like to explore today? His backend internships, AI/RAG systems, or full-stack projects?`,
+        `Hello! JARVIS 2.0 here. Ready to guide you through Nikhil's engineering portfolio. Ask me about his NestJS systems or his live Next.js platforms!`,
+        `Hi! Great to connect with you. I can walk you through Nikhil's software development experience, tech stack, or coding achievements. What's on your mind?`
+      ]);
     }
     if (q === 'yes' || q === 'yeah' || q === 'yep' || q === 'sure' || q === 'ok' || q === 'okay') {
-      return `Awesome! What would you like to hear about? His Wisflux SDE internship, his RAG document pipeline, or his projects?`;
+      return pick([
+        `Awesome! Should we look into his SDE internship at Wisflux, his Next.js flagship project (Flyeng Career), or his backend booking systems?`,
+        `Excellent! Let me know if you want to inspect his RAG document pipeline or check out his CodeChef coding stats.`,
+        `Perfect choice. Tell me what interests you: backend database locking, vector search systems, or download his resume?`
+      ]);
     }
-    if (q.includes('stop giving') || q.includes('unnecessary') || q.includes('irrelevant') || q.includes('too long') || q.includes('concise') || q.includes('brief') || q.includes('attitude') || q.includes('behaviour')) {
-      return `Understood. I will keep my answers short and direct. What specific detail can I provide for you?`;
+    if (q === 'no' || q === 'nope' || q === 'nah' || q === 'cancel' || q === 'stop') {
+      return pick([
+        `Understood. Let me know if you have any questions or want to look at his projects later!`,
+        `No problem! I'll be here whenever you want to check his tech stack or direct email.`,
+        `Okay! Feel free to scroll through the sections of the portfolio to see his works.`
+      ]);
     }
-    if (q.includes('thank') || q === 'thanks' || q === 'cool' || q === 'great') {
-      return `You're welcome! Let me know if you want to inspect his LeetCode rating or contact details.`;
+    if (q.includes('stop giving') || q.includes('unnecessary') || q.includes('irrelevant') || q.includes('too long') || q.includes('concise') || q.includes('brief') || q.includes('attitude') || q.includes('behaviour') || q.includes('behaviour')) {
+      return pick([
+        `Understood. I will keep my answers short and direct. What specific detail can I provide for you?`,
+        `Got it. Keeping it strictly concise. Ask me any direct question about his work.`,
+        `My apologies. I'll make sure my replies are straight to the point. What do you need?`
+      ]);
     }
-    if (q.includes('help') || q === 'what can you do') {
-      return `I can tell you about Nikhil's internships (Wisflux, Celebal), project architectures (NestJS booking, RAG document search), coding stats, and contact info. Ask me anything!`;
+    if (q.includes('thank') || q === 'thanks' || q === 'cool' || q === 'great' || q === 'nice') {
+      return pick([
+        `You're welcome! Let me know if you want to inspect his LeetCode rating or contact details.`,
+        `Anytime! Happy to help you explore Nikhil's profiles.`,
+        `Glad I could help! Would you like to check his achievements or live project URLs?`
+      ]);
+    }
+    if (q.includes('help') || q === 'what can you do' || q === 'features') {
+      return pick([
+        `I can detail Nikhil's SDE internships (Wisflux, Celebal, InternPe), explain his project architectures (NestJS booking, RAG vector pipelines), review his coding stats, or give you his contact details. Ask me anything!`,
+        `Ask me about his backend skills (NestJS, Docker, PostgreSQL), frontend tools (React, Next.js, TypeScript), or certifications. I've got all the data!`
+      ]);
     }
 
     // 0.5 Specific Personal Details
     if (q.includes('age') || q.includes('how old')) {
-      return `Nikhil Jangid is 21 years old.`;
+      return pick([
+        `Nikhil Jangid is 21 years old.`,
+        `He is 21 years of age, pursuing active engineering roles.`
+      ]);
     }
-    if (q.includes('location') || q.includes('live') || q.includes('jaipur')) {
-      return `Nikhil is located in Jaipur, Rajasthan, India.`;
+    if (q.includes('location') || q.includes('live') || q.includes('jaipur') || q.includes('where is')) {
+      return pick([
+        `Nikhil is located in Jaipur, Rajasthan, India.`,
+        `He lives and works in Jaipur, India.`
+      ]);
     }
-    if (q.includes('education') || q.includes('college') || q.includes('university') || q.includes('cgpa') || q.includes('b.tech') || q.includes('degree') || q.includes('amity')) {
-      return `Nikhil graduated with a B.Tech in Computer Science & Engineering from Amity University Rajasthan with an 8.48 CGPA.`;
+    if (q.includes('education') || q.includes('college') || q.includes('university') || q.includes('cgpa') || q.includes('b.tech') || q.includes('degree') || q.includes('amity') || q.includes('school')) {
+      return pick([
+        `Nikhil graduated with a B.Tech in Computer Science & Engineering from Amity University Rajasthan with an 8.48 CGPA.`,
+        `He holds a B.Tech degree in Computer Science (Batch 2022-2026) from Amity University, achieving an 8.48 CGPA.`
+      ]);
     }
 
     // 1. Specific Internship Roles
     if (q.includes('wisflux')) {
-      return `At Wisflux Tech Labs (June 2026 – Present), Nikhil is an SDE Intern building production NestJS backends. He designed a concurrency-safe booking database with TypeORM pessimistic locking, built RAG-based document intelligence systems (PDF ingestion, pgvector embeddings, Llama models), and structured applications within an Nx monorepo. Want details on his other internships?`;
+      return pick([
+        `At Wisflux Tech Labs (SDE Intern, June 2026 – Present), Nikhil builds NestJS backend systems in an Nx monorepo. He engineered a transactional booking backend with database-level pessimistic locking and integrated RAG pipelines using pgvector and Llama via OpenRouter. Want to hear about his Celebal role?`,
+        `Currently, Nikhil is an SDE Intern at Wisflux Tech Labs, focusing on backend architectures. He works with PostgreSQL, TypeORM, Docker, and builds PDF document intelligence RAG pipelines. What else would you like to know?`
+      ]);
     }
     if (q.includes('celebal')) {
-      return `At Celebal Technologies (May – July 2025), Nikhil was a Frontend Developer Intern. He engineered a shipment delivery tracking application using React.js and Tailwind CSS, integrating RESTful APIs and coordinating within an Agile development workflow. Want to know about his Web Dev internship?`;
+      return pick([
+        `At Celebal Technologies (Frontend Developer Intern, May – July 2025), Nikhil developed a shipment tracking web application using React.js and Tailwind CSS, integrating RESTful APIs and working in an Agile team. Want to check his InternPe experience?`,
+        `During his time at Celebal Tech in 2025, he specialized in React.js frontend interfaces, creating clean tracking dashboards and integrating secure endpoints.`
+      ]);
     }
     if (q.includes('internpe') || q.includes('intern pe')) {
-      return `During his Web Development Internship at InternPe (2024), Nikhil built responsive full-stack applications with React.js and Node.js. He designed user authentication and integrated RESTful APIs to deliver clean user flows. Want details on his current SDE role?`;
+      return pick([
+        `As a Web Development Intern at InternPe (2024), Nikhil built responsive full-stack applications using React.js and Node.js, implementing user authentication and database CRUD operations. Want to see his current Wisflux SDE role?`,
+        `At InternPe, Nikhil gained experience building full-stack web architectures, implementing clean routes, and managing user state.`
+      ]);
     }
 
     // 2. Specific Projects
     if (q.includes('flyeng') || q.includes('fly eng')) {
-      return `Flyeng Career (flagship project) is an AI-powered career development platform. It uses Next.js 14, PostgreSQL, and Prisma. It generates personalized learning roadmaps, does ATS resume score analysis, has an interview prep terminal, and a portfolio builder. Live at http://flyeng-career.vercel.app/. Would you like to check out his NestJS booking backend?`;
+      return pick([
+        `Flyeng Career (flagship project) is an AI-powered placement prep platform. Built with Next.js 14, TypeScript, PostgreSQL, and Prisma, it features custom roadmaps, resume evaluations, and interview prep. Live at http://flyeng-career.vercel.app/!`,
+        `Nikhil's flagship product, Flyeng Career, targets the placement prep gap with Next.js, Prisma, and PostgreSQL. Try it live at http://flyeng-career.vercel.app/!`
+      ]);
     }
     if (q.includes('hotel') || q.includes('booking')) {
-      return `Nikhil built a Hotel Booking Management System backend with NestJS, PostgreSQL, and TypeORM. It implements transactional workflows with pessimistic locking to prevent race conditions during concurrent reservations. It features JWT auth, Swagger documentation, and a Docker environment. Would you like to discuss his RAG database instead?`;
+      return pick([
+        `The Hotel Booking System backend is built with NestJS, PostgreSQL, and TypeORM. It implements transactional database workflows with pessimistic locking to prevent race conditions during concurrent bookings. Ask me about the Docker setup!`,
+        `To handle double-bookings, Nikhil built this NestJS database booking service featuring transactional safety, pessimistic locks, and Swagger documentation.`
+      ]);
     }
     if (q.includes('rag') || q.includes('document intelligence') || q.includes('pgvector') || q.includes('vector')) {
-      return `The AI Document Intelligence Platform is a full RAG pipeline. It handles PDF uploading, text chunking, and generates vector embeddings using MiniLM. Embeddings are stored in pgvector (PostgreSQL), permitting fast semantic search. Responses are generated via Llama on OpenRouter with source attribution. Want to explore his AI Resume Builder?`;
+      return pick([
+        `The AI Document Intelligence Platform is a full RAG pipeline. It chunks uploaded PDFs, computes vector embeddings using MiniLM, indexes them in pgvector (PostgreSQL), and returns source-attributed answers using Llama. Want to see his AI Resume Builder?`,
+        `Nikhil built a RAG document search pipeline using NestJS, pgvector, and OpenRouter LLMs. It executes fast semantic search on document structures.`
+      ]);
     }
     if (q.includes('resume builder')) {
-      return `Nikhil's AI Resume Builder is a Next.js app integrated with Gemini 1.5 Flash. It optimizes resume text for ATS engines, offers live templates, and exports to PDF. Live at https://ai-resume-builder-epbj.vercel.app/`;
+      return pick([
+        `The AI Resume Builder is a Next.js app integrated with the Gemini 1.5 Flash API. It builds ATS-optimized resumes, provides real-time layout rendering, and compiles PDF exports. Live at https://ai-resume-builder-epbj.vercel.app/!`,
+        `He developed this Next.js utility to help users format ATS-compliant resumes using Gemini AI suggestions. Try it at: https://ai-resume-builder-epbj.vercel.app/`
+      ]);
     }
     if (q.includes('code analyzer')) {
-      return `The AI Code Analyzer is built with Next.js and Groq API (Llama models) for fast inference. It parses code files, computes complexity, and renders interactive graphs with D3.js. Live at https://code-analyzer-f7bq.vercel.app/`;
+      return pick([
+        `The AI Code Analyzer is built with Next.js and Groq API (Llama models). It performs code syntax quality checks and renders complexity maps using D3.js. Live at https://code-analyzer-f7bq.vercel.app/!`,
+        `An intelligent code parser and structural complexity graph visualizer using D3.js and Groq's high-speed inference. Live at: https://code-analyzer-f7bq.vercel.app/`
+      ]);
     }
     if (q.includes('fitness') || q.includes('nutrition')) {
-      return `The AI Fitness Platform uses Next.js, Firebase, and Gemini API to generate personalized diet plans and exercise routines. Live at https://fitness-platform-zeta.vercel.app/`;
+      return pick([
+        `The AI Fitness Platform uses Next.js, Firebase, and Gemini API to generate personalized diet charts and workout regimes. Live at https://fitness-platform-zeta.vercel.app/!`,
+        `A custom nutrition planner and workout schedule builder powered by Next.js and Firebase. Live at: https://fitness-platform-zeta.vercel.app/`
+      ]);
     }
 
     // 3. Ownership / Website creation
     if (q.includes('owner') || q.includes('who made') || q.includes('who created') || q.includes('who built') || q.includes('whose site') || q.includes('who owns')) {
-      return `Nikhil Jangid is the owner, developer, and creator of this website. He is a Software Engineer who built this developer dashboard using React, Tailwind CSS, TypeScript, and Framer Motion. Would you like to connect with him or download his resume?`;
+      return pick([
+        `Nikhil Jangid is the owner and developer of this website. He built this console dashboard using React, Tailwind CSS, TypeScript, and Framer Motion. Want his email or resume?`,
+        `This portfolio was designed and coded entirely by Nikhil Jangid to showcase his technical journey. Let me know if you want his email or LinkedIn!`
+      ]);
     }
 
     // 4. Identity / Bot identity
     if (q.includes('who are you') || q.includes('your name') || q.includes('who is jarvis') || q.includes('what is jarvis') || q.includes('chatbot')) {
-      return `I am JARVIS 2.0, Nikhil's digital AI assistant. I'm equipped with comprehensive knowledge of Nikhil's 3 internships, 6 production projects, and core backend/AI skills. What would you like to explore?`;
+      return pick([
+        `I am JARVIS 2.0, Nikhil's digital AI assistant. I'm equipped with comprehensive knowledge of Nikhil's 3 internships, 6 production projects, and core backend/AI skills. What would you like to explore?`,
+        `I'm JARVIS 2.0, Nikhil's custom assistant. Ask me about his SDE internships, RAG pipelines, or backend architectures!`
+      ]);
     }
 
     // 5. Contact / Hire info
     if (q.includes('contact') || q.includes('email') || q.includes('hire') || q.includes('reach') || q.includes('connect') || q.includes('phone') || q.includes('mail')) {
-      return `You can connect with Nikhil at nikhiljangid343@gmail.com, or view his LinkedIn at linkedin.com/in/nikhil-jangid-b84360264. He is open to Software Engineer, Backend, and Full-Stack positions!`;
+      return pick([
+        `You can connect with Nikhil at nikhiljangid343@gmail.com, or view his LinkedIn at linkedin.com/in/nikhil-jangid-b84360264. He is open to Software Engineer, Backend, and Full-Stack positions!`,
+        `Nikhil is actively looking for Software Engineer and Backend Developer roles. Drop him a line at nikhiljangid343@gmail.com or send a message on LinkedIn: linkedin.com/in/nikhil-jangid-b84360264.`
+      ]);
     }
 
     // 6. Experience Summary
     if (q.includes('experience') || q.includes('job') || q.includes('work') || q.includes('internship') || q.includes('intern')) {
-      return `Nikhil has completed 3 internships: 1️⃣ SDE Intern at Wisflux Tech Labs (NestJS backend, RAG, pgvector); 2️⃣ Frontend Developer Intern at Celebal Technologies (React, Tailwind, shipment app); 3️⃣ Web Dev Intern at InternPe (React, Node). Which internship would you like to know more about?`;
+      return pick([
+        `Nikhil has completed 3 internships: 1️⃣ SDE Intern at Wisflux Tech Labs (NestJS backend, RAG, pgvector); 2️⃣ Frontend Developer Intern at Celebal Technologies (React, Tailwind, shipment app); 3️⃣ Web Dev Intern at InternPe (React, Node). Which internship would you like to know more about?`,
+        `Nikhil has practical software engineering experience across 3 roles: Wisflux (backend & AI databases), Celebal (frontend React interfaces), and InternPe (full-stack web). Tell me which role you want to focus on!`
+      ]);
     }
 
     // 7. Tech Stack / Skills
     if (q.includes('skills') || q.includes('tech stack') || q.includes('technologies') || q.includes('languages') || q.includes('databases') || q.includes('frameworks')) {
-      return `Nikhil's core stack is NestJS, Node.js, PostgreSQL (TypeORM/Prisma), Docker, and React/Next.js. He also specializes in AI Engineering (RAG, pgvector, LLM APIs). Which section of his stack interests you?`;
+      return pick([
+        `Nikhil's core stack is NestJS, Node.js, PostgreSQL (TypeORM/Prisma), Docker, and React/Next.js. He also specializes in AI Engineering (RAG, pgvector, LLM APIs). Which section of his stack interests you?`,
+        `His engineering toolbelt covers backend development (NestJS, Docker, REST APIs, TypeORM), databases (PostgreSQL, pgvector, MongoDB), frontend (React, Next.js, TypeScript), and AI pipelines (RAG, MiniLM, LLMs).`
+      ]);
     }
 
     // 8. Coding Stats / DSA
     if (q.includes('dsa') || q.includes('leetcode') || q.includes('gfg') || q.includes('codechef') || q.includes('problems') || q.includes('coding')) {
-      return `Nikhil has solved 250+ data structures and algorithms problems across LeetCode, GFG, and CodeChef. He has a 3⭐ rating on CodeChef, top 10% ranking on GFG, and 4,500+ GitHub contributions. Shall I give you his GitHub link?`;
+      return pick([
+        `Nikhil has solved 250+ data structures and algorithms problems across LeetCode, GFG, and CodeChef. He has a 3⭐ rating on CodeChef, top 10% ranking on GFG, and 4,500+ GitHub contributions. Shall I give you his GitHub link?`,
+        `With 250+ solved DSA problems (LeetCode/GFG/CodeChef) and a CodeChef 3⭐ rating, Nikhil combines strong algorithmic foundations with real production building. Ask me for his Github profile!`
+      ]);
     }
 
     // 9. Achievements
     if (q.includes('achievement') || q.includes('award') || q.includes('hackathon') || q.includes('certification')) {
-      return `Nikhil won First Prize in a College Hackathon at Amity University. He contributed to the GirlScript Summer of Code (GSSoC) and completed IBM SkillsBuild AI and McKinsey Forward certifications. What project details should we check?`;
+      return pick([
+        `Nikhil won First Prize in a College Hackathon at Amity University. He contributed to the GirlScript Summer of Code (GSSoC) and completed IBM SkillsBuild AI and McKinsey Forward certifications. What project details should we check?`,
+        `Nikhil won first prize in his university hackathon, contributed to GirlScript Summer of Code, and completed advanced certificates with IBM (AI engineering) and McKinsey. Ask me about his projects!`
+      ]);
     }
 
     // 10. Resume
     if (q.includes('resume') || q.includes('cv') || q.includes('download')) {
-      return `You can download Nikhil's ATS-friendly resume from the Resume section, or click the download button in the Hero section. Do you want me to give you his contact details?`;
+      return pick([
+        `You can download Nikhil's ATS-friendly resume from the Resume section, or click the download button in the Hero section. Do you want me to give you his contact details?`,
+        `His resume details his SDE internships, NestJS backends, RAG pipelines, and B.Tech CSE details. You can download it directly from the navigation header!`
+      ]);
     }
 
     // 11. Jokes / Humorous
     if (q.includes('joke') || q.includes('funny') || q.includes('haha') || q.includes('humor')) {
-      return `Why did the NestJS route go to therapy? Because it had too many dependencies injected! 😄 Want to hear about Nikhil's concurrency-safe booking database instead?`;
+      return pick([
+        `Why did the NestJS route go to therapy? Because it had too many dependencies injected! 😄 Want to hear about Nikhil's concurrency-safe booking database instead?`,
+        `Why are database administrators such bad dance partners? Because they always try to lock the tables! 🕺 Want to learn about Nikhil's RAG system?`
+      ]);
     }
 
     return null;
