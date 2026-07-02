@@ -271,10 +271,10 @@ DSA: 250+ problems solved on LeetCode, GFG, CodeChef
       });
 
       const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || `Nikhil Jangid is a Software Engineer specializing in backend systems (NestJS, PostgreSQL, Docker) and AI applications (RAG pipelines, pgvector). He is currently an SDE Intern at Wisflux Tech Labs, holding an 8.48 CGPA. You can email him at nikhiljangid343@gmail.com or check out his projects like Flyeng Career or the Hotel Booking backend. What details would you like to explore?`;
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || `I didn't quite catch that. Could you ask me about Nikhil's internships, backend stack details (like NestJS/PostgreSQL), or his AI/RAG projects?`;
     } catch (error) {
       console.error('Gemini API error:', error);
-      return `Connection interrupted. Nikhil is a Software Engineer SDE Intern @ Wisflux Tech Labs specializing in NestJS backends, PostgreSQL, and RAG architectures. You can reach him directly at nikhiljangid343@gmail.com or explore his GitHub at github.com/nikhiljangid120!`;
+      return `Connection interrupted. Could you ask me a specific question about Nikhil's SDE internships, his NestJS/RAG project stack, or how to connect with him?`;
     }
   }, []);
 
@@ -282,6 +282,34 @@ DSA: 250+ problems solved on LeetCode, GFG, CodeChef
   const getLocalResponse = useCallback((query: string): string | null => {
     const q = query.toLowerCase().trim();
     
+    // 0. Conversational greetings, affirmations, and help feedback
+    if (q === 'hi' || q === 'hello' || q === 'hey' || q === 'hola' || q === 'yo' || q.startsWith('greeting')) {
+      return `Hello! I'm JARVIS 2.0, Nikhil's digital assistant. How can I help you explore his backend systems, RAG pipelines, or full-stack work?`;
+    }
+    if (q === 'yes' || q === 'yeah' || q === 'yep' || q === 'sure' || q === 'ok' || q === 'okay') {
+      return `Awesome! What would you like to hear about? His Wisflux SDE internship, his RAG document pipeline, or his projects?`;
+    }
+    if (q.includes('stop giving') || q.includes('unnecessary') || q.includes('irrelevant') || q.includes('too long') || q.includes('concise') || q.includes('brief') || q.includes('attitude') || q.includes('behaviour')) {
+      return `Understood. I will keep my answers short and direct. What specific detail can I provide for you?`;
+    }
+    if (q.includes('thank') || q === 'thanks' || q === 'cool' || q === 'great') {
+      return `You're welcome! Let me know if you want to inspect his LeetCode rating or contact details.`;
+    }
+    if (q.includes('help') || q === 'what can you do') {
+      return `I can tell you about Nikhil's internships (Wisflux, Celebal), project architectures (NestJS booking, RAG document search), coding stats, and contact info. Ask me anything!`;
+    }
+
+    // 0.5 Specific Personal Details
+    if (q.includes('age') || q.includes('how old')) {
+      return `Nikhil Jangid is 21 years old.`;
+    }
+    if (q.includes('location') || q.includes('live') || q.includes('jaipur')) {
+      return `Nikhil is located in Jaipur, Rajasthan, India.`;
+    }
+    if (q.includes('education') || q.includes('college') || q.includes('university') || q.includes('cgpa') || q.includes('b.tech') || q.includes('degree') || q.includes('amity')) {
+      return `Nikhil graduated with a B.Tech in Computer Science & Engineering from Amity University Rajasthan with an 8.48 CGPA.`;
+    }
+
     // 1. Specific Internship Roles
     if (q.includes('wisflux')) {
       return `At Wisflux Tech Labs (June 2026 – Present), Nikhil is an SDE Intern building production NestJS backends. He designed a concurrency-safe booking database with TypeORM pessimistic locking, built RAG-based document intelligence systems (PDF ingestion, pgvector embeddings, Llama models), and structured applications within an Nx monorepo. Want details on his other internships?`;
