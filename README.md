@@ -8,7 +8,6 @@ Live Site: [http://flyeng-career.vercel.app/](http://flyeng-career.vercel.app/)
 ---
 
 ## ⚡ Key Features
-
 - **Terminal Console Theme**: A fully custom command-line interface aesthetic reflecting a clean developer environment.
 - **JARVIS 2.0 AI Assistant**: A context-aware chatbot helper integrated with Google's Gemini API to query project facts, stats, work history, or respond to custom prompts with smart offline fallbacks.
 - **Interactive Command Palette**: Open with `Ctrl + K` or `Cmd + K` to search and jump to sections instantly.
