@@ -9,7 +9,6 @@ const stats = [
   { value: '8.48', label: 'CGPA' },
   { value: '4500+', label: 'Commits' },
 ];
-
 const titles = [
   'Software Engineer',
   'Backend Developer',
