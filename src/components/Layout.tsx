@@ -193,5 +193,4 @@ const Layout = ({ children }: LayoutProps) => {
     </AnimatePresence>
   );
 };
-
 export default Layout;
