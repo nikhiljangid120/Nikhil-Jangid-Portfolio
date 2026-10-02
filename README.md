@@ -8,12 +8,13 @@ Live Site: [http://flyeng-career.vercel.app/](http://flyeng-career.vercel.app/)
 ---
 
 ## ⚡ Key Features
-- **Terminal Console Theme**: A fully custom command-line interface aesthetic reflecting a clean developer environment.
+- **Terminal Console Theme**: A fully custom command-line interface aesthetic — complete with a macOS-style terminal window hero, grid backdrops, and scanline/glow details.
 - **JARVIS 2.0 AI Assistant**: A context-aware chatbot helper integrated with Google's Gemini API to query project facts, stats, work history, or respond to custom prompts with smart offline fallbacks.
+- **Project Filtering**: Filter the deployed-solutions grid by category (AI, Backend, Full-Stack) and status (Live / In Progress) with an animated, terminal-style filter bar.
 - **Interactive Command Palette**: Open with `Ctrl + K` or `Cmd + K` to search and jump to sections instantly.
 - **Core Pillars Grid**: Floating animation cards showcasing backend concurrency solutions, RAG pipelines, monorepo architectures, and system security.
 - **Categorized Arsenal**: Custom filterable skills panel covering Languages, Front-end, Back-end, Databases, AI Engineering, and DevOps.
-- **Detailed Deployed Solutions**: Highlighted flagship project (Flyeng Career) and production builds featuring expandable problem, solution, and system architecture deep-dives.
+- **Detailed Deployed Solutions**: Highlighted flagship project (Flyeng Career) and production builds featuring expandable problem, solution, and system architecture deep-dives — including the live [RAG Chatbot — Document Q&A System](https://nikhil-rag-chatbot.onrender.com/).
 
 ---
 
@@ -45,7 +46,14 @@ cd Nikhil-Jangid-Portfolio
 npm install
 ```
 
-### 4. Run the Dev Server
+### 4. Set Up Environment (Optional)
+JARVIS 2.0's AI replies require a Gemini API key. Create a `.env` file in the project root (or set the variable in your Vercel dashboard):
+```bash
+VITE_GEMINI_API_KEY=your-gemini-api-key-here
+```
+Without a key, the chatbot automatically falls back to built-in local responses.
+
+### 5. Run the Dev Server
 ```bash
 npm run dev
 ```

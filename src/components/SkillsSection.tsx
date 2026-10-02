@@ -1,113 +1,146 @@
 import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Zap, Server, Globe, Database, Brain, Wrench } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { Zap, Server, Globe, Database, Brain, Wrench, Sparkles } from 'lucide-react';
 
 interface SkillCategory {
   id: string;
   label: string;
   icon: React.ReactNode;
-  color: string;
+  tileClass: string;
+  span: string;
   skills: string[];
 }
 
 const skillCategories: SkillCategory[] = [
   {
+    id: 'backend',
+    label: 'Backend',
+    icon: <Server className="w-4 h-4" />,
+    tileClass: 'bg-primary/10 text-primary',
+    span: 'lg:col-span-2',
+    skills: ['Node.js', 'Express.js', 'NestJS', 'REST APIs', 'JWT Auth', 'Swagger', 'TypeORM', 'Prisma', 'Nx Monorepo'],
+  },
+  {
     id: 'languages',
     label: 'Languages',
     icon: <Zap className="w-4 h-4" />,
-    color: 'from-gold to-orange',
+    tileClass: 'bg-primary/10 text-primary',
+    span: '',
     skills: ['JavaScript', 'TypeScript', 'C++', 'Python', 'SQL', 'HTML5', 'CSS3'],
   },
   {
     id: 'frontend',
     label: 'Frontend',
     icon: <Globe className="w-4 h-4" />,
-    color: 'from-teal to-lime',
+    tileClass: 'bg-secondary/10 text-secondary',
+    span: '',
     skills: ['React.js', 'Next.js', 'Tailwind CSS', 'Zustand', 'Framer Motion', 'Bootstrap'],
-  },
-  {
-    id: 'backend',
-    label: 'Backend',
-    icon: <Server className="w-4 h-4" />,
-    color: 'from-purple to-teal',
-    skills: ['Node.js', 'Express.js', 'NestJS', 'REST APIs', 'JWT Auth', 'Swagger', 'TypeORM', 'Prisma', 'Nx Monorepo'],
-  },
-  {
-    id: 'databases',
-    label: 'Databases',
-    icon: <Database className="w-4 h-4" />,
-    color: 'from-lime to-teal',
-    skills: ['PostgreSQL', 'MongoDB', 'MySQL', 'SQLite', 'pgvector', 'Firebase', 'Supabase'],
   },
   {
     id: 'ai',
     label: 'AI Engineering',
     icon: <Brain className="w-4 h-4" />,
-    color: 'from-orange to-gold',
-    skills: ['RAG', 'OpenRouter', 'Gemini API', 'Groq API', 'Llama Models', 'Prompt Engineering', 'Vector Embeddings', 'Semantic Search', 'PDF Processing'],
+    tileClass: 'bg-secondary/10 text-secondary',
+    span: 'lg:col-span-2',
+    skills: ['RAG', 'LangChain', 'MCP', 'OpenRouter', 'Gemini API', 'Groq API', 'Llama Models', 'Prompt Engineering', 'Vector Embeddings', 'Semantic Search', 'LLM Orchestration', 'PDF Processing'],
+  },
+  {
+    id: 'databases',
+    label: 'Databases',
+    icon: <Database className="w-4 h-4" />,
+    tileClass: 'bg-accent/10 text-accent',
+    span: '',
+    skills: ['PostgreSQL', 'MongoDB', 'MySQL', 'SQLite', 'pgvector', 'Firebase', 'Supabase'],
   },
   {
     id: 'devops',
     label: 'DevOps & Tools',
     icon: <Wrench className="w-4 h-4" />,
-    color: 'from-teal to-purple',
-    skills: ['Docker', 'Docker Compose', 'Git', 'GitHub', 'Postman', 'Vercel', 'VS Code', 'Cursor', 'Claude Code', 'Antigravity'],
+    tileClass: 'bg-accent/10 text-accent',
+    span: '',
+    skills: ['Docker', 'Docker Compose', 'Git', 'GitHub', 'Postman', 'Vercel', 'VS Code', 'Cursor'],
   },
 ];
+
+const exploringSkills = ['Claude Code', 'Antigravity', 'AI Agents'];
+
+const skillVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
+const SkillCard = ({ category, index }: { category: SkillCategory; index: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [spot, setSpot] = useState({ x: -400, y: -400 });
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    setSpot({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={() => setSpot({ x: -400, y: -400 })}
+      className={`relative overflow-hidden rounded-2xl border border-border/60 bg-card/40 p-6 transition-colors duration-300 hover:border-primary/25 ${category.span}`}
+      variants={skillVariants}
+      whileHover={{ y: -3 }}
+      transition={{ delay: index * 0.06 }}
+    >
+      <span
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+        style={{
+          opacity: spot.x < 0 ? 0 : 1,
+          background: `radial-gradient(240px circle at ${spot.x}px ${spot.y}px, rgba(38,235,218,0.07), transparent 70%)`,
+        }}
+      />
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-lg ${category.tileClass}`}>{category.icon}</div>
+            <h3 className="text-base font-semibold text-white">{category.label}</h3>
+          </div>
+          <span className="text-[11px] font-mono text-muted-foreground/70">
+            {category.skills.length} tech
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {category.skills.map((skill) => (
+            <span
+              key={skill}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono rounded-md bg-background/60 border border-border/60 text-gray-300 hover:border-primary/40 hover:text-primary transition-colors duration-200 cursor-default select-none"
+            >
+              <span className="w-1 h-1 rounded-full bg-primary/60" />
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const SkillsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
-  const [activeCategory, setActiveCategory] = useState<string>('backend');
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 },
+      transition: { staggerChildren: 0.08 },
     },
   };
-
-  const skillVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  };
-
-  const activeSkillCategory = skillCategories.find((c) => c.id === activeCategory)!;
 
   return (
-    <section id="skills" ref={ref} className="py-20 relative overflow-hidden bg-gradient-to-b from-charcoal/80 to-inkyblack/80">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,255,0,0.05),transparent_70%)] -z-10" />
-
-      {/* Subtle animated blobs */}
-      <div className="absolute inset-0 overflow-hidden -z-10">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-lime/5"
-            style={{
-              width: Math.random() * 80 + 40,
-              height: Math.random() * 80 + 40,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              x: [0, Math.random() * 60 - 30, 0],
-              y: [0, Math.random() * 60 - 30, 0],
-              opacity: [0.1, 0.25, 0.1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 15,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-      </div>
+    <section id="skills" ref={ref} className="py-20 relative overflow-hidden bg-background">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <motion.div
         className="section-container"
@@ -117,115 +150,56 @@ const SkillsSection = () => {
       >
         {/* Section Header */}
         <motion.div variants={skillVariants} className="mb-12">
-          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <Zap className="w-5 h-5" />
-            <span>~/skills</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-primary/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-primary">Skills</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Technical</span>{' '}
             <span className="text-primary opacity-80">Arsenal</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-2xl">
-            A curated toolkit spanning languages, frameworks, databases, AI engineering, and DevOps — built from real production experience.
+            A curated toolkit spanning languages, frameworks, databases, AI engineering, and DevOps —
+            built from real production experience.
           </p>
         </motion.div>
 
-        {/* Category Tab Buttons */}
-        <motion.div
-          className="flex flex-wrap gap-3 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          {skillCategories.map((category) => (
-            <motion.button
-              key={category.id}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium font-mono transition-all duration-300 interactive border ${
-                activeCategory === category.id
-                  ? 'bg-primary/10 text-primary border-primary/50'
-                  : 'bg-charcoal/40 text-white/60 hover:bg-charcoal/70 border-white/10 hover:border-white/20'
-              }`}
-              onClick={() => setActiveCategory(category.id)}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {category.icon}
-              {category.label}
-            </motion.button>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {skillCategories.map((category, index) => (
+            <SkillCard key={category.id} category={category} index={index} />
           ))}
-        </motion.div>
 
-        {/* Skills Tag Cloud */}
-        <AnimatePresence mode="wait">
+          {/* Always Exploring tile */}
           <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35 }}
-            className="mb-12"
+            className="relative overflow-hidden rounded-2xl border border-dashed border-secondary/30 bg-card/20 p-6 transition-colors duration-300 hover:border-secondary/50"
+            variants={skillVariants}
+            whileHover={{ y: -3 }}
           >
-            {/* Category Header */}
-            <div className={`flex items-center gap-3 mb-6 p-4 rounded-xl bg-gradient-to-r ${activeSkillCategory.color} bg-opacity-10 border border-white/5`}>
-              <div className={`p-2.5 rounded-lg bg-gradient-to-r ${activeSkillCategory.color} text-black`}>
-                {activeSkillCategory.icon}
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-lg bg-secondary/10 text-secondary">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-base font-semibold text-white">Always Exploring</h3>
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground/70">next up</span>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold text-white">{activeSkillCategory.label}</h3>
-                <p className="text-xs text-muted-foreground font-mono">{activeSkillCategory.skills.length} technologies</p>
-              </div>
-            </div>
-
-            {/* Skill Tags */}
-            <div className="flex flex-wrap gap-3">
-              {activeSkillCategory.skills.map((skill, index) => (
-                <motion.div
-                  key={skill}
-                  className="relative group"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.04 }}
-                >
-                  <motion.span
-                    className="inline-flex items-center px-4 py-2.5 rounded-lg text-sm font-mono font-medium bg-charcoal/50 border border-white/10 text-gray-200 hover:border-primary/50 hover:text-primary hover:bg-primary/5 transition-all duration-200 cursor-default select-none"
-                    whileHover={{ scale: 1.05, y: -2 }}
+              <div className="flex flex-wrap gap-2">
+                {exploringSkills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono rounded-md bg-background/40 border border-secondary/20 text-gray-300 hover:border-secondary/50 hover:text-secondary transition-colors duration-200 cursor-default select-none"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mr-2" />
+                    <span className="w-1 h-1 rounded-full bg-secondary/60" />
                     {skill}
-                  </motion.span>
-                </motion.div>
-              ))}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
-        </AnimatePresence>
-
-        {/* All Categories Overview Grid */}
-        <motion.div variants={skillVariants} className="mt-8">
-          <h3 className="text-lg font-mono text-muted-foreground mb-6 text-center">
-            <span className="text-primary/60">$ </span>cat skills.json
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {skillCategories.map((cat) => (
-              <motion.div
-                key={cat.id}
-                className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 hover-lift gradient-border ${
-                  activeCategory === cat.id
-                    ? 'bg-primary/10 border-primary/40'
-                    : 'bg-charcoal/20 border-white/5 hover:border-white/15'
-                }`}
-                onClick={() => setActiveCategory(cat.id)}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <div className={`p-2 rounded-md bg-gradient-to-r ${cat.color} text-black w-fit mb-3`}>
-                  {cat.icon}
-                </div>
-                <p className="text-xs font-mono font-semibold text-white mb-1">{cat.label}</p>
-                <p className="text-xs text-muted-foreground">{cat.skills.length} skills</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );

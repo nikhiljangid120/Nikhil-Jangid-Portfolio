@@ -30,7 +30,7 @@ const BadgesCertificates = () => {
   const badges: Badge[] = [
     // Achievements & Milestones
     { id: 1, name: 'First Prize – College Hackathon', platform: 'Amity University', category: 'Coding', issueDate: '2024', credentialUrl: '#', skills: ['Innovation', 'Teamwork'] },
-    { id: 2, name: '250+ DSA Problems Solved', platform: 'LeetCode + GFG + CodeChef', category: 'Coding', issueDate: '2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['Algorithms', 'Problem Solving'] },
+    { id: 2, name: '400+ DSA Problems Solved', platform: 'LeetCode + GFG', category: 'Coding', issueDate: '2024', credentialUrl: 'https://leetcode.com/u/nikhil_888/', skills: ['Algorithms', 'Problem Solving'] },
     { id: 3, name: '4,500+ GitHub Contributions', platform: 'GitHub', category: 'Coding', issueDate: '2024-2026', credentialUrl: 'https://github.com/nikhiljangid120', skills: ['Open Source', 'Consistency'] },
     { id: 4, name: 'GirlScript Summer of Code', platform: 'GSSoC', category: 'Coding', issueDate: '2024', credentialUrl: '#', skills: ['Open Source', 'Collaboration'] },
     // AI & Technology
@@ -46,7 +46,7 @@ const BadgesCertificates = () => {
     { id: 12, name: 'JavaScript Algorithms', platform: 'freeCodeCamp', category: 'Programming', issueDate: 'Nov 2023', credentialUrl: '#', skills: ['JavaScript', 'ES6'] },
     // Web Development
     { id: 13, name: 'Full Stack Development', platform: 'freeCodeCamp', category: 'Web Dev', issueDate: 'Jan 2024', credentialUrl: '#', skills: ['React', 'Node.js'] },
-    { id: 14, name: 'Three Software Engineering Internships', platform: 'InternPe · Celebal · Wisflux', category: 'Academic', issueDate: '2024-2026', credentialUrl: '#', skills: ['Backend', 'Full Stack'] },
+    { id: 14, name: 'Software Engineering Internships', platform: 'Celebal Technologies · Wisflux Tech Labs', category: 'Academic', issueDate: '2025-2026', credentialUrl: '#', skills: ['Backend', 'Full Stack'] },
   ];
 
   const categories = ['All', 'Coding', 'Programming', 'AI', 'Web Dev', 'DSA', 'Cloud'];
@@ -66,9 +66,9 @@ const BadgesCertificates = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <Award className="w-5 h-5" />
-            <span>~/achievements</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-primary/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-primary">Achievements</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Achievements &</span> <span className="text-primary opacity-80">Certifications</span>

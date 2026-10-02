@@ -47,7 +47,7 @@ const TerminalBlock = ({ lines, onComplete, title = "bash", autoScroll = true }:
   }, [displayedLines, autoScroll]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto font-mono text-sm sm:text-base rounded-lg overflow-hidden border border-muted bg-[#0d1117] shadow-2xl">
+    <div className="w-full max-w-2xl mx-auto font-mono text-sm sm:text-base rounded-lg overflow-hidden border border-border bg-background shadow-2xl">
       {/* Terminal Title Bar */}
       <div className="flex items-center px-4 py-2 bg-muted/50 border-b border-muted">
         <div className="flex space-x-2">
@@ -63,7 +63,7 @@ const TerminalBlock = ({ lines, onComplete, title = "bash", autoScroll = true }:
       {/* Terminal Content */}
       <div 
         ref={scrollRef}
-        className="p-4 h-64 sm:h-80 overflow-y-auto bg-[#0d1117]/95 scroll-smooth"
+        className="p-4 h-64 sm:h-80 overflow-y-auto bg-background/95 scroll-smooth"
       >
         <div className="flex flex-col space-y-1">
           {displayedLines.map((line, index) => (

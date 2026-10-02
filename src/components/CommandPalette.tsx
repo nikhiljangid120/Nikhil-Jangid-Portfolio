@@ -10,7 +10,6 @@ import {
     Smile,
     User,
     Code,
-    Terminal,
     Home,
     Briefcase,
     Mail,
@@ -56,17 +55,17 @@ const CommandPalette = () => {
                 onClick={() => setOpen(true)}
                 className="fixed bottom-5 left-5 z-40 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/80 backdrop-blur border border-border text-xs text-muted-foreground cursor-pointer hover:bg-muted transition-colors font-mono"
             >
-                <Terminal size={12} />
-                <span>Command Palette</span>
+                <Search size={12} />
+                <span>Search</span>
                 <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                     <span className="text-xs">⌘</span>K
                 </kbd>
             </div>
 
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="overflow-hidden p-0 shadow-2xl bg-[#0d1117] border border-[#30363d] max-w-2xl translate-y-[-50%] top-[30%]">
+                <DialogContent className="overflow-hidden p-0 shadow-2xl bg-background border border-border max-w-2xl translate-y-[-50%] top-[30%]">
                     <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-                        <div className="flex items-center border-b border-[#30363d] px-3">
+                        <div className="flex items-center border-b border-border px-3">
                             <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
                             <Command.Input
                                 placeholder="Type a command or search..."

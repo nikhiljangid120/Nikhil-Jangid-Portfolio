@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Download, FileText, GraduationCap, Code, Briefcase, Award, ExternalLink, Rocket } from 'lucide-react';
+import { Download, GraduationCap, Code, Briefcase, Award, ExternalLink, Rocket, CheckCircle2 } from 'lucide-react';
 
 const ResumeSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -9,24 +9,23 @@ const ResumeSection = () => {
   const highlights = [
     { icon: GraduationCap, label: "B.Tech CSE", value: "2026" },
     { icon: Award, label: "CGPA", value: "8.48" },
-    { icon: Code, label: "DSA Problems", value: "250+" },
-    { icon: Briefcase, label: "Internships", value: "3" },
+    { icon: Code, label: "DSA Problems", value: "400+" },
+    { icon: Briefcase, label: "Internships", value: "2" },
   ];
 
   const skills = {
-    "Backend": ["NestJS", "Node.js", "Express.js", "TypeORM", "Prisma", "Docker"],
-    "Frontend": ["React.js", "Next.js", "TypeScript", "Tailwind CSS"],
-    "Databases": ["PostgreSQL", "MongoDB", "pgvector", "Firebase"],
-    "AI Engineering": ["RAG", "MiniLM", "OpenRouter", "Gemini API", "Llama"],
+    "Backend": ["NestJS", "Node.js", "Express.js", "TypeORM", "Prisma", "REST APIs", "JWT", "Swagger", "Docker"],
+    "Frontend": ["React.js", "Next.js (SSR/SSG/ISR)", "TypeScript", "Tailwind CSS", "Zustand", "Framer Motion"],
+    "Databases": ["PostgreSQL", "pgvector", "MongoDB", "MySQL", "SQLite", "Supabase", "Firebase"],
+    "AI Engineering": ["RAG", "MiniLM", "OpenRouter", "Gemini API", "Groq API", "Llama 3.3"],
   };
 
   const projects = [
     { name: "Flyeng Career", url: "http://flyeng-career.vercel.app/", status: "live" },
+    { name: "RAG Chatbot — Document Q&A", url: "https://nikhil-rag-chatbot.onrender.com/", status: "live" },
     { name: "AI Resume Builder", url: "https://ai-resume-builder-epbj.vercel.app/", status: "live" },
-    { name: "AI Fitness Platform", url: "https://fitness-platform-zeta.vercel.app/", status: "live" },
     { name: "AI Code Analyzer", url: "https://code-analyzer-f7bq.vercel.app/", status: "live" },
-    { name: "Hotel Booking System", url: null, status: "building" },
-    { name: "AI Document Intelligence", url: null, status: "building" },
+    { name: "AI Fitness Platform", url: "https://fitness-platform-zeta.vercel.app/", status: "live" },
   ];
 
   return (
@@ -41,9 +40,9 @@ const ResumeSection = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <FileText className="w-5 h-5" />
-            <span>~/resume</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-primary/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-primary">Resume</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Resume &</span> <span className="text-primary opacity-80">Experience</span>
@@ -78,7 +77,7 @@ const ResumeSection = () => {
 
             {/* Download Button */}
             <motion.a
-              href="/Resume_2026_Nikhil Jangid.pdf"
+              href="/Nikhil-Jangid-Resume.pdf"
               download
               className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium hover:opacity-90 transition-opacity"
               whileHover={{ scale: 1.02 }}
@@ -103,7 +102,7 @@ const ResumeSection = () => {
                         Live <ExternalLink className="w-3 h-3" />
                       </a>
                     ) : (
-                      <span className="text-orange-400 text-xs px-2 py-0.5 bg-orange-400/10 rounded">Building</span>
+                      <span className="text-amber-400 text-xs px-2 py-0.5 bg-amber-400/10 rounded">Building</span>
                     )}
                   </div>
                 ))}
@@ -147,20 +146,20 @@ const ResumeSection = () => {
 
             {/* Experience Highlight */}
             <motion.div
-              className="mt-6 p-6 bg-gradient-to-r from-primary/5 via-card/50 to-teal/5 border border-primary/20 rounded-xl relative overflow-hidden"
+              className="mt-6 p-6 bg-gradient-to-r from-primary/5 via-card/50 to-secondary/5 border border-primary/20 rounded-xl relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <div className="absolute top-3 right-3 px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs font-bold text-green-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Currently Active
+                <CheckCircle2 className="w-3 h-3" />
+                Completed
               </div>
 
               <h3 className="text-xl font-bold text-foreground mb-1">Wisflux Tech Labs</h3>
-              <p className="text-sm text-primary/70 font-mono mb-2">SDE Intern · June 2026 – Present</p>
+              <p className="text-sm text-primary/70 font-mono mb-2">SDE Intern · June 2026 – Aug 2026</p>
               <p className="text-sm text-muted-foreground mb-4">
-                Building production-grade backend services with NestJS, PostgreSQL, and Docker. Developed RAG-based document intelligence pipelines using pgvector and OpenRouter.
+                Built production-grade backend services with NestJS, PostgreSQL, and Docker — including concurrency-safe transactional APIs and an end-to-end RAG document Q&amp;A pipeline deployed on Render using pgvector and OpenRouter.
               </p>
               <div className="flex flex-wrap gap-2">
                 {["NestJS", "PostgreSQL", "TypeORM", "Docker", "RAG", "pgvector"].map((tech) => (

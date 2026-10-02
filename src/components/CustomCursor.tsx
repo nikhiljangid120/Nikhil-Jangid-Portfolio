@@ -62,10 +62,10 @@ const CustomCursor = () => {
         ref={cursorRef}
         className="fixed top-0 left-0 w-4 h-4 rounded-full bg-primary mix-blend-difference pointer-events-none z-[9999]"
         style={{
-          marginTop: '-8px',
-          marginLeft: '-8px',
+          marginTop: isHovering ? '-32px' : '-8px',
+          marginLeft: isHovering ? '-32px' : '-8px',
           willChange: 'transform',
-          transition: 'width 0.2s, height 0.2s',
+          transition: 'width 0.2s, height 0.2s, margin 0.2s',
           width: isHovering ? '64px' : '16px',
           height: isHovering ? '64px' : '16px',
           opacity: 0.8

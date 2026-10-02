@@ -24,18 +24,18 @@ const TimelineCard = ({ item, index }: TimelineCardProps) => {
 
   const colorMap = {
     education: {
-      bg: 'bg-teal-500/10',
-      border: 'border-teal-500/20',
-      text: 'text-teal-400',
-      glow: 'from-teal-500/30',
-      accent: 'bg-teal-500',
+      bg: 'bg-secondary/10',
+      border: 'border-secondary/20',
+      text: 'text-secondary',
+      glow: 'from-secondary/30',
+      accent: 'bg-secondary',
     },
     work: {
-      bg: 'bg-lime-500/10',
-      border: 'border-lime-500/20',
-      text: 'text-lime-400',
-      glow: 'from-lime-500/30',
-      accent: 'bg-lime-500',
+      bg: 'bg-primary/10',
+      border: 'border-primary/20',
+      text: 'text-primary',
+      glow: 'from-primary/30',
+      accent: 'bg-primary',
     },
     achievement: {
       bg: 'bg-amber-500/10',

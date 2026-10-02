@@ -4,6 +4,8 @@ import { Send, Mail, Phone, MapPin, Github, Linkedin, Code, ExternalLink, CheckC
 import { toast } from '@/components/ui/use-toast';
 import confetti from 'canvas-confetti';
 
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+
 const ContactSection = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,13 +25,13 @@ const ContactSection = () => {
       const y = rect.y + rect.height / 2;
 
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 36,
+        spread: 45,
         origin: {
           x: x / window.innerWidth,
           y: y / window.innerHeight
         },
-        colors: ['#10B981', '#A3E635', '#22D3EE', '#ffffff'],
+        colors: ['#26ebda', '#b392f0', '#ffffff'],
         zIndex: 1000,
       });
     }
@@ -38,51 +40,83 @@ const ContactSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!name || !email || !message) {
       toast({
-        title: "Missing Information",
-        description: "Please fill out all fields",
-        variant: "destructive"
+        title: 'Missing Information',
+        description: 'Please fill out all fields.',
+        variant: 'destructive',
       });
       return;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address",
-        variant: "destructive"
+        title: 'Invalid Email',
+        description: 'Please enter a valid email address.',
+        variant: 'destructive',
       });
       return;
     }
 
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      if (!WEB3FORMS_ACCESS_KEY) {
+        const subject = `Portfolio message from ${name}`;
+        const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+        window.location.href = `mailto:nikhiljangid343@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        toast({
+          title: 'Email Composer Opened',
+          description: 'Review the message in your email app, then send it to reach Nikhil.',
+        });
+        return;
+      }
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Portfolio message from ${name}`,
+          from_name: name,
+          name,
+          email,
+          message,
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Message delivery failed.');
+      }
+
       setIsSuccess(true);
-
-      // Trigger confetti effect
-      triggerConfetti();
-
-      // Reset success state after animation completes
+      setTimeout(triggerConfetti, 0);
       setTimeout(() => {
         setIsSuccess(false);
-        // Reset form
         setName('');
         setEmail('');
         setMessage('');
       }, 3000);
 
       toast({
-        title: "Message Sent",
-        description: "Thanks for reaching out! I'll get back to you soon.",
+        title: 'Message Sent',
+        description: "Thanks for reaching out! Nikhil will get back to you soon.",
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Contact form error:', error);
+      toast({
+        title: 'Message Not Sent',
+        description: 'Please try again or email nikhiljangid343@gmail.com directly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -192,34 +226,8 @@ const ContactSection = () => {
 
   return (
     <section id="contact" ref={sectionRef} className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-charcoal to-inkyblack -z-10" />
-
-      <motion.div
-        className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-gradient-to-b from-lime/10 to-transparent blur-3xl z-0 opacity-30"
-        animate={{
-          x: [0, -30, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          repeatType: "mirror"
-        }}
-      />
-
-      <motion.div
-        className="absolute bottom-20 left-12 w-96 h-96 rounded-full bg-gradient-to-t from-teal/10 to-purple/5 blur-3xl z-0 opacity-20"
-        animate={{
-          x: [0, 40, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          repeatType: "mirror"
-        }}
-      />
+      <div className="absolute inset-0 bg-background -z-10" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -229,9 +237,9 @@ const ContactSection = () => {
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <Mail className="w-5 h-5" />
-            <span>~/contact</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-primary/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-primary">Contact</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Let's</span> <span className="text-primary opacity-80">Connect</span>
@@ -250,8 +258,9 @@ const ContactSection = () => {
             animate={inView ? "visible" : "hidden"}
             className="bg-charcoal/50 backdrop-blur-sm rounded-xl border border-white/5 p-6 md:p-8 relative overflow-hidden"
           >
-            <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center">
-              <span className="text-lime mr-2">📝</span> Send a Message
+            <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <Send size={20} className="text-primary" />
+              Send a Message
             </motion.h3>
 
             {/* Form */}
@@ -305,7 +314,7 @@ const ContactSection = () => {
                 variants={itemVariants}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 bg-gradient-to-r from-lime to-teal text-inkyblack font-medium rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-lime/20 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium rounded-lg flex items-center justify-center hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <span className="flex items-center">
@@ -314,7 +323,7 @@ const ContactSection = () => {
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     >
-                      <svg className="h-full w-full text-inkyblack" viewBox="0 0 24 24">
+                      <svg className="h-full w-full text-primary-foreground" viewBox="0 0 24 24">
                         <path
                           fill="none"
                           stroke="currentColor"
@@ -359,9 +368,9 @@ const ContactSection = () => {
                     }}
                   >
                     <motion.div
-                      className="w-20 h-20 rounded-full bg-gradient-to-r from-lime to-teal flex items-center justify-center mb-6"
+                      className="w-20 h-20 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mb-6"
                       animate={{
-                        boxShadow: ["0 0 0 0 rgba(163, 230, 53, 0.7)", "0 0 0 20px rgba(163, 230, 53, 0)"],
+                        boxShadow: ["0 0 0 0 rgba(38, 235, 218, 0.7)", "0 0 0 20px rgba(38, 235, 218, 0)"],
                       }}
                       transition={{
                         repeat: 3,
@@ -369,7 +378,7 @@ const ContactSection = () => {
                         ease: "easeOut",
                       }}
                     >
-                      <CheckCircle size={40} className="text-inkyblack" />
+                      <CheckCircle size={40} className="text-primary-foreground" />
                     </motion.div>
 
                     <motion.h3
@@ -396,52 +405,10 @@ const ContactSection = () => {
                       Thanks for reaching out! I'll get back to you as soon as possible.
                     </motion.p>
                   </motion.div>
-
-                  {/* Animated particles */}
-                  <motion.div className="absolute inset-0 pointer-events-none">
-                    {[...Array(20)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-2 h-2 rounded-full bg-lime"
-                        initial={{
-                          x: "50%",
-                          y: "50%",
-                          opacity: 0,
-                          scale: 0
-                        }}
-                        animate={{
-                          x: `${Math.random() * 100}%`,
-                          y: `${Math.random() * 100}%`,
-                          opacity: [0, 1, 0],
-                          scale: [0, 1.5, 0]
-                        }}
-                        transition={{
-                          duration: 2 + Math.random() * 2,
-                          delay: 0.2 + Math.random() * 0.3,
-                          ease: "easeOut"
-                        }}
-                      />
-                    ))}
-                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Background pulse animation */}
-            {isSuccess && (
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-lime/20 to-teal/20 rounded-xl z-0"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{
-                  opacity: [0, 0.2, 0],
-                  scale: [0.8, 1.2, 1.5],
-                }}
-                transition={{
-                  duration: 2,
-                  ease: "easeOut",
-                }}
-              />
-            )}
           </motion.div>
 
           {/* Contact Information */}
@@ -453,8 +420,9 @@ const ContactSection = () => {
           >
             {/* Contact Details */}
             <motion.div variants={containerVariants} className="mb-10">
-              <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center">
-                <span className="text-lime mr-2">📞</span> Contact Information
+              <motion.h3 variants={itemVariants} className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <Phone size={20} className="text-primary" />
+                Contact Information
               </motion.h3>
 
               <div className="space-y-4">
@@ -465,11 +433,11 @@ const ContactSection = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     variants={itemVariants}
-                    className="flex items-center p-4 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-lime/20 transition-colors duration-300 group"
+                    className="flex items-center p-4 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-primary/20 transition-colors duration-300 group"
                     whileHover={{ x: 5 }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-lime/10 to-teal/10 flex items-center justify-center mr-4 group-hover:from-lime/20 group-hover:to-teal/20 transition-colors duration-300">
-                      <contact.icon size={18} className="text-lime" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center mr-4 group-hover:from-primary/20 group-hover:to-secondary/20 transition-colors duration-300">
+                      <contact.icon size={18} className="text-primary" />
                     </div>
                     <div>
                       <p className="text-sm text-gray-400">{contact.label}</p>
@@ -482,8 +450,9 @@ const ContactSection = () => {
 
             {/* Social Links */}
             <motion.div variants={containerVariants} className="mb-10">
-              <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center">
-                <span className="text-lime mr-2">🌐</span> Connect Online
+              <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Linkedin size={18} className="text-primary" />
+                Connect Online
               </motion.h3>
 
               <div className="flex flex-wrap gap-3">
@@ -495,9 +464,9 @@ const ContactSection = () => {
                     rel="noopener noreferrer"
                     variants={itemVariants}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className="flex items-center px-4 py-2 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-lime/20 transition-colors duration-300"
+                    className="flex items-center px-4 py-2 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-primary/20 transition-colors duration-300"
                   >
-                    <social.icon size={16} className="text-lime mr-2" />
+                    <social.icon size={16} className="text-primary mr-2" />
                     <span className="text-white text-sm">{social.label}</span>
                   </motion.a>
                 ))}
@@ -506,8 +475,9 @@ const ContactSection = () => {
 
             {/* Coding Profiles */}
             <motion.div variants={containerVariants}>
-              <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center">
-                <span className="text-lime mr-2">💻</span> Coding Profiles & Achievements
+              <motion.h3 variants={itemVariants} className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Code size={18} className="text-primary" />
+                Coding Profiles & Achievements
               </motion.h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -519,10 +489,10 @@ const ContactSection = () => {
                     rel="noopener noreferrer"
                     variants={itemVariants}
                     whileHover={{ scale: 1.02 }}
-                    className="flex flex-col p-4 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-lime/20 transition-colors duration-300"
+                    className="flex flex-col p-4 bg-inkyblack/50 border border-white/5 rounded-lg hover:bg-charcoal/70 hover:border-primary/20 transition-colors duration-300"
                   >
                     <span className="text-white font-medium">{profile.label}</span>
-                    <span className="text-xs px-2 py-0.5 bg-lime/20 text-lime rounded-full w-fit mt-2">{profile.badge}</span>
+                    <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full w-fit mt-2">{profile.badge}</span>
                   </motion.a>
                 ))}
               </div>

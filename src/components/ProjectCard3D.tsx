@@ -107,7 +107,7 @@ const ProjectCard3D = ({ project, onView, index }: ProjectCardProps) => {
                   href={project.githubUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors"
+                  className="text-gray-400 hover:text-primary transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Github size={18} />
@@ -118,7 +118,7 @@ const ProjectCard3D = ({ project, onView, index }: ProjectCardProps) => {
                   href={project.liveUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-lime transition-colors"
+                  className="text-gray-400 hover:text-primary transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ExternalLink size={18} />
@@ -126,7 +126,7 @@ const ProjectCard3D = ({ project, onView, index }: ProjectCardProps) => {
               )}
             </div>
             <button 
-              className="text-lime/80 hover:text-lime"
+              className="text-primary/80 hover:text-primary"
               onClick={(e) => {
                 e.stopPropagation();
                 onView();
@@ -148,7 +148,7 @@ const ProjectCard3D = ({ project, onView, index }: ProjectCardProps) => {
         
         {/* Edge highlight */}
         <motion.div
-          className="absolute inset-0 border border-lime/30 rounded-xl opacity-0 transition-opacity"
+          className="absolute inset-0 border border-primary/30 rounded-xl opacity-0 transition-opacity"
           animate={{ opacity: cardScale > 1 ? 1 : 0 }}
           style={{ transform: 'translateZ(5px)' }}
         />

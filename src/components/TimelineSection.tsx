@@ -46,17 +46,8 @@ const TimelineSection = () => {
       organization: "Amity University, Rajasthan",
       description: "Started my B.Tech journey, diving deep into algorithms, data structures, operating systems, computer networks, and web development. Actively built personal projects and contributed to open source.",
       type: "education",
-      details: "Coursework: Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Participated in coding clubs, hackathons, and academic projects. Solved 250+ DSA problems across LeetCode, GeeksForGeeks, and CodeChef throughout the degree.",
+      details: "Coursework: Advanced Data Structures, Operating Systems, Database Management, Computer Networks, and Web Technologies. Participated in coding clubs, hackathons, and academic projects. Solved 400+ DSA problems across LeetCode and GeeksForGeeks throughout the degree.",
       location: "Jaipur, Rajasthan"
-    },
-    {
-      year: "2024",
-      title: "Web Development Intern",
-      organization: "InternPe",
-      description: "Built responsive web applications using React.js and Node.js, implemented RESTful APIs and authentication features. Strengthened core full-stack development skills in a professional environment.",
-      type: "experience",
-      details: "Developed and deployed full-stack web applications with user authentication, REST API integration, and responsive design. Gained foundational experience in collaborative software development workflows using Git and agile practices.",
-      location: "Remote"
     },
     {
       year: "2025",
@@ -73,16 +64,16 @@ const TimelineSection = () => {
       organization: "Amity University, Rajasthan",
       description: "Graduated with a CGPA of 8.48. Completed 4 years of Computer Science engineering with hands-on project experience, internships, and a strong foundation in software engineering principles.",
       type: "education",
-      details: "Final CGPA: 8.48. Key achievements during degree: 3 software engineering internships, 250+ DSA problems solved, 4500+ GitHub contributions, First Prize in college hackathon, and built 6+ production-grade projects.",
+      details: "Final CGPA: 8.48 (Class XII: 95.87% · Class X: 83.67%). Key achievements during degree: software engineering internships, 400+ DSA problems solved, 4,500+ GitHub contributions, First Prize in college hackathon, and built 4+ full-stack products.",
       location: "Jaipur, Rajasthan"
     },
     {
       year: "2026",
       title: "SDE Intern",
       organization: "Wisflux Tech Labs",
-      description: "Developing production-grade backend services using NestJS, PostgreSQL, TypeORM, and Docker Compose. Built RAG-based document intelligence systems, concurrency-safe booking workflows, and modular Nx monorepo architecture.",
+      description: "Built production-grade backend services using NestJS, PostgreSQL, TypeORM, and Docker Compose. Developed an end-to-end RAG document Q&A pipeline with pgvector and OpenRouter, and concurrency-safe booking workflows with modular Nx monorepo architecture.",
       type: "experience",
-      details: "Backend Engineering: Developed transactional workflows secured with JWT auth, designed for consistency under concurrent requests using pessimistic locking. Implemented modular NestJS architecture within an Nx monorepo.\n\nAI Engineering: Designed and developed a RAG system for document Q&A — PDF ingestion pipelines, vector embeddings with pgvector + MiniLM, and OpenRouter with Llama models for context-aware responses.",
+      details: "Backend Engineering: Developed transactional workflows secured with JWT auth, designed for consistency under concurrent requests using pessimistic locking. Implemented modular NestJS architecture within an Nx monorepo.\n\nAI Engineering: Designed and developed the RAG Chatbot — Document Q&A System (live at nikhil-rag-chatbot.onrender.com): PDF ingestion with SHA-256 deduplication, sliding-window chunking, 384-dim MiniLM vector embeddings with pgvector, and OpenRouter/Llama 3.3 for grounded, source-attributed responses. Deployed on Render with Docker and managed PostgreSQL.",
       location: "Jaipur, Rajasthan"
     }
   ];
@@ -104,39 +95,39 @@ const TimelineSection = () => {
   const getGradient = (type: string) => {
     switch (type) {
       case 'education':
-        return 'from-teal to-lime';
+        return 'from-secondary to-primary';
       case 'experience':
-        return 'from-purple to-teal';
+        return 'from-primary to-accent';
       case 'achievement':
-        return 'from-orange to-gold';
+        return 'from-amber-400 to-amber-600';
       default:
-        return 'from-teal to-lime';
+        return 'from-primary to-secondary';
     }
   };
 
   const getBgColor = (type: string) => {
     switch (type) {
       case 'education':
-        return 'bg-teal/10';
+        return 'bg-secondary/10';
       case 'experience':
-        return 'bg-purple/10';
+        return 'bg-primary/10';
       case 'achievement':
-        return 'bg-orange/10';
+        return 'bg-amber-500/10';
       default:
-        return 'bg-teal/10';
+        return 'bg-primary/10';
     }
   };
 
   const getBorderColor = (type: string) => {
     switch (type) {
       case 'education':
-        return 'border-teal/30';
+        return 'border-secondary/30';
       case 'experience':
-        return 'border-purple/30';
+        return 'border-primary/30';
       case 'achievement':
-        return 'border-orange/30';
+        return 'border-amber-500/30';
       default:
-        return 'border-teal/30';
+        return 'border-primary/30';
     }
   };
 
@@ -162,16 +153,8 @@ const TimelineSection = () => {
   };
 
   return (
-    <section id="timeline" ref={ref} className="py-20 relative overflow-hidden bg-gradient-to-b from-charcoal/80 to-inkyblack/80">
-      {/* Improved background effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(47,23,96,0.3),transparent_70%)] -z-10" />
-
-      <motion.div
-        className="absolute top-20 left-0 w-full h-full mix-blend-overlay opacity-20"
-        style={{
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.2"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-        }}
-      />
+    <section id="timeline" ref={ref} className="py-20 relative overflow-hidden bg-background">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <motion.div
         className="section-container relative z-10"
@@ -180,16 +163,16 @@ const TimelineSection = () => {
         animate={inView ? "visible" : "hidden"}
       >
         <motion.div variants={itemVariants} className="mb-16">
-          <div className="flex items-center space-x-2 text-primary mb-4 font-mono">
-            <Calendar className="w-5 h-5" />
-            <span>~/timeline</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-primary/60" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-primary">Timeline</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">My</span>{' '}
             <span className="text-primary opacity-80">Journey</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-2xl">
-            From a curious CS student to a production-grade backend engineer — 3 internships, 6+ projects, and a CGPA of 8.48.
+            From a curious CS student to a production-grade backend engineer — internships at Celebal Technologies and Wisflux Tech Labs, 5+ projects, and a CGPA of 8.48.
           </p>
         </motion.div>
 
@@ -203,9 +186,9 @@ const TimelineSection = () => {
           >
             <motion.button
               onClick={handlePrevItem}
-              className="p-3 rounded-full bg-gradient-to-r from-purple/20 to-purple/5 text-white/70 hover:text-white transition-colors interactive border border-white/10"
-              whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(155, 81, 224, 0.4)" }}
-              whileTap={{ scale: 0.9 }}
+              className="p-3 rounded-full bg-card/50 text-white/70 hover:text-white transition-colors interactive border border-border"
+              whileHover={{ y: -1, borderColor: 'rgba(179, 146, 240, 0.28)' }}
+              whileTap={{ scale: 0.96 }}
               data-cursor-text="Previous"
             >
               <ChevronLeft size={20} />
@@ -217,9 +200,9 @@ const TimelineSection = () => {
 
             <motion.button
               onClick={handleNextItem}
-              className="p-3 rounded-full bg-gradient-to-r from-teal/5 to-teal/20 text-white/70 hover:text-white transition-colors interactive border border-white/10"
-              whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(0, 204, 189, 0.4)" }}
-              whileTap={{ scale: 0.9 }}
+              className="p-3 rounded-full bg-card/50 text-white/70 hover:text-white transition-colors interactive border border-border"
+              whileHover={{ y: -1, borderColor: 'rgba(38, 235, 218, 0.28)' }}
+              whileTap={{ scale: 0.96 }}
               data-cursor-text="Next"
             >
               <ChevronRight size={20} />
@@ -257,7 +240,7 @@ const TimelineSection = () => {
                       {timelineItems[activeIndex].title}
                     </motion.span>
                     <motion.div
-                      className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple/50 via-teal/50 to-purple/50"
+                      className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-secondary/50 via-primary/50 to-secondary/50"
                       initial={{ width: 0 }}
                       animate={{ width: "100%" }}
                       transition={{ duration: 0.5, delay: 0.2 }}
@@ -265,7 +248,7 @@ const TimelineSection = () => {
                   </h3>
 
                   <div className="flex items-center mt-4 text-sm space-x-4">
-                    <div className="flex items-center text-lime">
+                    <div className="flex items-center text-primary">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{timelineItems[activeIndex].year}</span>
                     </div>
@@ -296,23 +279,6 @@ const TimelineSection = () => {
                   <ChevronRight size={16} className="ml-1" />
                 </motion.button>
               </div>
-
-              {/* Visual flourish - animated corner */}
-              <motion.div
-                className="absolute -bottom-10 -right-10 w-20 h-20 rounded-full"
-                style={{
-                  background: `conic-gradient(from 225deg at 50% 50%, transparent 0deg, ${timelineItems[activeIndex].type === 'education' ? '#00CCA9' : timelineItems[activeIndex].type === 'experience' ? '#9B51E0' : '#F97316'} 360deg)`,
-                  opacity: 0.2,
-                }}
-                animate={{
-                  rotate: [0, 360],
-                  scale: [0.8, 1, 0.8],
-                }}
-                transition={{
-                  rotate: { duration: 10, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 3, repeat: Infinity, repeatType: "reverse" }
-                }}
-              />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -321,7 +287,7 @@ const TimelineSection = () => {
         <div className="hidden lg:block relative max-w-4xl mx-auto">
           {/* Main timeline line */}
           <motion.div
-            className="absolute left-[60px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple/50 via-teal/50 to-purple/50"
+            className="absolute left-[60px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary/50 via-primary/50 to-secondary/50"
             initial={{ height: 0 }}
             whileInView={{ height: "100%" }}
             transition={{ duration: 1.5 }}
@@ -354,20 +320,6 @@ const TimelineSection = () => {
                 viewport={{ once: true }}
               >
                 {getIcon(item.type)}
-
-                {/* Pulse animation */}
-                <motion.div
-                  className={`absolute inset-0 rounded-full bg-gradient-to-r ${getGradient(item.type)}`}
-                  animate={{
-                    opacity: [0, 0.2, 0],
-                    scale: [1, 1.8, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: index * 0.2,
-                  }}
-                />
               </motion.div>
 
               {/* Year badge */}
@@ -378,50 +330,37 @@ const TimelineSection = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <span className="bg-charcoal/70 backdrop-blur-sm px-2 py-1 rounded text-xs font-mono text-lime border border-lime/20">
+                <span className="bg-charcoal/70 backdrop-blur-sm px-2 py-1 rounded text-xs font-mono text-primary border border-primary/20">
                   {item.year.split(' - ')[0]}
                 </span>
               </motion.div>
 
               <motion.div
-                className={`relative border border-white/10 rounded-xl overflow-hidden group interactive ${hoveredIndex === index ? 'ring-1 ring-offset-2 ring-offset-inkyblack' : ''} ${hoveredIndex === index ? (item.type === 'education' ? 'ring-teal/50' : item.type === 'experience' ? 'ring-purple/50' : 'ring-orange/50') : ''}`}
+                className={`relative border border-border/70 rounded-xl overflow-hidden group interactive bg-card/40 ${hoveredIndex === index ? 'ring-1 ring-border' : ''}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                whileHover={{ y: -2, transition: { duration: 0.25 } }}
                 data-cursor-text="Expand"
                 onClick={() => setSelectedItem(item)}
               >
-                {/* Card background */}
-                <motion.div
-                  className={`absolute inset-0 ${getBgColor(item.type)} opacity-50 z-0`}
-                  initial={{ opacity: 0.5 }}
-                  whileHover={{ opacity: 0.7 }}
-                  transition={{ duration: 0.3 }}
-                />
-
-                {/* Shimmering effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full z-0"
-                  animate={{ x: hoveredIndex === index ? ['0%', '200%'] : '-100%' }}
-                  transition={{ duration: 1.5, ease: "easeInOut" }}
-                />
+                <div className={`absolute inset-0 ${getBgColor(item.type)} opacity-35 z-0`} />
 
                 {/* Type badge */}
-                <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium bg-gradient-to-r ${getGradient(item.type)} text-inkyblack rounded-bl-lg`}>
+                <div className={`absolute top-0 right-0 px-3 py-1 text-xs font-medium bg-gradient-to-r ${getGradient(item.type)} text-primary-foreground rounded-bl-lg`}>
                   {getTypeLabel(item.type)}
                 </div>
 
                 <div className="p-6 relative z-10">
                   <div className="flex flex-col sm:flex-row sm:items-start mb-3 justify-between">
-                    <h3 className="text-xl font-bold text-white mb-2 sm:mb-0 group-hover:text-lime transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-white mb-2 sm:mb-0 group-hover:text-primary transition-colors duration-300">
                       {item.title}
                     </h3>
                   </div>
 
                   <div className="flex flex-wrap gap-4 mb-3 text-sm">
-                    <div className="flex items-center text-lime">
+                    <div className="flex items-center text-primary">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{item.year}</span>
                     </div>
@@ -442,7 +381,7 @@ const TimelineSection = () => {
                   <p className="text-gray-400 text-sm">{item.description}</p>
 
                   <motion.div
-                    className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-transparent via-lime/30 to-transparent"
+                    className="absolute bottom-0 left-0 h-0.5 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent"
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
                     transition={{ duration: 0.5 }}
@@ -452,7 +391,7 @@ const TimelineSection = () => {
                     className="absolute top-3 right-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     whileHover={{ rotate: 90 }}
                   >
-                    <ExternalLink size={16} className="text-lime" />
+                    <ExternalLink size={16} className="text-primary" />
                   </motion.div>
                 </div>
               </motion.div>
@@ -463,8 +402,8 @@ const TimelineSection = () => {
                   className="absolute left-[60px] top-0 w-0.5 h-24 z-0"
                   style={{
                     background: `linear-gradient(to bottom, 
-                      ${item.type === 'education' ? 'rgba(0, 204, 169, 0.5)' : item.type === 'experience' ? 'rgba(155, 81, 224, 0.5)' : 'rgba(249, 115, 22, 0.5)'}, 
-                      ${timelineItems[index + 1].type === 'education' ? 'rgba(0, 204, 169, 0.5)' : timelineItems[index + 1].type === 'experience' ? 'rgba(155, 81, 224, 0.5)' : 'rgba(249, 115, 22, 0.5)'})`
+                      ${item.type === 'education' ? 'rgba(179, 146, 240, 0.5)' : item.type === 'experience' ? 'rgba(38, 235, 218, 0.5)' : 'rgba(245, 158, 11, 0.5)'}, 
+                      ${timelineItems[index + 1].type === 'education' ? 'rgba(179, 146, 240, 0.5)' : timelineItems[index + 1].type === 'experience' ? 'rgba(38, 235, 218, 0.5)' : 'rgba(245, 158, 11, 0.5)'})`
                   }}
                   initial={{ height: 0, top: 11 }}
                   whileInView={{ height: "100%", top: 11 }}
@@ -511,7 +450,7 @@ const TimelineSection = () => {
                 <motion.div
                   className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30 z-0"
                   style={{
-                    background: `radial-gradient(circle, ${selectedItem.type === 'education' ? 'rgba(0, 204, 169, 0.6)' : selectedItem.type === 'experience' ? 'rgba(155, 81, 224, 0.6)' : 'rgba(249, 115, 22, 0.6)'} 0%, transparent 70%)`,
+                    background: `radial-gradient(circle, ${selectedItem.type === 'education' ? 'rgba(179, 146, 240, 0.6)' : selectedItem.type === 'experience' ? 'rgba(38, 235, 218, 0.6)' : 'rgba(245, 158, 11, 0.6)'} 0%, transparent 70%)`,
                   }}
                   animate={{
                     scale: [1, 1.2, 1],
@@ -539,7 +478,7 @@ const TimelineSection = () => {
                       {getIcon(selectedItem.type)}
                     </div>
 
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${getGradient(selectedItem.type)} text-inkyblack`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${getGradient(selectedItem.type)} text-primary-foreground`}>
                       {getTypeLabel(selectedItem.type)}
                     </span>
                   </div>
@@ -554,7 +493,7 @@ const TimelineSection = () => {
                   </motion.h3>
 
                   <div className="flex flex-wrap gap-4 text-sm mb-4">
-                    <div className="flex items-center text-lime">
+                    <div className="flex items-center text-primary">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{selectedItem.year}</span>
                     </div>
@@ -590,7 +529,7 @@ const TimelineSection = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                       >
-                        <h5 className="text-lime font-medium mb-2 flex items-center">
+                        <h5 className="text-primary font-medium mb-2 flex items-center">
                           <Clock className="w-4 h-4 mr-2" />
                           Details
                         </h5>

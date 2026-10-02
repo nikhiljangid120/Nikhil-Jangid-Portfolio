@@ -63,11 +63,6 @@ export default {
           ring: 'hsl(var(--sidebar-ring))'
         },
         // Custom colors for Nikhil's portfolio
-        teal: '#005A66',
-        orange: '#D94F30',
-        gold: '#FFB100',
-        purple: '#2E1760',
-        lime: '#CCFF00',
         charcoal: '#1A1A1A',
         inkyblack: '#0A0E17',
       },
@@ -220,8 +215,8 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-pattern': 'linear-gradient(to bottom, #0A0E17, #1A1A1A)',
-        'text-gradient': 'linear-gradient(to right, #005A66, #2E1760, #D94F30)',
+        'hero-pattern': 'linear-gradient(to bottom, hsl(var(--background)), hsl(var(--card)))',
+        'text-gradient': 'linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)))',
         'shimmer-gradient': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%)',
       },
       transitionProperty: {

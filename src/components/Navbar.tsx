@@ -11,6 +11,14 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // Lock body scroll while the mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
@@ -32,10 +40,10 @@ const Navbar = () => {
       const header = document.querySelector('header');
       const navbarHeight = header?.getBoundingClientRect().height || 0;
 
-      // Adjust offset for mobile (extra space for browser toolbars)
-      const mobileOffset = isMobile() ? 20 : 20; // Increased for mobile toolbar
+      // Small extra offset below the navbar so the section heading isn't flush against it
+      const scrollOffset = 20;
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - navbarHeight - mobileOffset;
+      const offsetPosition = elementPosition + window.scrollY - navbarHeight - scrollOffset;
 
       // Ensure menu closes before scrolling to prevent glitches
       setIsOpen(false);
@@ -124,7 +132,7 @@ const Navbar = () => {
     }),
     hover: {
       scale: 1.1,
-      color: '#9BF00B',
+      color: '#26ebda',
       transition: { duration: 0.2 },
     },
   };
@@ -167,9 +175,9 @@ const Navbar = () => {
             className="text-2xl font-spaceGrotesk font-bold flex items-center"
           >
             <span className="text-white">Nikhil</span>
-            <span className="text-lime">Jangid</span>
+            <span className="text-primary">Jangid</span>
             <motion.div
-              className="ml-2 h-1 w-2 bg-lime rounded-full"
+              className="ml-2 h-1 w-2 bg-primary rounded-full"
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [1, 0.8, 1],
@@ -189,8 +197,8 @@ const Navbar = () => {
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={`nav-link font-medium text-sm ${activeSection === item.id
-                  ? 'text-lime border-b-2 border-lime'
-                  : 'text-white hover:text-lime'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-white hover:text-primary'
                   }`}
                 variants={navItemVariants}
                 custom={index}
@@ -233,8 +241,8 @@ const Navbar = () => {
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`nav-link py-3 text-left font-medium text-sm ${activeSection === item.id
-                    ? 'text-lime'
-                    : 'text-white hover:text-lime'
+                    ? 'text-primary'
+                    : 'text-white hover:text-primary'
                     }`}
                   variants={navItemVariants}
                   custom={index}
