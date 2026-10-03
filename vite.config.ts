@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
           const norm = id.replace(/\\/g, "/");
-          if (/\/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom)\//.test(norm)) {
+          if (/\/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom|@remix-run\/router)\//.test(norm)) {
             return "react-vendor";
           }
           if (/\/node_modules\/(framer-motion|motion-dom|motion-utils)\//.test(norm)) {
