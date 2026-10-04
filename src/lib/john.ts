@@ -780,6 +780,42 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
   {
     id: 'origin',
     keywords: [
+      'is he chinese',
+      'chinese',
+      'is he american',
+      'american',
+      'is he pakistani',
+      'pakistani',
+      'is he canadian',
+      'canadian',
+      'is he british',
+      'british',
+      'is he german',
+      'german',
+      'is he french',
+      'french',
+      'is he japanese',
+      'japanese',
+      'is he russian',
+      'russian',
+      'is he asian',
+      'asian',
+      'is he caucasian',
+      'caucasian',
+      'is he african',
+      'african',
+      'is he a foreigner',
+      'is he foreigner',
+      'foreigner',
+      'foreign',
+      'foreign national',
+      'citizenship',
+      'passport',
+      'what nationality',
+      'non indian',
+      'is he foreign',
+      'race',
+      'ethnicity',
       'is he from',
       'where from',
       'nationality',
@@ -794,7 +830,8 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
       'based in jaipur',
     ],
     responses: [
-      `Nikhil is an Indian software engineer based in Jaipur, Rajasthan. His most suitable and preferred locations include Jaipur (home base), Gurugram, Noida, Delhi NCR, and Pune, along with major tech centers like Bangalore and Hyderabad. He is 100% open to relocation, on-site, hybrid, or remote engineering positions.`,
+      `Nikhil is an Indian software engineer born and based in Jaipur, Rajasthan, India. He is not Chinese, American, or of foreign nationality. He is bilingual in English and Hindi, collaborates seamlessly with global engineering teams, and is open to relocation (Jaipur, Gurugram, Noida, Delhi NCR, Pune, Bangalore, Hyderabad) as well as remote positions.`,
+      `Nikhil is an Indian citizen based in Jaipur, Rajasthan. His most suitable and preferred locations include Jaipur (home base), Gurugram, Noida, Delhi NCR, and Pune, along with major tech centers like Bangalore and Hyderabad. He is 100% open to relocation, on-site, hybrid, or remote engineering positions.`,
     ],
     followUps: [`Want his contact details or availability date?`],
   },
@@ -1109,6 +1146,566 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
     ],
     followUps: [`Ready to explore his backend stack or project builds?`],
   },
+  {
+    id: 'languages-spoken',
+    keywords: [
+      'languages',
+      'language',
+      'languages spoken',
+      'does he speak english',
+      'is he fluent in english',
+      'english proficiency',
+      'hindi',
+      'mother tongue',
+      'what languages does he speak',
+      'can he speak hindi',
+      'communication language',
+      'can he communicate in english',
+      'english and hindi',
+      'fluent in english',
+    ],
+    responses: [
+      `Nikhil is bilingual, fluent in both English and Hindi. He uses English daily for software documentation, code comments, pull request reviews, and technical presentations, ensuring smooth collaboration across international and distributed engineering teams.`,
+    ],
+    followUps: [`Want to know more about his teamwork style or communication?`],
+  },
+  {
+    id: 'age-gender-personal',
+    keywords: [
+      'how old is he',
+      'his age',
+      'what is his age',
+      'age of nikhil',
+      'date of birth',
+      'dob',
+      'when was he born',
+      'birth year',
+      'is he a boy',
+      'is he a man',
+      'gender',
+      'is he married',
+      'marital status',
+      'single or married',
+      'does he have a girlfriend',
+      'relationship status',
+      'family background',
+      'parents',
+    ],
+    responses: [
+      `Nikhil is a 21-year-old software engineer (born in 2005) based in Jaipur, India. He graduated B.Tech CSE in 2026, is single, and dedicates his time to software engineering, algorithmic problem solving, and building scalable systems.`,
+    ],
+    followUps: [`Want to see his education or core technical skills?`],
+  },
+  {
+    id: 'higher-studies-mba',
+    keywords: [
+      'higher studies',
+      'higher education',
+      'masters',
+      'ms abroad',
+      'plans for masters',
+      'mba',
+      'cat exam',
+      'gre',
+      'further studies',
+      'will he leave for college',
+      'will he leave for higher studies',
+      'higher study plans',
+      'phd',
+      'further education',
+    ],
+    responses: [
+      `Nikhil has zero plans for higher studies, an MS abroad, or an MBA. He is 100% committed to software engineering as his full-time career, aiming to take deep technical ownership of production backend services and distributed systems within a high-growth team.`,
+    ],
+    followUps: [`Want his immediate availability date or contact info?`],
+  },
+  {
+    id: 'academics-backlogs',
+    keywords: [
+      'backlog',
+      'backlogs',
+      'any backlogs',
+      'failed any exam',
+      'failed any subject',
+      'atkt',
+      'arrear',
+      'schooling',
+      '12th marks',
+      '10th marks',
+      'cbse',
+      'school percentage',
+      'academic record',
+      'cgpa details',
+    ],
+    responses: [
+      `Nikhil has a spotless academic track record with zero backlogs. He completed his B.Tech in Computer Science and Engineering from Amity University Rajasthan (batch 2022-2026) with an 8.48 CGPA, backed by strong fundamentals in algorithms, operating systems, database management, and networking.`,
+    ],
+    followUps: [`Want to check his 400+ DSA problem record?`],
+  },
+  {
+    id: 'work-authorization-visa',
+    keywords: [
+      'visa',
+      'work authorization',
+      'work permit',
+      'visa sponsorship',
+      'h1b',
+      'can he work in us',
+      'can he work in europe',
+      'can he work in uk',
+      'can he work abroad',
+      'international relocation',
+      'relocate abroad',
+      'work in usa',
+      'work in germany',
+      'work in canada',
+    ],
+    responses: [
+      `Nikhil is an Indian citizen with full authorization to work anywhere in India without restrictions. For international roles (US, Europe, UK, UAE, Singapore, etc.), he is available for remote engineering contracts or positions offering standard work visa sponsorship.`,
+    ],
+    followUps: [`Want his preferred locations or contact details?`],
+  },
+  {
+    id: 'work-logistics-shifts',
+    keywords: [
+      'night shift',
+      'night shifts',
+      'can he work night shift',
+      'graveyard shift',
+      'weekend',
+      'work on weekends',
+      'saturday',
+      'sunday',
+      'extra hours',
+      'overtime',
+      'us shift',
+      'uk shift',
+      'timezone overlap',
+      'est hours',
+      'pst hours',
+      'working hours',
+      'flexible hours',
+      'on call duty',
+      'on call shift',
+    ],
+    responses: [
+      `Nikhil is highly adaptable with working hours. He accommodates US (EST/PST) and European timezones for agile standups and sprint planning. He is comfortable with on-call shifts, while engineering defensive code (type safety, transactional locks) to prevent production emergencies by design.`,
+    ],
+    followUps: [`Want to review his immediate joining availability?`],
+  },
+  {
+    id: 'dev-environment-tooling',
+    keywords: [
+      'what os',
+      'operating system',
+      'mac or windows',
+      'windows or linux',
+      'linux',
+      'ubuntu',
+      'vs code',
+      'vscode',
+      'vim',
+      'neovim',
+      'editor',
+      'ide',
+      'tabs or spaces',
+      'dark mode or light mode',
+      'what tools does he use',
+      'favorite editor',
+      'dev setup',
+    ],
+    responses: [
+      `Nikhil works primarily with VS Code, Docker, Git, and Linux/Unix terminal environments. And on the legendary developer debates: 2 spaces, strict TypeScript, automated linting, and 100% dark mode! 😄`,
+    ],
+    followUps: [`Want to see his core tech stack or GitHub repositories?`],
+  },
+  {
+    id: 'bgv-trustworthiness',
+    keywords: [
+      'background check',
+      'bgv',
+      'background verification',
+      'criminal record',
+      'police verification',
+      'is he trustworthy',
+      'can we trust him',
+      'is he legitimate',
+      'is he fake',
+      'real developer',
+      'fake portfolio',
+      'reference check',
+      'integrity',
+    ],
+    responses: [
+      `Nikhil has a verified, clean background: authenticated B.Tech degree (8.48 CGPA), official internship certificates from Wisflux Tech Labs and Celebal Technologies, 4,500+ genuine GitHub commits, and 5 deployed web applications. He is fully prepared for corporate BGV processes.`,
+    ],
+    followUps: [`Want to download his resume or check his LinkedIn?`],
+  },
+  {
+    id: 'tech-other-languages',
+    keywords: [
+      'does he know java',
+      'java',
+      'spring boot',
+      'golang',
+      'go language',
+      'does he know go',
+      'python',
+      'django',
+      'fastapi',
+      'c#',
+      '.net',
+      'rust',
+      'c plus plus',
+      'c++ experience',
+      'other programming languages',
+    ],
+    responses: [
+      `Nikhil's core daily languages are TypeScript/JavaScript, C++ (used for 400+ DSA solutions), and Python (used in AI and data scripts). Because of his strong CS fundamentals, he understands memory, concurrency, and OOP patterns, enabling him to ramp up on Go, Java/Spring Boot, or Rust in just a few days.`,
+    ],
+    followUps: [`Want to explore his backend stack or DSA record?`],
+  },
+  {
+    id: 'tech-cloud-infra',
+    keywords: [
+      'aws',
+      'amazon web services',
+      'ec2',
+      's3',
+      'gcp',
+      'google cloud',
+      'azure',
+      'cloud experience',
+      'serverless',
+      'lambda',
+      'terraform',
+      'cloud architecture',
+      'cloud deployment',
+    ],
+    responses: [
+      `Nikhil deploys containerized apps with Docker to platforms like Render, Vercel, and Firebase with CI/CD automation. He understands fundamental cloud concepts like compute instances, S3 object storage, IAM access roles, and reverse proxies, and is eager to work with AWS, GCP, or Azure environments.`,
+    ],
+    followUps: [`Want to inspect his Dockerized RAG chatbot deployment?`],
+  },
+  {
+    id: 'tech-k8s-devops',
+    keywords: [
+      'kubernetes',
+      'k8s',
+      'helm',
+      'ci cd pipeline',
+      'github actions',
+      'orchestration',
+      'container orchestration',
+      'nginx',
+      'reverse proxy',
+      'devops skills',
+    ],
+    responses: [
+      `Nikhil containerizes his microservices with Docker and Docker Compose (including multi-service NestJS + pgvector apps on Render). While single-host containerization is his current production deployment standard, mastering Kubernetes orchestration and Helm charts is his next immediate learning milestone.`,
+    ],
+    followUps: [`Want to explore his DevOps setup or project architectures?`],
+  },
+  {
+    id: 'tech-kafka-queues',
+    keywords: [
+      'kafka',
+      'apache kafka',
+      'rabbitmq',
+      'message queue',
+      'message broker',
+      'event driven',
+      'pub sub',
+      'asynchronous tasks',
+      'event streaming',
+      'sqs',
+      'queues',
+    ],
+    responses: [
+      `Nikhil understands event-driven architecture and asynchronous message queues. At Wisflux, services communicated via REST APIs and transactional PostgreSQL boundaries; he has studied Kafka partition streams and RabbitMQ acknowledge loops, and is excited to architect distributed queue pipelines at scale.`,
+    ],
+    followUps: [`Want to discuss how he prevented double bookings at Wisflux?`],
+  },
+  {
+    id: 'tech-graphql-grpc-websockets',
+    keywords: [
+      'graphql',
+      'grpc',
+      'websockets',
+      'websocket',
+      'socket io',
+      'real time',
+      'sse',
+      'server sent events',
+      'protocol buffers',
+      'protobuf',
+      'realtime',
+    ],
+    responses: [
+      `Nikhil's production systems focus on RESTful APIs with NestJS, DTO validation, and Swagger OpenAPI contracts. He understands WebSockets and Socket.io for real-time bidirectional communication and gRPC with Protocol Buffers for fast microservice IPC.`,
+    ],
+    followUps: [`Want to see his backend architectural design patterns?`],
+  },
+  {
+    id: 'tech-vue-angular',
+    keywords: [
+      'angular',
+      'vue',
+      'vuejs',
+      'svelte',
+      'sveltekit',
+      'does he know angular',
+      'does he know vue',
+      'redux',
+      'mobx',
+      'frontend frameworks',
+    ],
+    responses: [
+      `Nikhil specializes in the modern React and Next.js 14 ecosystem (TypeScript, Tailwind CSS, Zustand, Framer Motion). Because he understands reactive state, component lifecycles, and unidirectional data flows, he can adapt to Vue or Angular in short order if needed.`,
+    ],
+    followUps: [`Want to inspect his flagship Flyeng Career platform?`],
+  },
+  {
+    id: 'tech-redis-caching',
+    keywords: [
+      'redis',
+      'caching',
+      'cache',
+      'cache invalidation',
+      'in memory database',
+      'session store',
+      'rate limiting with redis',
+      'lru cache',
+      'redis cache',
+    ],
+    responses: [
+      `Nikhil designs systems with caching layers to reduce database load and latency: using Redis for distributed locks, session management, rate limiting, and caching hot query paths with explicit TTL invalidation strategies.`,
+    ],
+    followUps: [`Want to discuss his database design choices?`],
+  },
+  {
+    id: 'tech-mongodb-nosql',
+    keywords: [
+      'mongodb',
+      'mongoose',
+      'nosql',
+      'document database',
+      'dynamodb',
+      'cassandra',
+      'firebase firestore',
+      'when to use nosql',
+      'sql or nosql',
+    ],
+    responses: [
+      `Nikhil has hands-on experience with MongoDB and Firebase Firestore (used in his AI Fitness Platform). He uses PostgreSQL as his primary choice when ACID guarantees and transactional locking are essential, and leverages NoSQL document stores for flexible, unstructured data.`,
+    ],
+    followUps: [`Want to hear about his PostgreSQL and pgvector implementations?`],
+  },
+  {
+    id: 'tech-testing-qa',
+    keywords: [
+      'testing',
+      'unit testing',
+      'jest',
+      'integration testing',
+      'e2e testing',
+      'cypress',
+      'postman',
+      'tdd',
+      'how does he test',
+      'automated tests',
+      'test coverage',
+    ],
+    responses: [
+      `Nikhil focuses testing where risk is highest: critical business logic, DTO input validation, and transactional edge cases. He writes unit tests using Jest, verifies REST endpoints with Postman and Swagger, and ensures schema migrations are validated before deployment.`,
+    ],
+    followUps: [`Want to know how he verified the RAG retrieval accuracy?`],
+  },
+  {
+    id: 'tech-system-design-principles',
+    keywords: [
+      'hld',
+      'lld',
+      'high level design',
+      'low level design',
+      'cap theorem',
+      'horizontal scaling',
+      'microservices vs monolith',
+      'monolith vs microservices',
+      'load balancing',
+      'rate limiting architecture',
+      'system design principles',
+    ],
+    responses: [
+      `Nikhil designs systems around core resilience principles: 1) Modular service boundaries, 2) Stateless backend layers for horizontal scaling, 3) ACID transactional guarantees at the database level, 4) Defensive validation with typed DTOs, and 5) Idempotent endpoints to ensure safe retries.`,
+    ],
+    followUps: [`Want to discuss his Wisflux concurrency locking architecture?`],
+  },
+  {
+    id: 'hr-leadership-initiative',
+    keywords: [
+      'leadership',
+      'leadership skills',
+      'led a team',
+      'take initiative',
+      'hackathon win',
+      'first prize hackathon',
+      'mentoring',
+      'proactive',
+      'initiative',
+    ],
+    responses: [
+      `Nikhil demonstrates high initiative: he captained his hackathon team to First Prize at Amity University, steering the architecture and delivery under a 24-hour deadline. At Wisflux, he proactively uncovered double-booking race conditions during testing and implemented row-level locking to solve it.`,
+    ],
+    followUps: [`Want to hear about his hackathon project or achievements?`],
+  },
+  {
+    id: 'hr-motivation-drive',
+    keywords: [
+      'what motivates him',
+      'why engineering',
+      'passion for coding',
+      'what drives him',
+      'why does he code',
+      'love for programming',
+      'what gets him excited',
+      'motivation',
+    ],
+    responses: [
+      `Nikhil is driven by building systems that run flawlessly under pressure: writing backend code that doesn't break at 2 AM, eliminating race conditions, and turning complex AI capabilities into real, snappy user experiences. Shipping reliable software is what energizes him every day.`,
+    ],
+    followUps: [`Want to see his 400+ DSA record or shipped projects?`],
+  },
+  {
+    id: 'hr-handling-criticism',
+    keywords: [
+      'handling criticism',
+      'negative feedback',
+      'pr pushback',
+      'code review criticism',
+      'how does he take feedback',
+      'constructive criticism',
+      'humility',
+      'feedback',
+    ],
+    responses: [
+      `Nikhil welcomes rigorous feedback with humility and an open mind. During PR reviews at Wisflux and Celebal, he treated architectural critiques as learning opportunities to sharpen code quality, actively seeking out feedback from senior engineers.`,
+    ],
+    followUps: [`Want to know more about his teamwork style?`],
+  },
+  {
+    id: 'hr-greatest-accomplishment',
+    keywords: [
+      'greatest accomplishment',
+      'proudest achievement',
+      'biggest achievement',
+      'proudest moment',
+      'what is he most proud of',
+      'major accomplishment',
+    ],
+    responses: [
+      `Nikhil's standout achievements include: 1) Architecting and deploying a live, production-grade pgvector RAG chatbot in Docker, 2) Solving real-world concurrency double-bookings with pessimistic locking at Wisflux, 3) Winning First Prize at the Amity University Hackathon, and 4) Solving 400+ DSA algorithmic problems with 4,500+ GitHub commits.`,
+    ],
+    followUps: [`Want to see his live RAG chatbot or flagship project?`],
+  },
+  {
+    id: 'hr-ideal-manager',
+    keywords: [
+      'ideal manager',
+      'ideal boss',
+      'management style',
+      'what kind of manager',
+      'autonomous',
+      'micromanagement',
+      'how does he like to be managed',
+      'preferred manager',
+    ],
+    responses: [
+      `Nikhil thrives under leaders who set clear technical objectives and user context, give engineers the autonomy to research and execute solutions, and foster a culture of blameless postmortems and continuous code review feedback.`,
+    ],
+    followUps: [`Want to discuss his work culture preferences?`],
+  },
+  {
+    id: 'hr-startups-vs-mnc',
+    keywords: [
+      'startup vs mnc',
+      'startups or big tech',
+      'mnc or startup',
+      'product company vs service company',
+      'why startup',
+      'why product company',
+      'service vs product',
+    ],
+    responses: [
+      `Nikhil is drawn to high-growth product companies and engineering-first teams where code ships quickly, technical ownership is deep, and individual contributors have a direct impact on product architecture and user experience.`,
+    ],
+    followUps: [`Want to check his immediate availability date?`],
+  },
+  {
+    id: 'personal-hobbies-routine',
+    keywords: [
+      'hobbies',
+      'what does he do for fun',
+      'free time',
+      'interests',
+      'outside work',
+      'music',
+      'sports',
+      'coffee or tea',
+      'daily routine',
+      'personal life',
+    ],
+    responses: [
+      `Outside of coding, Nikhil enjoys reading engineering postmortems (such as Cloudflare and Uber outage analyses), solving algorithmic puzzles for fun, staying physically active with fitness routines, and exploring modern developer tooling. He is a coffee enthusiast who loves deep-focus engineering sessions! ☕`,
+    ],
+    followUps: [`Want to see his 400+ DSA record or projects?`],
+  },
+  {
+    id: 'meta-ai-replacing-programmers',
+    keywords: [
+      'will ai replace engineers',
+      'ai replacing developers',
+      'future of software engineering',
+      'ai coding',
+      'does he fear ai',
+      'ai will replace programmers',
+    ],
+    responses: [
+      `Nikhil views AI as a powerful force multiplier for skilled engineers, not a replacement. While LLMs excel at generating boilerplate, human judgment is essential for system architecture, transaction boundaries, data integrity, security, and debugging subtle distributed failures. He embraces AI tools to build 10x faster.`,
+    ],
+    followUps: [`Want to explore his live RAG document Q&A system?`],
+  },
+  {
+    id: 'mgr-disagree-pm-scope',
+    keywords: [
+      'disagree with pm',
+      'product manager conflict',
+      'scope creep',
+      'feature deadline vs quality',
+      'pm wants feature fast',
+      'pressure from pm',
+    ],
+    responses: [
+      `When deadlines clash with technical viability, Nikhil bridges the gap by speaking product language: explaining how cutting corners on transactional boundaries creates customer support tickets and downtime later. He proposes phased rollouts: an MVP with clean contracts delivered on time, with advanced optimizations scheduled for phase two.`,
+    ],
+    followUps: [`Want to discuss his product engineering on Flyeng Career?`],
+  },
+  {
+    id: 'behavioral-getting-stuck',
+    keywords: [
+      'stuck on a problem',
+      'when he gets stuck',
+      'how does he debug',
+      'unable to solve',
+      'blockers',
+      'blocked',
+      'debugging process',
+    ],
+    responses: [
+      `When Nikhil hits a difficult blocker, he uses a disciplined 4-step framework: 1) Isolate the problem with a minimal reproduction script or unit test, 2) Consult documentation, source code, and GitHub issues, 3) Formulate clear hypotheses and test them systematically, and 4) If unresolved after 60-90 minutes, formulate a concise question with context and ask a teammate or lead to avoid blocking project timelines.`,
+    ],
+    followUps: [`Want to know more about his problem solving in code?`],
+  },
 ];
 
 const FOLLOW_UP_RE = /\b(tell me more|more details|elaborate|go deeper|expand|more|continue|and\?|why|how so|explain more|details|detail)\b/i;
@@ -1157,8 +1754,99 @@ export interface LocalAnswer {
 export const getSmartFallback = (query: string): LocalAnswer => {
   const q = query.toLowerCase();
 
+  // Nationality / Demographics intent
+  if (/\b(chinese|american|pakistan|bangladesh|canad|british|german|french|japan|russia|asian|caucasian|african|foreigner|foreign|citizenship|passport|ethnicity|race|nationality|indian|india|native)\b/.test(q)) {
+    return {
+      text: `Nikhil is an Indian citizen and software engineer born and based in Jaipur, Rajasthan, India. He is not Chinese, American, or from abroad. He is fluent in English and Hindi, works comfortably across global timezones, and is open to relocation (Jaipur, Gurugram, Noida, Delhi NCR, Pune, Bangalore, Hyderabad) or remote roles worldwide.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Relocation & Cities', query: 'What are his preferred work locations?' },
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Notice & Joining', query: 'When can he start working?' },
+      ],
+    };
+  }
+
+  // Personal / Age / Demographics intent
+  if (/\b(age|old|born|dob|birth|gender|male|female|man|boy|marital|single|married|wife|husband|girlfriend|boyfriend|family|parents|father|mother)\b/.test(q)) {
+    return {
+      text: `Nikhil is a 21-year-old male software engineer born in 2005, based in Jaipur, India. He completed his B.Tech in CSE in 2026, is single, and is 100% committed to engineering high-performance backend systems and practical AI tools.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Education & Degree', query: 'Tell me about his college and degree' },
+        { label: 'Core Tech Stack', query: 'What is his core backend tech stack?' },
+      ],
+    };
+  }
+
+  // Academics / Backlogs intent
+  if (/\b(backlog|backlogs|fail|marks|percentage|cgpa|gpa|school|10th|12th|amity|university|degree|academics|studies|score)\b/.test(q)) {
+    return {
+      text: `Nikhil graduated with an 8.48 CGPA in B.Tech Computer Science and Engineering from Amity University Rajasthan (2022-2026) with zero backlogs. His education provided a rigorous grounding in algorithms, operating systems, database management, and distributed networks.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: '400+ DSA Record', query: 'Tell me about his DSA problem solving record' },
+        { label: 'Wisflux SDE role', query: 'Tell me about his Wisflux internship' },
+        { label: 'Flagship Project', query: 'Tell me about his flagship Flyeng Career platform' },
+      ],
+    };
+  }
+
+  // Career continuity / higher studies intent
+  if (/\b(higher studies|master|masters|ms abroad|mba|cat|gre|phd|further studies|leave soon|switch|resign)\b/.test(q)) {
+    return {
+      text: `Nikhil has zero plans for higher studies or an MBA. He is 100% focused on his software engineering career, looking to take long-term ownership of backend microservices and modern AI systems within a high-impact engineering team.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Notice & Joining', query: 'When can he start working?' },
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Core Tech Stack', query: 'What is his core backend tech stack?' },
+      ],
+    };
+  }
+
+  // Work hours / shifts / logistics intent
+  if (/\b(night shift|weekend|saturday|sunday|overtime|timezone|hours|late night|on call|shifts|work life|travel)\b/.test(q)) {
+    return {
+      text: `Nikhil is adaptable and disciplined with working schedules. He easily accommodates US (EST/PST) and European timezones for collaboration, handles sprint delivery cycles comfortably, and is ready for on-call rotations when needed.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Notice & Joining', query: 'When can he start and can he relocate?' },
+        { label: 'Wisflux SDE role', query: 'Tell me about his Wisflux internship' },
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+      ],
+    };
+  }
+
+  // Relocation / Cities intent
+  if (/\b(jaipur|gurugram|gurgaon|noida|delhi|delhi ncr|pune|bangalore|bengaluru|hyderabad|mumbai|chennai|kolkata|relocat|wfo|wfh|hybrid|remote|onsite|location|city|places)\b/.test(q)) {
+    return {
+      text: `Nikhil's most suitable and preferred locations are Jaipur (home base), Gurugram, Noida, Delhi NCR, and Pune, along with Bangalore and Hyderabad. He is fully prepared to relocate immediately for on-site or hybrid roles, and is equally equipped for remote setups.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Notice & Joining', query: 'When can he start and can he relocate?' },
+        { label: 'Contact Details', query: 'How do I contact Nikhil?' },
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+      ],
+    };
+  }
+
+  // Languages intent
+  if (/\b(language|languages|speak|fluent|english|hindi|mother tongue|communication|talk)\b/.test(q)) {
+    return {
+      text: `Nikhil is fluent in both English and Hindi. He communicates technical concepts clearly, writes detailed PR summaries and architecture docs, and collaborates effortlessly in international and distributed teams.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Wisflux SDE role', query: 'Tell me about his Wisflux internship' },
+        { label: 'Core Tech Stack', query: 'What is his core backend tech stack?' },
+      ],
+    };
+  }
+
   // Salary / compensation intent
-  if (/\b(money|budget|pay|ctc|package|salary|compensation|hourly|rate|cost)\b/.test(q)) {
+  if (/\b(money|budget|pay|ctc|package|salary|compensation|hourly|rate|cost|stipend)\b/.test(q)) {
     return {
       text: `Nikhil's compensation expectations reflect competitive market standards for high-impact early-career Software Engineers. He is open to discussions based on role scope, equity, and location. Reach him directly at nikhiljangid343@gmail.com for numbers.`,
       topic: null,
@@ -1171,7 +1859,7 @@ export const getSmartFallback = (query: string): LocalAnswer => {
   }
 
   // Hiring / evaluation intent
-  if (/\b(hire|candidate|interview|evaluat|shortlist|offer|fit|developer|engineer)\b/.test(q)) {
+  if (/\b(hire|candidate|interview|evaluat|shortlist|offer|fit|developer|engineer|recommend)\b/.test(q)) {
     return {
       text: `If you are evaluating Nikhil: he is a 2026 B.Tech CSE graduate with production experience in NestJS, PostgreSQL, TypeORM, Docker, and RAG systems (Wisflux Tech Labs & Celebal). He is immediately available and open to relocation or remote work. Contact him at nikhiljangid343@gmail.com.`,
       topic: null,
@@ -1183,10 +1871,36 @@ export const getSmartFallback = (query: string): LocalAnswer => {
     };
   }
 
-  // Technical / backend / AI intent
-  if (/\b(code|tech|backend|database|api|docker|architecture|system|stack|frontend|framework)\b/.test(q)) {
+  // Trust / Verification intent
+  if (/\b(bgv|background check|police|criminal|legit|real|fake|scam|trust|trustworthy|verif|genuine)\b/.test(q)) {
     return {
-      text: `Nikhil specializes in backend and AI engineering: NestJS, PostgreSQL with pgvector, TypeORM, Docker Compose, and end-to-end RAG pipelines with MiniLM and OpenRouter/Llama. All his source code is public at https://github.com/nikhiljangid120.`,
+      text: `Nikhil has an authentic, verified record: a clean background, documented B.Tech CSE degree (8.48 CGPA), verifiable internship credentials from Wisflux and Celebal, 4,500+ genuine GitHub commits, and 5 live deployed applications. He is fully ready for corporate background verification.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Wisflux SDE role', query: 'Tell me about his Wisflux internship' },
+        { label: 'Flagship Project', query: 'Tell me about his flagship Flyeng Career platform' },
+      ],
+    };
+  }
+
+  // Hobbies / Personal interests intent
+  if (/\b(hobby|hobbies|free time|outside code|interests|sports|music|coffee|tea|routine|relax|play)\b/.test(q)) {
+    return {
+      text: `Outside of coding, Nikhil enjoys studying systems postmortems (Cloudflare, Uber), competitive problem solving, fitness routines, and experimenting with emerging tech like AI agent protocols (MCP). He is a coffee enthusiast who loves deep-focus development sessions! ☕`,
+      topic: null,
+      suggestedPrompts: [
+        { label: '400+ DSA Record', query: 'Tell me about his DSA problem solving record' },
+        { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
+        { label: 'Production RAG', query: 'Explain his production RAG chatbot pipeline' },
+      ],
+    };
+  }
+
+  // Technical / backend / AI intent
+  if (/\b(code|tech|backend|database|api|docker|architecture|system|stack|frontend|framework|java|golang|go|python|c\+\+|rust|aws|gcp|azure|kubernetes|k8s|kafka|rabbitmq|redis|graphql|grpc|angular|vue|svelte)\b/.test(q)) {
+    return {
+      text: `Nikhil specializes in backend and AI engineering: NestJS, PostgreSQL with pgvector, TypeORM, Docker Compose, and end-to-end RAG pipelines with MiniLM and OpenRouter/Llama. With C++ for 400+ DSA algorithmic problems and Python for AI scripts, his deep CS fundamentals allow him to adapt to Go, Java, or cloud tooling in days. All his code is public at https://github.com/nikhiljangid120.`,
       topic: null,
       suggestedPrompts: [
         { label: 'Pessimistic locking', query: 'Explain the pessimistic locking in his booking service' },
@@ -1199,9 +1913,9 @@ export const getSmartFallback = (query: string): LocalAnswer => {
   // Default intelligent fallback
   return {
     text: pickVaried('fallback', [
-      `I don't have a verified note on that exact question, but here is what I can confirm: Nikhil is a backend-focused SWE (B.Tech 2026, 8.48 CGPA) with two internships, five shipped projects, and 400+ DSA solutions. Try asking one of the prompts below!`,
-      `That sits outside what Nikhil has documented in my verified database. If it's crucial for your evaluation, drop him a quick note at nikhiljangid343@gmail.com, or explore his engineering work using the prompts below.`,
-      `Good question, but I keep my answers strictly grounded to verified facts about his software engineering experience, projects, stack, and availability. Choose a topic below to see what he builds.`,
+      `Nikhil is a 2026 B.Tech CSE graduate (8.48 CGPA) and backend-focused Software Engineer with two internships, five shipped projects, and 400+ DSA solutions. For specific inquiries, you can reach him directly at nikhiljangid343@gmail.com, or explore the verified highlights below!`,
+      `I keep my answers strictly grounded in Nikhil's software engineering background: backend systems (NestJS, PostgreSQL, pessimistic locking), production RAG pipelines, 5 deployed web apps, and immediate availability with zero notice period. What technical area would you like to explore?`,
+      `Nikhil's core profile: Software Engineer based in Jaipur (open to Gurugram, Noida, Delhi NCR, Pune, Bangalore, Hyderabad, or remote), with proven production backend experience at Wisflux Tech Labs. Check out his key projects or reach him at nikhiljangid343@gmail.com.`,
     ]),
     topic: null,
     suggestedPrompts: [
