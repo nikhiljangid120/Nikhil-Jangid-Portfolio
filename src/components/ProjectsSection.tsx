@@ -31,7 +31,7 @@ const projects: Project[] = [
     category: 'Full-Stack',
     overview: 'AI-powered career development platform helping aspiring software engineers prepare for placements through personalized roadmaps, portfolio building, interview preparation, resume enhancement, and AI-assisted career guidance.',
     problem: 'Students lack a unified platform that combines AI-driven career guidance, portfolio building, and interview preparation in one experience.',
-    solution: 'Built a comprehensive platform with AI/LLM integration, structured learning paths, resume optimization, and progress tracking — all within a production-grade Next.js + PostgreSQL architecture.',
+    solution: 'Built a comprehensive platform with AI/LLM integration, structured learning paths, resume optimization, and progress tracking, all within a production-grade Next.js + PostgreSQL architecture.',
     highlights: ['AI Career Guidance', 'Portfolio Builder', 'Resume Optimization', 'Learning Roadmaps', 'Interview Preparation', 'Progress Tracking'],
     tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Tailwind CSS', 'AI/LLM'],
     image: '/FlyEng.png',
@@ -41,11 +41,11 @@ const projects: Project[] = [
   },
   {
     id: 'rag-chatbot',
-    title: 'RAG Chatbot — Document Q&A System',
+    title: 'RAG Chatbot: Document Q&A System',
     status: 'live',
     category: 'AI',
-    overview: 'Production RAG pipeline for querying PDF documents: SHA-256 deduplicated ingestion, sliding-window chunking, 384-dim MiniLM embeddings, top-5 pgvector similarity search, and grounded answers generated through OpenRouter/Llama 3.3 — deployed on Render.',
-    problem: 'Large document collections are difficult to query efficiently — keyword search misses semantic meaning, and LLM answers need grounded sources to be trustworthy.',
+    overview: 'Production RAG pipeline for querying PDF documents: SHA-256 deduplicated ingestion, sliding-window chunking, 384-dim MiniLM embeddings, top-5 pgvector similarity search, and grounded answers generated through OpenRouter/Llama 3.3 deployed on Render.',
+    problem: 'Large document collections are difficult to query efficiently: keyword search misses semantic meaning, and LLM answers need grounded sources to be trustworthy.',
     solution: 'Built an end-to-end RAG document Q&A system: PDF ingestion with SHA-256 deduplication → sliding-window chunking → 384-dim MiniLM embeddings stored in pgvector → top-5 semantic retrieval → grounded Llama 3.3 responses with source attribution via OpenRouter.',
     highlights: ['SHA-256 Deduplication', 'Sliding-Window Chunking', '384-dim MiniLM Embeddings', 'Top-5 pgvector Search', 'OpenRouter + Llama 3.3', 'Dockerized & Deployed on Render'],
     tech: ['NestJS', 'React', 'PostgreSQL', 'pgvector', 'MiniLM', 'OpenRouter', 'Docker'],
@@ -74,7 +74,7 @@ const projects: Project[] = [
     title: 'AI Code Analyzer',
     status: 'live',
     category: 'AI',
-    overview: 'AI coding assistant that detects time/space complexity and suggests refactoring using the Groq API — first prize winner at a college-level hackathon.',
+    overview: 'AI coding assistant that detects time/space complexity and suggests refactoring using the Groq API (first prize winner at a college-level hackathon).',
     problem: 'Developers need quick, actionable feedback on code quality without setting up heavyweight analysis tools.',
     solution: 'Built a browser-based analyzer using Groq API with Llama for fast inference, D3.js for complexity visualization, and structured output parsing.',
     highlights: ['Code Quality Metrics', 'Complexity Visualization', 'Groq API', 'D3.js Charts', 'Multi-Language Support'],
@@ -349,7 +349,7 @@ const ProjectsSection = () => {
             <span className="text-primary opacity-80">Solutions</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-2xl">
-            Production systems, AI-powered platforms, and backend engineering — each built to solve real problems.
+            Production systems, AI-powered platforms, and backend engineering: each built to solve real problems.
           </p>
         </motion.div>
 

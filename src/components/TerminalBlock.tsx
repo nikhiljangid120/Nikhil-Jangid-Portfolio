@@ -56,7 +56,7 @@ const TerminalBlock = ({ lines, onComplete, title = "bash", autoScroll = true }:
           <div className="w-3 h-3 rounded-full bg-green-500/80" />
         </div>
         <div className="ml-4 text-xs text-muted-foreground opacity-70 flex-1 text-center font-bold">
-          {title} — zsh
+          {title} - zsh
         </div>
       </div>
 

@@ -159,7 +159,7 @@ const SkillsSection = () => {
             <span className="text-primary opacity-80">Arsenal</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-2xl">
-            A curated toolkit spanning languages, frameworks, databases, AI engineering, and DevOps —
+            A curated toolkit spanning languages, frameworks, databases, AI engineering, and DevOps,
             built from real production experience.
           </p>
         </motion.div>

@@ -164,7 +164,7 @@ const AboutSection = () => {
 
       try {
         const tone = isHumorous
-          ? 'witty, humorous and clever — one light quip is fine, but stay informative'
+          ? 'witty, humorous and clever: one light quip is fine, but stay informative'
           : 'professional, direct and concise';
 
         const contents = [
@@ -197,7 +197,7 @@ const AboutSection = () => {
         return text?.trim() || pickVaried('fallback', FALLBACK_RESPONSES);
       } catch (error) {
         console.error('Gemini API error:', error);
-        return `My live connection dropped, but the local knowledge base is intact — ask me about his internships, projects, stack, or contact details.`;
+        return `My live connection dropped, but the local knowledge base is intact: ask me about his internships, projects, stack, or contact details.`;
       }
     },
     []

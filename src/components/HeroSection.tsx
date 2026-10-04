@@ -10,6 +10,7 @@ import {
   animate,
 } from 'framer-motion';
 import { Github, Linkedin, Download, Code2, ChevronDown, MapPin, Briefcase, FileCode2 } from 'lucide-react';
+import InteractiveHeroBackground from './InteractiveHeroBackground';
 
 const stats = [
   { to: 2, suffix: '', decimals: 0, label: 'Internships' },
@@ -245,8 +246,11 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
     >
+      {/* Interactive Constellation Particle Mesh Background */}
+      <InteractiveHeroBackground />
+
       {/* Tech Grid Background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background/50 pointer-events-none" />
       {/* Ambient glows */}
@@ -326,7 +330,7 @@ const HeroSection = () => {
               transition={{ delay: 0.75 }}
             >
               B.Tech CSE Graduate · SDE Intern @ <span className="text-foreground/80">Wisflux Tech Labs</span>{' '}
-              (Jun–Aug 2026) · Builds with{' '}
+              (Jun-Aug 2026) · Builds with{' '}
               <span className="text-foreground/80">NestJS · PostgreSQL · Docker · RAG</span>
             </motion.p>
 

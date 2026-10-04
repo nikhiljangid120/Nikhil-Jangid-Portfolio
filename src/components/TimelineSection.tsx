@@ -60,7 +60,7 @@ const TimelineSection = () => {
     },
     {
       year: "2026",
-      title: "B.Tech CSE — Graduated",
+      title: "B.Tech CSE: Graduated",
       organization: "Amity University, Rajasthan",
       description: "Graduated with a CGPA of 8.48. Completed 4 years of Computer Science engineering with hands-on project experience, internships, and a strong foundation in software engineering principles.",
       type: "education",
@@ -73,7 +73,7 @@ const TimelineSection = () => {
       organization: "Wisflux Tech Labs",
       description: "Built production-grade backend services using NestJS, PostgreSQL, TypeORM, and Docker Compose. Developed an end-to-end RAG document Q&A pipeline with pgvector and OpenRouter, and concurrency-safe booking workflows with modular Nx monorepo architecture.",
       type: "experience",
-      details: "Backend Engineering: Developed transactional workflows secured with JWT auth, designed for consistency under concurrent requests using pessimistic locking. Implemented modular NestJS architecture within an Nx monorepo.\n\nAI Engineering: Designed and developed the RAG Chatbot — Document Q&A System (live at nikhil-rag-chatbot.onrender.com): PDF ingestion with SHA-256 deduplication, sliding-window chunking, 384-dim MiniLM vector embeddings with pgvector, and OpenRouter/Llama 3.3 for grounded, source-attributed responses. Deployed on Render with Docker and managed PostgreSQL.",
+      details: "Backend Engineering: Developed transactional workflows secured with JWT auth, designed for consistency under concurrent requests using pessimistic locking. Implemented modular NestJS architecture within an Nx monorepo.\n\nAI Engineering: Designed and developed the RAG Chatbot: Document Q&A System (live at nikhil-rag-chatbot.onrender.com): PDF ingestion with SHA-256 deduplication, sliding-window chunking, 384-dim MiniLM vector embeddings with pgvector, and OpenRouter/Llama 3.3 for grounded, source-attributed responses. Deployed on Render with Docker and managed PostgreSQL.",
       location: "Jaipur, Rajasthan"
     }
   ];
@@ -189,7 +189,7 @@ const TimelineSection = () => {
             <span className="text-primary opacity-80">Journey</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-2xl">
-            From a curious CS student to a production-grade backend engineer — internships at Celebal Technologies and Wisflux Tech Labs, 5+ projects, and a CGPA of 8.48.
+            From a curious CS student to a production-grade backend engineer with internships at Celebal Technologies and Wisflux Tech Labs, 5+ projects, and a CGPA of 8.48.
           </p>
         </motion.div>
 

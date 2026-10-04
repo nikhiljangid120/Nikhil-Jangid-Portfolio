@@ -82,7 +82,7 @@ const CommandPalette = () => {
 
     const openChatbot = () => {
         window.dispatchEvent(new CustomEvent('open-portfolio-chat'));
-        toast.info("John is online — ask him anything about Nikhil's work!");
+        toast.info("John is online: ask him anything about Nikhil's work!");
     };
 
     const items: CommandItemType[] = useMemo(() => [
@@ -154,7 +154,7 @@ const CommandPalette = () => {
         // Experience & Timeline Items
         {
             id: 'exp-wisflux',
-            title: 'Wisflux Tech Labs — SDE Intern',
+            title: 'Wisflux Tech Labs: SDE Intern',
             category: 'Experience',
             description: 'NestJS Nx monorepo, pessimistic locking & RAG pipeline (2026)',
             icon: Terminal,
@@ -164,7 +164,7 @@ const CommandPalette = () => {
         },
         {
             id: 'exp-celebal',
-            title: 'Celebal Technologies — Frontend Intern',
+            title: 'Celebal Technologies: Frontend Intern',
             category: 'Experience',
             description: 'React.js, Tailwind CSS & shipment tracking app (2025)',
             icon: Layers,
@@ -176,7 +176,7 @@ const CommandPalette = () => {
             id: 'edu-btech',
             title: 'B.Tech in Computer Science & Engineering',
             category: 'Experience',
-            description: 'Amity University Rajasthan · CGPA: 8.48 (2022–2026)',
+            description: 'Amity University Rajasthan · CGPA: 8.48 (2022-2026)',
             icon: GraduationCap,
             badge: 'Education',
             keywords: ['btech', 'cse', 'education', 'amity', 'degree', 'college', 'gpa', 'university', 'graduated'],
@@ -186,7 +186,7 @@ const CommandPalette = () => {
         // Projects
         {
             id: 'proj-flyeng',
-            title: 'Flyeng Career — AI Platform',
+            title: 'Flyeng Career: AI Platform',
             category: 'Projects',
             description: 'Flagship AI career platform (Next.js 14, TypeScript, PostgreSQL, Prisma)',
             icon: Sparkles,
@@ -198,7 +198,7 @@ const CommandPalette = () => {
         },
         {
             id: 'proj-rag',
-            title: 'RAG Chatbot — Document Q&A System',
+            title: 'RAG Chatbot: Document Q&A System',
             category: 'Projects',
             description: 'PDF dedup, sliding-window chunking, MiniLM embeddings & pgvector',
             icon: Bot,

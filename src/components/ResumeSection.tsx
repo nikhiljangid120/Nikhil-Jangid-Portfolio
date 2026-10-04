@@ -22,7 +22,7 @@ const ResumeSection = () => {
 
   const projects = [
     { name: "Flyeng Career", url: "http://flyeng-career.vercel.app/", status: "live" },
-    { name: "RAG Chatbot — Document Q&A", url: "https://nikhil-rag-chatbot.onrender.com/", status: "live" },
+    { name: "RAG Chatbot: Document Q&A", url: "https://nikhil-rag-chatbot.onrender.com/", status: "live" },
     { name: "AI Resume Builder", url: "https://ai-resume-builder-epbj.vercel.app/", status: "live" },
     { name: "AI Code Analyzer", url: "https://code-analyzer-f7bq.vercel.app/", status: "live" },
     { name: "AI Fitness Platform", url: "https://fitness-platform-zeta.vercel.app/", status: "live" },
@@ -159,7 +159,7 @@ const ResumeSection = () => {
               <h3 className="text-xl font-bold text-foreground mb-1">Wisflux Tech Labs</h3>
               <p className="text-sm text-primary/70 font-mono mb-2">SDE Intern · June 2026 – Aug 2026</p>
               <p className="text-sm text-muted-foreground mb-4">
-                Built production-grade backend services with NestJS, PostgreSQL, and Docker — including concurrency-safe transactional APIs and an end-to-end RAG document Q&amp;A pipeline deployed on Render using pgvector and OpenRouter.
+                Built production-grade backend services with NestJS, PostgreSQL, and Docker, including concurrency-safe transactional APIs and an end-to-end RAG document Q&amp;A pipeline deployed on Render using pgvector and OpenRouter.
               </p>
               <div className="flex flex-wrap gap-2">
                 {["NestJS", "PostgreSQL", "TypeORM", "Docker", "RAG", "pgvector"].map((tech) => (

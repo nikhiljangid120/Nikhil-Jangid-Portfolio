@@ -362,7 +362,7 @@
     perspective: 1000px;
   }
 
-  /* Animated shine border — rotating conic highlight on a padded wrapper */
+  /* Animated shine border: rotating conic highlight on a padded wrapper */
   .shine-border {
     position: relative;
     overflow: hidden;
