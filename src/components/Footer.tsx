@@ -50,28 +50,30 @@ const Footer = () => {
             </p>
           </motion.div>
 
-          {/* Copyright and Scroll-to-Top */}
+          {/* Copyright */}
           <div className="flex flex-col items-center md:items-end">
             <motion.div
-              className="text-muted-foreground text-sm mb-4 font-medium"
+              className="text-muted-foreground text-sm font-medium"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
               Building reliable software, one commit at a time.
             </motion.div>
-            <motion.button
-              onClick={scrollToTop}
-              className="p-3 bg-muted/30 rounded-full text-muted-foreground hover:text-primary border border-border transition-colors"
-              whileHover={{ y: -2, borderColor: 'rgba(38, 235, 218, 0.28)' }}
-              whileTap={{ scale: 0.97 }}
-              aria-label="Scroll to top"
-            >
-              <ArrowUp size={20} />
-            </motion.button>
           </div>
         </div>
       </motion.div>
+
+      {/* Floating scroll-to-top, offset left of the chat orb so they never overlap */}
+      <motion.button
+        onClick={scrollToTop}
+        className="fixed bottom-5 right-20 z-40 p-3 bg-background/80 backdrop-blur-md rounded-full text-muted-foreground hover:text-primary border border-border transition-colors shadow-lg"
+        whileHover={{ y: -2, borderColor: 'rgba(38, 235, 218, 0.28)' }}
+        whileTap={{ scale: 0.97 }}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp size={20} />
+      </motion.button>
     </footer>
   );
 };

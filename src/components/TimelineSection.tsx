@@ -473,14 +473,8 @@ const TimelineSection = () => {
                 </motion.button>
 
                 <div className="relative p-8 z-10">
-                  <div className="flex items-start justify-between">
-                    <div className={`p-3 rounded-lg bg-gradient-to-r ${getGradient(selectedItem.type)} mb-4`}>
-                      {getIcon(selectedItem.type)}
-                    </div>
-
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${getGradient(selectedItem.type)} text-primary-foreground`}>
-                      {getTypeLabel(selectedItem.type)}
-                    </span>
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${getGradient(selectedItem.type)} mb-4 w-fit`}>
+                    {getIcon(selectedItem.type)}
                   </div>
 
                   <motion.h3
@@ -492,7 +486,11 @@ const TimelineSection = () => {
                     {selectedItem.title}
                   </motion.h3>
 
-                  <div className="flex flex-wrap gap-4 text-sm mb-4">
+                  <div className="flex flex-wrap items-center gap-4 text-sm mb-4">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${getGradient(selectedItem.type)} text-primary-foreground`}>
+                      {getTypeLabel(selectedItem.type)}
+                    </span>
+
                     <div className="flex items-center text-primary">
                       <Calendar className="w-4 h-4 mr-1" />
                       <span>{selectedItem.year}</span>

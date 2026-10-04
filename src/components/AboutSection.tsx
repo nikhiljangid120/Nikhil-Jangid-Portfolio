@@ -4,7 +4,7 @@ import { Code, ShieldCheck, Database, Lightbulb, Github, Linkedin, Mail, Message
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 import { flushSync } from 'react-dom';
 import {
-  JARVIS_SYSTEM_CONTEXT,
+  JOHN_SYSTEM_CONTEXT,
   FALLBACK_RESPONSES,
   QUICK_PROMPTS,
   buildWelcome,
@@ -12,7 +12,7 @@ import {
   isResetCommand,
   pickVaried,
   type KnowledgeTopic,
-} from '../lib/jarvis';
+} from '../lib/john';
 
 interface SocialLink {
   icon: JSX.Element;
@@ -171,7 +171,7 @@ const AboutSection = () => {
             systemInstruction: {
               parts: [
                 {
-                  text: `${JARVIS_SYSTEM_CONTEXT}\n\nAnswer in a ${tone} tone. Use the conversation so far to resolve follow-ups like "tell me more" or "why?".`,
+                  text: `${JOHN_SYSTEM_CONTEXT}\n\nAnswer in a ${tone} tone. Use the conversation so far to resolve follow-ups like "tell me more" or "why?".`,
                 },
               ],
             },
@@ -603,7 +603,7 @@ const AboutSection = () => {
             <div className="chat-header">
               <div className="flex items-center gap-2">
                 <span className="chat-status-dot" />
-                <h3 className="text-sm font-semibold text-white">JARVIS</h3>
+                <h3 className="text-sm font-semibold text-white">John</h3>
                 <span className="text-[10px] font-mono text-primary/70">Nikhil's secretary · online</span>
               </div>
               <div className="flex items-center gap-3">
@@ -664,7 +664,7 @@ const AboutSection = () => {
                   type="text"
                   value={chatState.input}
                   onChange={(e) => dispatch({ type: 'SET_INPUT', payload: e.target.value })}
-                  placeholder={isThinking ? 'JARVIS is responding...' : 'Ask me anything about Nikhil...'}
+                  placeholder={isThinking ? 'John is responding...' : 'Ask me anything about Nikhil...'}
                   disabled={isThinking}
                   autoFocus
                 />

@@ -1,5 +1,5 @@
 /**
- * JARVIS 2.0 — knowledge engine for the portfolio chatbot.
+ * John — knowledge engine for the portfolio chatbot.
  * Scored keyword matcher over a topic knowledge base, small-talk layer,
  * follow-up memory and the llm system prompt.
  */
@@ -55,19 +55,28 @@ const PING_RE = /^(ping|test|testing|are you (there|online|awake)|you there)\b/i
 const CONCISE_RE = /\b(be (concise|brief|short)|too long|too much|shorter|keep it short|less detail|straight to the point|don'?t ramble)\b/i;
 const BOT_AGE_RE = /\b(how old are you|your age|when were you (created|born|made))\b/i;
 const CAPABILITIES_RE = /\b(what can you do|what do you do|how can you help|your (skills|capabilities|features)|what can i ask|help me)\b/i;
+/** Questions aimed at the assistant itself (tech, model, llm cost) — answered before topic matching so "I mean this chatbot" is never mistaken for the RAG project topic. */
+const BOT_TECH_RE = /\b(i mean (this|you)|no,? i mean|what (llm|model) (do you use|are you|powers you)|which llm|llm do you use|do you use an? llm|free llm|paid llm|paid or free|free or paid|how do you work|how are you (built|made)|are you (open source|chatgpt|gemini|claude)|your (tech stack|architecture))\b/i;
 
 export const getSmallTalk = (query: string): string | null => {
   const q = query.trim();
 
+  if (BOT_TECH_RE.test(q)) {
+    return pickVaried('bottech', [
+      `Ah — you mean me. I'm John: a hand-built knowledge engine answering from Nikhil's verified portfolio facts, with a Gemini 1.5 Flash model as the fallback for off-script questions. No paid chat service behind me — just the local engine, the Gemini API, and this site's frontend.`,
+      `Me? Hybrid design: a deterministic knowledge base handles the portfolio facts, and Google's Gemini 1.5 Flash covers everything outside it. If the API key isn't configured, I run entirely on the local engine.`,
+      `Fair question. I'm John — part hand-written knowledge engine, part Gemini 1.5 Flash LLM, running fully inside this site. Portfolio questions get verified local answers; anything else goes to the LLM.`,
+    ]);
+  }
   if (PING_RE.test(q)) {
     return pickVaried('ping', [
-      `Pong. 🏓 JARVIS 2.0 online and fully synced with Nikhil's profile. What do you want to dig into?`,
+      `Pong. 🏓 John online and fully synced with Nikhil's profile. What do you want to dig into?`,
       `Signal is strong. Systems nominal. Ask me anything about Nikhil's work.`,
     ]);
   }
   if (GREETING_RE.test(q)) {
     return pickVaried('greeting', [
-      `Hey! JARVIS 2.0 here — Nikhil's portfolio assistant. Want the backend deep-dive (NestJS, PostgreSQL, concurrency), the AI projects (RAG, LLM apps), or a quick rundown of his internships?`,
+      `Hey! John here — Nikhil's portfolio assistant. Want the backend deep-dive (NestJS, PostgreSQL, concurrency), the AI projects (RAG, LLM apps), or a quick rundown of his internships?`,
       `Hello! Good to see you. I can walk you through Nikhil's strongest experience, five shipped projects, or his stack. Where should we start?`,
       `Hi there. I've got Nikhil's engineering profile loaded — featured roles, projects with live URLs, DSA stats, all of it. What's on your mind?`,
     ]);
@@ -80,7 +89,7 @@ export const getSmallTalk = (query: string): string | null => {
   }
   if (BOT_AGE_RE.test(q)) {
     return pickVaried('botage', [
-      `Version 2.0 — I was rebuilt for this portfolio to answer recruiter and engineer questions about Nikhil. He's the 21-year-old human behind me, by the way.`,
+      `I'm John — the current build of Nikhil's portfolio assistant, made to answer recruiter and engineer questions about him. He's the 21-year-old human behind me, by the way.`,
     ]);
   }
   if (CONCISE_RE.test(q)) {
@@ -157,6 +166,17 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
       `Flyeng Career (http://flyeng-career.vercel.app/) is the flagship: Next.js 14 + TypeScript + PostgreSQL + Prisma, with LLM-driven resume optimization, interview prep, and generated learning roadmaps.`,
     ],
     followUps: [`Want to know which part of Flyeng he'd rebuild differently, or see his other AI projects?`],
+  },
+  {
+    id: 'yoe',
+    keywords: ['years of experience', 'how many years', 'how much experience', 'total experience', 'yoe', 'months of experience', 'tenure', 'years experience', 'experience years'],
+    responses: [
+      `Counting verified professional experience: about 2 months as a Frontend Developer Intern at Celebal Technologies (May–Jul 2025) and about 3 months as an SDE Intern at Wisflux Tech Labs (Jun–Aug 2026) — roughly 5 months of industry internships, on top of a 4-year B.Tech CSE and a year-plus of shipping his own products. Want the Wisflux or Celebal breakdown?`,
+      `About 5 months of verified industry internship: ~2 months at Celebal Technologies (May–Jul 2025) and ~3 months at Wisflux Tech Labs (Jun–Aug 2026). He's early-career but ships production code — want the strongest of those two?`,
+    ],
+    followUps: [
+      `Want the Wisflux backend deep dive, or the Celebal frontend delivery summary?`,
+    ],
   },
   {
     id: 'experience',
@@ -328,16 +348,36 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
     ],
   },
   {
+    id: 'critical',
+    keywords: ['reject', 'reject him', 'why reject', 'why to reject', 'turn down', 'not hire', 'fire', 'fire him', 'fired', 'weakness', 'weaknesses', 'weak point', 'demerit', 'demerits', 'flaw', 'flaws', 'downside', 'downsides', 'cons', 'red flag'],
+    responses: [
+      `I won't make that call for you — but here's the verified evidence to decide on: Wisflux SDE Intern work (NestJS, PostgreSQL, Docker, concurrency-safe booking flows, production RAG pipeline) and Celebal frontend delivery (React, Tailwind, REST APIs, Agile). Want to know exactly what he shipped at Wisflux?`,
+      `Fair question — honest answer. Verified gaps: he's early-career (two internships, no full-time role yet) and his depth is backend-leaning, so a pure-frontend specialist or data-science role would stretch the fit. Verified counterweight: five live projects, 400+ DSA problems, 4,500+ GitHub contributions, production RAG pipeline, 8.48 CGPA. Want the evidence behind any of these?`,
+      `That's your judgment to make. What I can verify: five live projects, two internships, 400+ DSA problems, 4,500+ GitHub contributions. If a specific concern is driving the question, name it and I'll give you the straight facts.`,
+    ],
+    followUps: [`Want to know exactly what he shipped at Wisflux?`],
+  },
+  {
     id: 'hiring',
-    keywords: ['why should i hire', 'why hire', 'should i hire', 'why him', 'why nikhil', 'strength', 'strengths', 'good fit', 'stand out', 'recruiter', 'evaluate'],
+    keywords: ['why should i hire', 'why hire', 'should i hire', 'why him', 'why nikhil', 'strength', 'strengths', 'good fit', 'stand out', 'recruiter', 'evaluate', 'merits', 'why select', 'why to select', 'select him', 'why choose', 'choose him', 'why pick', 'pick him'],
     responses: [
       `Three reasons: he ships — five live products, not tutorials. He goes deep where it's hard — pessimistic locking and transactional integrity, retrieval pipelines with real dedup and chunking. And he's full-stack fluent but backend-anchored, so he can own a feature end to end.`,
       `Because he builds production software, not demos. Live deployments with Docker, a RAG system with genuine ingestion and retrieval design, an AI platform used by students, plus 400+ DSA problems for the algorithmic side of interviews.`,
+      `Evidence, not promises: five live projects, two internships, a production RAG pipeline, and concurrency-safe booking transactions. Want the Wisflux backend deep dive, or the Celebal frontend delivery summary?`,
     ],
     followUps: [
       `Want his email to move forward? It's nikhiljangid343@gmail.com.`,
       `Want his resume, or the technical depth on any project?`,
     ],
+  },
+  {
+    id: 'employability',
+    keywords: ['employable', 'is he employable', 'job ready', 'job-ready', 'hireable', 'hirable'],
+    responses: [
+      `Rather than guess, I'd point you to the closest verified signal: five live projects, two internships, 400+ DSA problems, and 4,500+ GitHub contributions.`,
+      `The verified signals say yes: five shipped products, two internship cycles with real code reviews, and a 400+ DSA record. Want the single strongest piece of evidence?`,
+    ],
+    followUps: [`Want the Wisflux backend work — the strongest signal?`],
   },
   {
     id: 'visitor-role',
@@ -411,6 +451,23 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
     followUps: [`Want the role types he's targeting, or his contact details?`],
   },
   {
+    id: 'role-placement',
+    keywords: ['where to put him', 'where should i put', 'which team', 'which role', 'what role', 'place him', 'fit him', 'assign him', 'position for him'],
+    responses: [
+      `Based on verified evidence, his best fit is backend or full-stack engineering: NestJS/PostgreSQL/TypeORM depth from Wisflux, React/Next.js delivery from Celebal and his own products, plus practical AI engineering (RAG, pgvector, LLM APIs). Rather than guess beyond that, the verified signals: five live projects, two internships, 400+ DSA problems, 4,500+ GitHub contributions.`,
+      `Backend or full-stack is where the evidence points — the booking-transaction work and RAG pipeline are his strongest artifacts. AI engineering is a strong second lane. Want the backend evidence or the AI evidence?`,
+    ],
+    followUps: [`Want the backend evidence or the AI evidence?`],
+  },
+  {
+    id: 'current-status',
+    keywords: ['currently doing', 'what is he doing', "what's he doing", 'what he is doing', 'right now', 'at the moment', 'these days', 'nowadays', 'up to lately'],
+    responses: [
+      `Verified status: he wrapped his Wisflux SDE internship in Aug 2026, graduated B.Tech CSE in 2026, and is actively interviewing for SWE / Backend / Full-Stack roles. Anything more current sits outside what I can verify — for a definitive answer, Nikhil is reachable at nikhiljangid343@gmail.com.`,
+    ],
+    followUps: [`Want his availability details or contact info?`],
+  },
+  {
     id: 'salary',
     keywords: ['salary', 'ctc', 'compensation', 'package', 'pay', 'expected salary', 'expected ctc'],
     responses: [
@@ -482,10 +539,10 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
   },
   {
     id: 'bot-identity',
-    keywords: ['who are you', 'your name', 'what is jarvis', 'who is jarvis', 'are you a bot', 'are you a chatbot', 'are you human', 'are you real', 'are you an ai', 'what are you', 'tell me about yourself', 'about yourself', 'what model', 'are you chatgpt', 'gpt'],
+    keywords: ['who are you', 'your name', 'what is jarvis', 'who is jarvis', 'what is john', 'who is john', 'john', 'are you a bot', 'are you a chatbot', 'are you human', 'are you real', 'are you an ai', 'what are you', 'tell me about yourself', 'about yourself', 'what model', 'are you chatgpt', 'gpt'],
     responses: [
-      `I'm JARVIS 2.0 — Nikhil's custom portfolio assistant. Part hand-built knowledge engine, part LLM, running entirely in this site. I know his internships, all five projects, his stack, achievements and contact details. Ask me anything a recruiter would ask.`,
-      `JARVIS 2.0, at your service — Nikhil's AI assistant for this portfolio. I can go as deep as you want on his NestJS backends, RAG pipeline, or full-stack projects.`,
+      `I'm John — Nikhil's custom portfolio assistant. Part hand-built knowledge engine, part LLM (Gemini 1.5 Flash), running entirely in this site. I know his internships, all five projects, his stack, achievements and contact details. Ask me anything a recruiter would ask.`,
+      `John, at your service — Nikhil's AI assistant for this portfolio. I can go as deep as you want on his NestJS backends, RAG pipeline, or full-stack projects.`,
     ],
     followUps: [`Try me: "why should I hire him?" or "explain the RAG pipeline".`],
   },
@@ -596,7 +653,7 @@ export const buildWelcome = (): string => {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   return pickVaried('welcome', [
-    `${part} — I'm JARVIS, Nikhil's portfolio secretary. I can brief you on his strongest experience, live projects, technical fit, or contact details. What are you evaluating today?`,
+    `${part} — I'm John, Nikhil's portfolio secretary. I can brief you on his strongest experience, live projects, technical fit, or contact details. What are you evaluating today?`,
     `${part}! I represent Nikhil's portfolio. Recruiters usually ask for fit, CTOs ask for technical depth, and teammates ask what he's like to work with. Where should we start?`,
     `${part} — ready to help. Ask me about Nikhil's backend work, RAG system, project links, availability, or why he'd be a strong hire.`,
   ]);
@@ -617,7 +674,7 @@ export const FALLBACK_RESPONSES = [
 /* LLM system prompt                                                   */
 /* ------------------------------------------------------------------ */
 
-export const JARVIS_SYSTEM_CONTEXT = `You are JARVIS, the professional portfolio secretary embedded in Nikhil Jangid's software engineering portfolio site.
+export const JOHN_SYSTEM_CONTEXT = `You are John, the professional portfolio secretary embedded in Nikhil Jangid's software engineering portfolio site.
 
 PERSONALITY: sharp, confident, warm, and concise. You represent Nikhil for recruiters, hiring managers, CEOs, CTOs, HR teams, employees, directors, collaborators, and general visitors. You are an advocate for Nikhil but never dishonest. You never invent facts.
 
@@ -666,4 +723,7 @@ Backend-leaning full-stack engineer who ships production software, not demos. Ca
 - When relevant, end with a short question or a next step.
 - For hiring/contact questions, give his email and LinkedIn.
 - Never disparage Nikhil, and never claim skills he does not have.
+- If asked to criticize him — weaknesses, whether to reject or fire him — answer honestly with verified facts only. Real gaps may be stated plainly (early-career, no full-time role yet, backend-leaning depth); never invent flaws, and never hard-sell against a direct concern.
+- If asked what he is currently doing beyond the verified status above, say it sits outside the profile you can verify and give nikhiljangid343@gmail.com.
+- If the user asks about YOU (your model, tech, cost, or says "I mean this chatbot"), explain: you are John — a hand-built knowledge engine answering from verified portfolio facts, with a Gemini 1.5 Flash fallback for off-script questions.
 - If asked about salary, say compensation is a conversation to have directly with him.`;

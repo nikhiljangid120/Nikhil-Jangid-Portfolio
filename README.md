@@ -9,7 +9,7 @@ Live Site: [http://flyeng-career.vercel.app/](http://flyeng-career.vercel.app/)
 
 ## ⚡ Key Features
 - **Terminal Console Theme**: A fully custom command-line interface aesthetic — complete with a macOS-style terminal window hero, grid backdrops, and scanline/glow details.
-- **JARVIS 2.0 AI Assistant**: A context-aware chatbot helper integrated with Google's Gemini API to query project facts, stats, work history, or respond to custom prompts with smart offline fallbacks.
+- **John AI Assistant**: A context-aware chatbot helper integrated with Google's Gemini API to query project facts, stats, work history, or respond to custom prompts with smart offline fallbacks.
 - **Project Filtering**: Filter the deployed-solutions grid by category (AI, Backend, Full-Stack) and status (Live / In Progress) with an animated, terminal-style filter bar.
 - **Interactive Command Palette**: Open with `Ctrl + K` or `Cmd + K` to search and jump to sections instantly.
 - **Core Pillars Grid**: Floating animation cards showcasing backend concurrency solutions, RAG pipelines, monorepo architectures, and system security.
@@ -47,7 +47,7 @@ npm install
 ```
 
 ### 4. Set Up Environment (Optional)
-JARVIS 2.0's AI replies require a Gemini API key. Create a `.env` file in the project root (or set the variable in your Vercel dashboard):
+John's AI replies require a Gemini API key. Create a `.env` file in the project root (or set the variable in your Vercel dashboard):
 ```bash
 VITE_GEMINI_API_KEY=your-gemini-api-key-here
 ```
