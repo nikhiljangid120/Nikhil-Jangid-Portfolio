@@ -151,6 +151,11 @@ const AboutSection = () => {
     return () => window.removeEventListener('open-portfolio-chat', handleOpenChat);
   }, []);
 
+  // Broadcast chat open/close state for floating buttons
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('portfolio-chat-state', { detail: { isOpen: isChatOpen } }));
+  }, [isChatOpen]);
+
   // Gemini call with the full profile context and multi-turn conversation memory
   const fetchGeminiResponse = useCallback(
     async (

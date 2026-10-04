@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -10,6 +12,27 @@ const Footer = () => {
       behavior: 'smooth',
     });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowTopBtn(window.scrollY > 400);
+    };
+
+    const handleChatState = (e: Event) => {
+      const customEvent = e as CustomEvent<{ isOpen: boolean }>;
+      setIsChatOpen(customEvent.detail?.isOpen ?? false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('portfolio-chat-state', handleChatState);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('portfolio-chat-state', handleChatState);
+    };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -34,10 +57,10 @@ const Footer = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Name and Title */}
           <motion.div
-            className="mb-6 md:mb-0 bg-card/50 p-4 rounded-lg border border-border/80"
+            className="bg-card/50 p-4 rounded-lg border border-border/80"
             whileHover={{ y: -2, borderColor: 'rgba(38, 235, 218, 0.28)' }}
             transition={{ duration: 0.25 }}
           >
@@ -50,8 +73,8 @@ const Footer = () => {
             </p>
           </motion.div>
 
-          {/* Copyright */}
-          <div className="flex flex-col items-center md:items-end">
+          {/* Copyright & In-page back to top */}
+          <div className="flex flex-col items-center md:items-end gap-2">
             <motion.div
               className="text-muted-foreground text-sm font-medium"
               initial={{ opacity: 0 }}
@@ -60,20 +83,36 @@ const Footer = () => {
             >
               Building reliable software, one commit at a time.
             </motion.div>
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+            >
+              Back to top
+              <ArrowUp size={13} />
+            </button>
           </div>
         </div>
       </motion.div>
 
-      {/* Floating scroll-to-top, offset left of the chat orb so they never overlap */}
-      <motion.button
-        onClick={scrollToTop}
-        className="fixed bottom-5 right-20 z-40 p-3 bg-background/80 backdrop-blur-md rounded-full text-muted-foreground hover:text-primary border border-border transition-colors shadow-lg"
-        whileHover={{ y: -2, borderColor: 'rgba(38, 235, 218, 0.28)' }}
-        whileTap={{ scale: 0.97 }}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp size={20} />
-      </motion.button>
+      {/* Floating scroll-to-top: cleanly stacked vertically above the chat button on the right edge */}
+      <AnimatePresence>
+        {showTopBtn && !isChatOpen && (
+          <motion.button
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.7, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 12 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed bottom-[5.4rem] right-[1.55rem] z-40 w-10 h-10 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-md text-muted-foreground hover:text-primary border border-border/80 hover:border-primary/50 shadow-xl transition-colors cursor-pointer"
+            whileHover={{ y: -2, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Back to top"
+            title="Scroll to top"
+          >
+            <ArrowUp size={18} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </footer>
   );
 };
