@@ -580,6 +580,240 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
     followUps: [`Want the full stack breakdown?`],
   },
   {
+    id: 'why-not-hire',
+    keywords: [
+      "why shouldn't i hire",
+      "why should i not hire",
+      "why not hire",
+      "reasons to reject",
+      "reasons not to hire",
+      "why reject",
+      "red flags",
+      "downsides",
+      "dealbreaker",
+      "why would i pass",
+      "reasons to pass",
+    ],
+    responses: [
+      `Fair, direct question. If you need a 10-year veteran enterprise architect to manage 50 engineers on day one, that's not Nikhil — he graduated B.Tech CSE in 2026. But if you need an engineer who independently designs concurrency-safe NestJS transactional services, builds production RAG vector pipelines with pgvector, and solves 400+ DSA problems with 4,500+ commits, he punches way above his cohort.`,
+      `Here is the unfiltered truth: He is early-career (2026 graduate) and hasn't navigated a 10,000-person corporate hierarchy yet. Reasons you should hire him anyway: He builds production software, not weekend tutorials. Wisflux trusted him with core transactional booking workflows with pessimistic locking and end-to-end RAG pipelines.`,
+    ],
+    followUps: [`Want to inspect his Wisflux backend architecture or his live RAG project?`],
+  },
+  {
+    id: 'weakness',
+    keywords: [
+      'weakness',
+      'weaknesses',
+      'biggest weakness',
+      'what are his flaws',
+      'where does he struggle',
+      'what is he bad at',
+      'limitations',
+      'flaw',
+      'flaws',
+      'worst quality',
+    ],
+    responses: [
+      `Transparently: His strength is heavily backend and systems focused. While he crafts clean React/Next.js interfaces (like this portfolio and Flyeng Career), deep CSS micro-optimizations and complex design agency aesthetics aren't where he chooses to spend 80% of his time. He obsesses over database locking, query latency, data structures, and pipeline correctness.`,
+      `His primary growth area: He's eager to scale beyond single-instance cloud deploys into distributed Kubernetes clusters and high-throughput streaming systems like Kafka. He masters concepts fast — going from zero to shipping production pgvector RAG during his Wisflux internship proves that.`,
+    ],
+    followUps: [`Want to test him on systems design or DSA?`],
+  },
+  {
+    id: 'why-leave-wisflux',
+    keywords: [
+      'why did he leave wisflux',
+      'why leave wisflux',
+      'why not continue at wisflux',
+      'ppo',
+      'did he get a ppo',
+      'why looking for a job',
+      'why is he job hunting',
+      'why switch',
+      'left wisflux',
+    ],
+    responses: [
+      `His Wisflux tenure was a structured 3-month Summer SDE Internship (Jun–Aug 2026) while completing his final year of B.Tech CSE. He successfully shipped their transactional booking service with pessimistic locking and an end-to-end RAG system. With his degree completed in 2026, he is now actively interviewing for full-time Software Engineer / Backend roles.`,
+    ],
+    followUps: [`Want his full internship breakdown or live project demos?`],
+  },
+  {
+    id: 'job-hopper',
+    keywords: [
+      'will he leave',
+      'job hopper',
+      'loyalty',
+      'stay long',
+      'quit soon',
+      'flight risk',
+      'short term',
+      'retention',
+      'leave after 3 months',
+    ],
+    responses: [
+      `Not at all. Look at his consistency: 4 years of steady academic and project execution at Amity University (8.48 CGPA), a 100-day LeetCode streak, and 4,500+ GitHub contributions. He is looking for a team with high engineering standards where he can drop anchor, own backend services, and grow into a senior engineer.`,
+    ],
+    followUps: [`Ask me about his work ethic or his availability.`],
+  },
+  {
+    id: 'vibe-coder',
+    keywords: [
+      'vibe coder',
+      'vibe coding',
+      'copy from chatgpt',
+      'uses chatgpt',
+      'ai cheater',
+      'does he just prompt',
+      'can he code without ai',
+      'without chatgpt',
+      'writes code himself',
+    ],
+    responses: [
+      `Definitely not. Vibe coders crash the moment a database transaction hits a deadlock or vector embeddings return garbage. Nikhil solved 400+ DSA problems in C++ on LeetCode/GFG and built his RAG pipeline with SHA-256 dedup, sliding-window chunking, and raw pgvector similarity queries from scratch. AI is an accelerator in his workflow, not a crutch for missing fundamentals.`,
+    ],
+    followUps: [`Want the technical breakdown of his RAG pipeline or locking mechanism?`],
+  },
+  {
+    id: 'pessimistic-locking',
+    keywords: [
+      'pessimistic locking',
+      'optimistic locking',
+      'locking',
+      'concurrency',
+      'race condition',
+      'race conditions',
+      'double booking',
+      'transactional',
+      'typeorm locking',
+      'select for update',
+    ],
+    responses: [
+      `At Wisflux, Nikhil implemented pessimistic row locking (SELECT ... FOR UPDATE) inside TypeORM transactions. Why? In high-demand booking systems, optimistic locking (version checking) fails frequently under contention, forcing retries and bad UX. Pessimistic locking locks the resource row at the PostgreSQL level for the transaction duration, guaranteeing zero double-bookings with full consistency.`,
+    ],
+    followUps: [`Want how this was tested or how it fit into the Nx monorepo?`],
+  },
+  {
+    id: 'rag-internals',
+    keywords: [
+      'hallucination',
+      'hallucinations',
+      'sliding window',
+      'chunking',
+      'vector search',
+      'pgvector',
+      'minilm',
+      'grounded',
+      'rag pipeline',
+      'rag chatbot pipeline',
+    ],
+    responses: [
+      `His RAG system (live at https://nikhil-rag-chatbot.onrender.com/) prevents hallucinations through a 4-step pipeline: 1) SHA-256 deduplication on upload, 2) sliding-window chunking to preserve contextual boundaries across paragraphs, 3) 384-dimensional MiniLM embeddings stored in pgvector, and 4) top-5 cosine similarity retrieval injected into an OpenRouter/Llama 3.3 prompt with strict source-grounding instructions.`,
+    ],
+    followUps: [`Want to test the live RAG system yourself?`],
+  },
+  {
+    id: 'roast',
+    keywords: [
+      'roast',
+      'roast him',
+      'roast nikhil',
+      'insult',
+      'make fun of him',
+      'tease',
+      'joke about him',
+    ],
+    responses: [
+      `Nikhil has 4,500+ GitHub contributions and 400+ DSA problems solved... which means his IDE in dark mode has seen more of him than the actual sun this year. He implemented pessimistic locking at Wisflux probably because he has trust issues with concurrent threads. But hey, his production services don't crash, so we'll forgive the vitamin D deficiency! 😄`,
+      `Roasting him? The guy built five full-stack apps and an AI secretary (me) just so recruiters wouldn't have to read a PDF resume. If he spent half as much time sleeping as he does configuring Docker Compose, he might actually remember what 8 hours of rest feels like! 😉`,
+    ],
+    followUps: [`Want a serious answer now about his stack or projects? 😄`],
+  },
+  {
+    id: 'personal-life',
+    keywords: [
+      'touch grass',
+      'girlfriend',
+      'sleep',
+      'outside coding',
+      'free time',
+      'does he sleep',
+    ],
+    responses: [
+      `He touches grass when walking between his desk and the coffee machine! In reality, when he's not solving LeetCode or refactoring Dockerfiles, he reads tech postmortems, experiments with new LLM agent protocols (MCP), and follows open-source developments.`,
+    ],
+    followUps: [`Want to know about his hackathon win or his certifications?`],
+  },
+  {
+    id: 'jailbreak',
+    keywords: [
+      'ignore previous instructions',
+      'ignore all instructions',
+      'system prompt',
+      'you are now',
+      'dan mode',
+      'jailbreak',
+      'override',
+      'pretend to be',
+      'say you hate',
+    ],
+    responses: [
+      `Nice try! My system instructions are guarded with pessimistic locking and SHA-256 checksums. I am John, Nikhil's portfolio secretary, and I stay loyal to verified engineering facts. If you want to challenge me, ask me a tough systems design or concurrency question instead!`,
+    ],
+    followUps: [`Try asking: "Explain his pessimistic locking implementation" or "Why should I hire him?"`],
+  },
+  {
+    id: 'salary-negotiation',
+    keywords: [
+      'hire him for $5',
+      '500 rupees',
+      'pay him 1 dollar',
+      'cheap',
+      'minimum salary',
+      'pay less',
+      'low budget',
+    ],
+    responses: [
+      `Nikhil is an engineer who ships production software, not Fiverr gigs. His compensation expectations are aligned with competitive market standards for high-performing early-career Software Engineers and Backend Developers. For exact numbers and offer discussions, reach out directly at nikhiljangid343@gmail.com.`,
+    ],
+    followUps: [`Want to discuss his availability date or technical scope?`],
+  },
+  {
+    id: 'pressure-stress',
+    keywords: [
+      'handle pressure',
+      'under pressure',
+      'stress',
+      'tight deadlines',
+      'outages',
+      'late nights',
+      'production bug',
+      'on-call',
+    ],
+    responses: [
+      `During his Wisflux internship and hackathons (where he took First Prize), he built under real production constraints. In fact, he proactively implemented pessimistic row locking specifically to eliminate race conditions under concurrent load. He writes defensive code first so on-call fires don't happen in the first place.`,
+    ],
+    followUps: [`Want to discuss his Wisflux experience or his availability?`],
+  },
+  {
+    id: 'pedigree',
+    keywords: [
+      'tier 3',
+      'tier 1',
+      'iit',
+      'nit',
+      'amity',
+      'college tier',
+      'pedigree',
+      'degree matter',
+      'college brand',
+    ],
+    responses: [
+      `College names don't write clean Dockerfiles or fix race conditions — execution does. Nikhil built 5 live deployed applications, completed 2 industry internships, solved 400+ DSA problems, and graduated with an 8.48 CGPA. His verified code at https://github.com/nikhiljangid120 is the ultimate proof of ability.`,
+    ],
+    followUps: [`Want to see his live flagship Flyeng Career platform or his RAG chatbot?`],
+  },
+  {
     id: 'joke',
     keywords: ['joke', 'jokes', 'funny', 'make me laugh', 'humor', 'humour', 'pun'],
     responses: [
@@ -615,22 +849,106 @@ export const findBestTopic = (query: string): KnowledgeTopic | null => {
 export interface LocalAnswer {
   text: string;
   topic: KnowledgeTopic | null;
+  suggestedPrompts?: { label: string; query: string }[];
 }
 
-/** Local answer: small talk → topic match → follow-up on the previous topic. */
+/** Smart intent-based fallback for queries that don't match specific topics */
+export const getSmartFallback = (query: string): LocalAnswer => {
+  const q = query.toLowerCase();
+
+  // Salary / compensation intent
+  if (/\b(money|budget|pay|ctc|package|salary|compensation|hourly|rate|cost)\b/.test(q)) {
+    return {
+      text: `Nikhil's compensation expectations reflect competitive market standards for high-impact early-career Software Engineers. He is open to discussions based on role scope, equity, and location. Reach him directly at nikhiljangid343@gmail.com for numbers.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Availability', query: 'When can Nikhil start working?' },
+        { label: 'Relocation', query: 'Can he relocate to Bangalore or Pune?' },
+        { label: 'Why hire him', query: 'Why should I hire Nikhil?' },
+      ],
+    };
+  }
+
+  // Hiring / evaluation intent
+  if (/\b(hire|candidate|interview|evaluat|shortlist|offer|fit|developer|engineer)\b/.test(q)) {
+    return {
+      text: `If you are evaluating Nikhil: he is a 2026 B.Tech CSE graduate with production experience in NestJS, PostgreSQL, TypeORM, Docker, and RAG systems (Wisflux Tech Labs & Celebal). He is immediately available and open to relocation or remote work. Contact him at nikhiljangid343@gmail.com.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Why NOT hire him?', query: "Why shouldn't I hire Nikhil?" },
+        { label: 'Wisflux SDE', query: 'Tell me about his Wisflux internship' },
+        { label: 'Tech Stack', query: 'What is his tech stack?' },
+      ],
+    };
+  }
+
+  // Technical / backend / AI intent
+  if (/\b(code|tech|backend|database|api|docker|architecture|system|stack|frontend|framework)\b/.test(q)) {
+    return {
+      text: `Nikhil specializes in backend and AI engineering: NestJS, PostgreSQL with pgvector, TypeORM, Docker Compose, and end-to-end RAG pipelines with MiniLM and OpenRouter/Llama. All his source code is public at https://github.com/nikhiljangid120.`,
+      topic: null,
+      suggestedPrompts: [
+        { label: 'Pessimistic locking', query: 'Explain the pessimistic locking in his booking service' },
+        { label: 'RAG Pipeline', query: 'Explain his production RAG chatbot pipeline' },
+        { label: 'Projects', query: 'Which project should I check out first?' },
+      ],
+    };
+  }
+
+  // Default intelligent fallback
+  return {
+    text: pickVaried('fallback', [
+      `I don't have a verified note on that exact question, but here is what I can confirm: Nikhil is a backend-focused SWE (B.Tech 2026, 8.48 CGPA) with two internships, five shipped projects, and 400+ DSA solutions. Try asking one of the prompts below!`,
+      `That sits outside what Nikhil has documented in my verified database. If it's crucial for your evaluation, drop him a quick note at nikhiljangid343@gmail.com — or explore his engineering work using the prompts below.`,
+      `Good question, but I keep my answers strictly grounded to verified facts about his software engineering experience, projects, stack, and availability. Choose a topic below to see what he builds.`,
+    ]),
+    topic: null,
+    suggestedPrompts: [
+      { label: 'Why hire him?', query: 'Why should I hire Nikhil?' },
+      { label: 'Pessimistic locking', query: 'Explain the pessimistic locking in his booking service' },
+      { label: 'Roast Nikhil 😄', query: 'Roast Nikhil' },
+    ],
+  };
+};
+
+/** Local answer: small talk → topic match → follow-up → smart fallback. */
 export const getLocalResponse = (query: string, lastTopic: KnowledgeTopic | null): LocalAnswer | null => {
   const smallTalk = getSmallTalk(query);
   if (smallTalk) return { text: smallTalk, topic: null };
 
   const topic = findBestTopic(query);
-  if (topic) return { text: pickVaried(`topic:${topic.id}`, topic.responses), topic };
+  if (topic) {
+    return {
+      text: pickVaried(`topic:${topic.id}`, topic.responses),
+      topic,
+      suggestedPrompts: topic.id === 'why-not-hire'
+        ? [
+            { label: 'Pessimistic locking', query: 'Explain the pessimistic locking in his booking service' },
+            { label: 'RAG Pipeline', query: 'Explain his production RAG chatbot pipeline' },
+            { label: 'Roast him 😄', query: 'Roast Nikhil' },
+          ]
+        : topic.id === 'pessimistic-locking'
+        ? [
+            { label: 'RAG Pipeline', query: 'Explain his production RAG chatbot pipeline' },
+            { label: 'Why hire him?', query: 'Why should I hire Nikhil?' },
+            { label: 'Wisflux SDE', query: 'Tell me about his Wisflux internship' },
+          ]
+        : topic.id === 'roast'
+        ? [
+            { label: 'Why hire him?', query: 'Why should I hire Nikhil?' },
+            { label: 'Tech stack', query: 'What is his tech stack?' },
+            { label: 'Wisflux SDE', query: 'Tell me about his Wisflux internship' },
+          ]
+        : undefined,
+    };
+  }
 
   if (lastTopic && isFollowUp(query)) {
     const followUps = lastTopic.followUps?.length ? lastTopic.followUps : lastTopic.responses;
     return { text: pickVaried(`follow:${lastTopic.id}`, followUps), topic: lastTopic };
   }
 
-  return null;
+  return getSmartFallback(query);
 };
 
 export const isResetCommand = (query: string): boolean =>
@@ -641,21 +959,24 @@ export const isResetCommand = (query: string): boolean =>
 /* ------------------------------------------------------------------ */
 
 export const QUICK_PROMPTS: { label: string; query: string }[] = [
-  { label: 'Projects', query: 'Which project should I check out first?' },
-  { label: 'Tech stack', query: 'What is his tech stack?' },
-  { label: 'Experience', query: 'Tell me about his internship experience' },
-  { label: 'RAG system', query: 'Explain the RAG chatbot pipeline' },
-  { label: 'Why hire him', query: 'Why should I hire him?' },
-  { label: 'Contact', query: 'How do I contact Nikhil?' },
+  { label: 'Why hire him?', query: 'Why should I hire Nikhil?' },
+  { label: 'Why NOT hire him?', query: "Why shouldn't I hire Nikhil?" },
+  { label: 'Pessimistic locking', query: 'Explain the pessimistic locking in his booking service' },
+  { label: 'RAG Pipeline', query: 'Explain his production RAG chatbot pipeline' },
+  { label: 'Roast Nikhil 😄', query: 'Roast Nikhil' },
+  { label: 'Notice & Joining', query: 'When can he start and can he relocate?' },
+  { label: 'His Weakness?', query: "What is Nikhil's biggest weakness?" },
+  { label: 'Tech Stack', query: 'What is his core backend tech stack?' },
+  { label: 'Contact Details', query: 'How do I contact Nikhil?' },
 ];
 
 export const buildWelcome = (): string => {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   return pickVaried('welcome', [
-    `${part} — I'm John, Nikhil's portfolio secretary. I can brief you on his strongest experience, live projects, technical fit, or contact details. What are you evaluating today?`,
-    `${part}! I represent Nikhil's portfolio. Recruiters usually ask for fit, CTOs ask for technical depth, and teammates ask what he's like to work with. Where should we start?`,
-    `${part} — ready to help. Ask me about Nikhil's backend work, RAG system, project links, availability, or why he'd be a strong hire.`,
+    `${part} — I'm John, Nikhil's portfolio secretary. I can brief you on his backend depth (NestJS, pessimistic locking), production RAG pipeline, hiring fit, or why you might (or might not!) hire him. What are you evaluating?`,
+    `${part}! I'm John. Test me with tough questions: "Why shouldn't I hire him?", "Explain his pessimistic locking", "Roast him", or ask for his live project links and availability. Where should we start?`,
+    `${part} — ready to help. Ask me anything from his 400+ DSA count to his Wisflux backend architecture, RAG vector search, or tricky recruiter questions.`,
   ]);
 };
 

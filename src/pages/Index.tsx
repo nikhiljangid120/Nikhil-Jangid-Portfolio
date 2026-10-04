@@ -8,7 +8,6 @@ import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
 import ResumeSection from "@/components/ResumeSection";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import CustomCursor from "@/components/CustomCursor";
 import CommandPalette from "@/components/CommandPalette";
 import ScrollProgress from "@/components/ScrollProgress";
 
@@ -22,7 +21,6 @@ const Index = () => {
         className="bg-transparent"
       >
         <TooltipProvider>
-          <CustomCursor />
           <ScrollProgress />
           <CommandPalette />
           <div className="fixed inset-0 bg-grid-pattern pointer-events-none opacity-20 -z-10" />

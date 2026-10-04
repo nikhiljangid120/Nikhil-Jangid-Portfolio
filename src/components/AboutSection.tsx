@@ -138,10 +138,18 @@ const AboutSection = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [chatState, dispatch] = useReducer(chatReducer, { messages: [], input: '', responseHistory: {} });
+  const [activeChips, setActiveChips] = useState<{ label: string; query: string }[]>(QUICK_PROMPTS);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const conversationRef = useRef<{ role: 'user' | 'model'; text: string }[]>([]);
   const lastTopicRef = useRef<KnowledgeTopic | null>(null);
   const hasWelcomedRef = useRef(false);
+
+  // Listen for open-portfolio-chat event from command palette or other components
+  useEffect(() => {
+    const handleOpenChat = () => setIsChatOpen(true);
+    window.addEventListener('open-portfolio-chat', handleOpenChat);
+    return () => window.removeEventListener('open-portfolio-chat', handleOpenChat);
+  }, []);
 
   // Gemini call with the full profile context and multi-turn conversation memory
   const fetchGeminiResponse = useCallback(
@@ -206,6 +214,7 @@ const AboutSection = () => {
         conversationRef.current = [];
         lastTopicRef.current = null;
         dispatch({ type: 'RESET_CHAT' });
+        setActiveChips(QUICK_PROMPTS);
         setIsThinking(false);
         hasWelcomedRef.current = true;
         setTimeout(() => {
@@ -234,9 +243,12 @@ const AboutSection = () => {
       let responseText: string;
 
       if (localAnswer) {
-        await new Promise((resolve) => setTimeout(resolve, 320 + Math.random() * 280));
+        await new Promise((resolve) => setTimeout(resolve, 280 + Math.random() * 240));
         responseText = localAnswer.text;
         if (localAnswer.topic) lastTopicRef.current = localAnswer.topic;
+        if (localAnswer.suggestedPrompts && localAnswer.suggestedPrompts.length > 0) {
+          setActiveChips(localAnswer.suggestedPrompts);
+        }
       } else {
         // 2. LLM fallback for anything outside the knowledge base
         responseText = await fetchGeminiResponse(lowerQuery, isHumorous, conversationRef.current);
@@ -649,9 +661,9 @@ const AboutSection = () => {
                 </motion.div>
               )}
             </div>
-            {!isThinking && chatState.messages.length <= 3 && (
-              <div className="chat-chips">
-                {QUICK_PROMPTS.map(({ label, query }) => (
+            {!isThinking && activeChips.length > 0 && (
+              <div className="chat-chips custom-scrollbar">
+                {activeChips.map(({ label, query }) => (
                   <button key={label} type="button" onClick={() => handleQuery(query)}>
                     {label}
                   </button>

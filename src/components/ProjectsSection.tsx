@@ -110,19 +110,27 @@ const SkillBadge = ({ tech }: { tech: string }) => (
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const [expanded, setExpanded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [spot, setSpot] = useState({ x: -400, y: -400 });
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setSpot({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty('--spot-x', `${x}px`);
+    cardRef.current.style.setProperty('--spot-y', `${y}px`);
+    cardRef.current.style.setProperty('--spot-opacity', '1');
+  };
+
+  const handleLeave = () => {
+    if (!cardRef.current) return;
+    cardRef.current.style.setProperty('--spot-opacity', '0');
   };
 
   return (
     <motion.div
       ref={cardRef}
       onMouseMove={handleMove}
-      onMouseLeave={() => setSpot({ x: -400, y: -400 })}
+      onMouseLeave={handleLeave}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
@@ -136,8 +144,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       <span
         className="absolute inset-0 pointer-events-none transition-opacity duration-300"
         style={{
-          opacity: spot.x < 0 ? 0 : 1,
-          background: `radial-gradient(260px circle at ${spot.x}px ${spot.y}px, rgba(38,235,218,0.08), transparent 70%)`,
+          opacity: 'var(--spot-opacity, 0)',
+          background: 'radial-gradient(260px circle at var(--spot-x, -400px) var(--spot-y, -400px), rgba(38,235,218,0.08), transparent 70%)',
         }}
       />
       {/* Project Image */}
