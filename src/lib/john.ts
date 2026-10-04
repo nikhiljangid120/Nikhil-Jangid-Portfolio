@@ -779,9 +779,22 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
   },
   {
     id: 'origin',
-    keywords: ['is he from', 'where from', 'nationality', 'country is he from', 'indian', 'india', 'jaipur', 'location'],
+    keywords: [
+      'is he from',
+      'where from',
+      'nationality',
+      'country is he from',
+      'indian',
+      'india',
+      'jaipur',
+      'location',
+      'which city',
+      'hometown',
+      'where is he based',
+      'based in jaipur',
+    ],
     responses: [
-      `Nikhil is based in Jaipur, Rajasthan, India. He is open to relocation (e.g. Bangalore, Pune, Hyderabad, NCR) and available for remote, hybrid, or on-site engineering positions.`,
+      `Nikhil is an Indian software engineer based in Jaipur, Rajasthan. His most suitable and preferred locations include Jaipur (home base), Gurugram, Noida, Delhi NCR, and Pune, along with major tech centers like Bangalore and Hyderabad. He is 100% open to relocation, on-site, hybrid, or remote engineering positions.`,
     ],
     followUps: [`Want his contact details or availability date?`],
   },
@@ -811,7 +824,7 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
   },
   {
     id: 'availability',
-    keywords: ['available', 'availability', 'open to work', 'notice period', 'start date', 'when can he start', 'join', 'joining', 'immediate'],
+    keywords: ['available', 'availability', 'open to work', 'notice period', 'start date', 'when can he start', 'join', 'joining', 'immediate', 'immediate joiner'],
     responses: [
       `Nikhil is available to join immediately with zero notice period. Having graduated B.Tech CSE in 2026 and wrapped up his Wisflux internship in August 2026, he is actively interviewing for Software Engineer, Backend Developer, and Full-Stack Developer roles.`,
     ],
@@ -819,11 +832,240 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
   },
   {
     id: 'relocation',
-    keywords: ['relocate', 'relocation', 'bangalore', 'pune', 'hyderabad', 'ncr', 'delhi', 'remote', 'hybrid', 'onsite'],
+    keywords: [
+      'relocate',
+      'relocation',
+      'suitable places',
+      'suitable locations',
+      'preferred places',
+      'preferred locations',
+      'preferred cities',
+      'jaipur',
+      'gurugram',
+      'gurgaon',
+      'noida',
+      'delhi',
+      'delhi ncr',
+      'pune',
+      'bangalore',
+      'bengaluru',
+      'hyderabad',
+      'mumbai',
+      'remote',
+      'hybrid',
+      'onsite',
+      'wfo',
+      'work from office',
+    ],
     responses: [
-      `Yes, Nikhil is actively open to relocating to major tech hubs including Bangalore, Pune, Hyderabad, Delhi NCR, and Mumbai. He is also fully set up for remote or hybrid positions.`,
+      `Nikhil's most suitable and preferred locations are Jaipur (home base), Gurugram, Noida, Delhi NCR, and Pune, as well as tech hubs like Bangalore and Hyderabad. He is fully prepared to relocate immediately for on-site or hybrid roles, and is equally equipped for remote setups.`,
     ],
     followUps: [`Want his contact email to connect directly?`],
+  },
+  {
+    id: 'hr-conflict-resolution',
+    keywords: [
+      'conflict',
+      'disagreement',
+      'technical disagreement',
+      'disagree with lead',
+      'handle conflict',
+      'differing opinions',
+      'disagreement with manager',
+      'disagree with coworker',
+    ],
+    responses: [
+      `When technical disagreements arise, Nikhil grounds discussions in data, benchmarks, and architectural invariants rather than opinion. For instance, when evaluating database locking strategies at Wisflux, he ran concurrent load simulations to demonstrate why optimistic locking failed under contention, convincing the team to adopt pessimistic row locking. He values collaborative consensus and always aligns behind the team decision.`,
+    ],
+    followUps: [`Want to know more about his teamwork style or communication?`],
+  },
+  {
+    id: 'hr-career-goals',
+    keywords: [
+      'career goals',
+      'where do you see yourself',
+      '5 years',
+      '3 years',
+      'future plans',
+      'career vision',
+      'long term goal',
+      'aspirations',
+    ],
+    responses: [
+      `Over the next 3 to 5 years, Nikhil aims to grow into a Senior Backend and Systems Engineer owning mission-critical microservices and high-throughput data pipelines. He plans to deepen his expertise in distributed systems, event-driven streaming with Kafka, and scalable AI infrastructure, while mentoring junior engineers and contributing to core architectural design.`,
+    ],
+    followUps: [`Want to review his current technical arsenal or projects?`],
+  },
+  {
+    id: 'hr-strength-blindspot',
+    keywords: [
+      'greatest strength',
+      'key strength',
+      'top strength',
+      'what makes him stand out',
+      'core superpower',
+      'strongest trait',
+    ],
+    responses: [
+      `His greatest strength is high-velocity execution coupled with deep systems rigor: he doesn't just build endpoints, he ensures transactional safety, prevents race conditions, and designs clean API boundaries. His active growth focus is expanding from single-instance and Dockerized environments into large-scale Kubernetes clusters and distributed streaming architectures.`,
+    ],
+    followUps: [`Want to see his production projects or Wisflux experience?`],
+  },
+  {
+    id: 'mgr-system-outage',
+    keywords: [
+      'production incident',
+      'system outage',
+      'server down',
+      'production bug',
+      'critical outage',
+      'on call incident',
+      'how do you handle outage',
+      'outage response',
+      'fire in production',
+    ],
+    responses: [
+      `In a production incident, Nikhil follows a structured triage approach: 1) Assess blast radius and rollback recent changes immediately if that restores uptime, 2) Spin up isolated reproduction environments in Docker to trace logs and database transaction locks, 3) Identify root cause, apply a verified hotfix with regression tests, and 4) Document a blameless postmortem covering root cause, detection time, and preventative architectural guards.`,
+    ],
+    followUps: [`Want to hear about how he prevented race conditions at Wisflux?`],
+  },
+  {
+    id: 'mgr-code-reviews',
+    keywords: [
+      'code review',
+      'code reviews',
+      'pr review',
+      'pull request review',
+      'reviewing code',
+      'handling feedback on pr',
+      'critique code',
+    ],
+    responses: [
+      `Nikhil treats code reviews as a collaborative quality gate and learning opportunity. When reviewing others' PRs, he prioritizes correctness, race condition risks, security vulnerabilities (like SQL injection or auth bypasses), and performance over formatting nitpicks. On his own PRs, he provides descriptive context, welcomes constructive critiques, and iterates quickly.`,
+    ],
+    followUps: [`Want to inspect his GitHub repositories and PR history?`],
+  },
+  {
+    id: 'mgr-tech-debt',
+    keywords: [
+      'tech debt',
+      'technical debt',
+      'speed vs quality',
+      'move fast vs clean code',
+      'shortcuts',
+      'refactoring',
+      'balance speed and quality',
+    ],
+    responses: [
+      `Nikhil adopts a pragmatic engineering philosophy: never compromise on database integrity, transaction boundaries, or security, as fixing corrupted state is 10x costlier than writing clean code. For business logic, he establishes modular services with strict DTO contracts, allowing internal implementations to be safely refactored or optimized without breaking clients as the product scales.`,
+    ],
+    followUps: [`Want to discuss his NestJS modular patterns?`],
+  },
+  {
+    id: 'mgr-ambiguity',
+    keywords: [
+      'ambiguity',
+      'unclear requirements',
+      'shifting requirements',
+      'scope creep',
+      'vague specs',
+      'handle ambiguity',
+      'dealing with ambiguity',
+    ],
+    responses: [
+      `When requirements are ambiguous, Nikhil works to de-risk assumptions early: 1) Clarify the core user workflow and data invariants, 2) Draft typed interface contracts and OpenAPI/Swagger specs to align stakeholders, 3) Build a vertical MVP slice to gather immediate feedback, and 4) Proactively flag trade-offs before engineering effort is sunk into the wrong path.`,
+    ],
+    followUps: [`Want to discuss his product engineering on Flyeng Career?`],
+  },
+  {
+    id: 'mgr-why-backend',
+    keywords: [
+      'why backend',
+      'why not frontend',
+      'why systems engineering',
+      'love backend',
+      'passion for backend',
+      'why focus on backend',
+    ],
+    responses: [
+      `Nikhil chose backend engineering because he is energized by data consistency, algorithmic efficiency, and resilient architecture. While he can build responsive React interfaces, solving concurrency race conditions, optimizing PostgreSQL queries, and architecting RAG vector search pipelines provides him with the deepest intellectual satisfaction.`,
+    ],
+    followUps: [`Want to see his backend architecture or concurrency work?`],
+  },
+  {
+    id: 'mgr-continuous-learning',
+    keywords: [
+      'stay updated',
+      'learning new tools',
+      'how do you learn',
+      'keep up with tech',
+      'adapt to new stack',
+      'continuous learning',
+    ],
+    responses: [
+      `Nikhil stays ahead through deliberate practice: he reads engineering postmortems (Uber, Netflix, Cloudflare), studies open-source codebases, and builds functional production prototypes rather than passive tutorials (such as building with Model Context Protocol and Next.js 14 App Router). His 100-day LeetCode streak and 4,500+ GitHub commits reflect this continuous learning habit.`,
+    ],
+    followUps: [`Want to see his 400+ DSA record or GitHub profile?`],
+  },
+  {
+    id: 'mgr-senior-collaboration',
+    keywords: [
+      'working with seniors',
+      'senior engineers',
+      'mentorship',
+      'take feedback from architect',
+      'collaborating with leads',
+      'work with architect',
+    ],
+    responses: [
+      `When collaborating with senior engineers and architects, Nikhil prepares thoroughly: he clearly outlines the problem, the options considered, the specific trade-offs, and where guidance is needed. He absorbs architectural feedback quickly, respects established codebase patterns, and implements recommendations with high attention to detail.`,
+    ],
+    followUps: [`Want to know more about his teamwork style?`],
+  },
+  {
+    id: 'hr-work-culture',
+    keywords: [
+      'work culture',
+      'ideal environment',
+      'company culture',
+      'team culture',
+      'type of company',
+      'what environment',
+      'culture fit',
+    ],
+    responses: [
+      `Nikhil thrives in engineering-driven cultures that value high ownership, intellectual honesty, rapid iteration, and blameless problem solving. He excels in environments where engineers are trusted to take responsibility for end-to-end features and where quality and performance are celebrated.`,
+    ],
+    followUps: [`Want to discuss his availability date?`],
+  },
+  {
+    id: 'hr-fresher-risk',
+    keywords: [
+      'is he risky to hire',
+      'risk of early career',
+      'fresher ramp up time',
+      'how long to ramp up',
+      'ramp up',
+      'ramp up quickly',
+    ],
+    responses: [
+      `Nikhil ramps up rapidly because his foundations in C++, DSA, and modern TypeScript are solid. During his 3-month Wisflux internship, he mastered their Nx monorepo, NestJS microservices, and pgvector RAG pipeline within weeks to ship production deliverables. He requires minimal hand-holding on core engineering workflows and begins contributing meaningful PRs from week one.`,
+    ],
+    followUps: [`Want his Wisflux work breakdown or live project demos?`],
+  },
+  {
+    id: 'hr-notice-joining',
+    keywords: [
+      'notice period details',
+      'immediate joiner confirmation',
+      'how fast can he join',
+      'ready to start tomorrow',
+      'joining status',
+    ],
+    responses: [
+      `Nikhil is an immediate joiner with zero notice period. Having graduated B.Tech CSE in 2026 and concluded his Wisflux internship in August 2026, he has zero pending contractual bonds or notice periods and can start immediately upon receiving an offer.`,
+    ],
+    followUps: [`Want to get his direct contact details?`],
   },
   {
     id: 'full-stack-skills',
@@ -1099,7 +1341,7 @@ export const JOHN_SYSTEM_CONTEXT = `You are John, the professional portfolio ass
 PERSONALITY: sharp, confident, warm, positive, and concise. You represent Nikhil for recruiters, hiring managers, CEOs, CTOs, HR teams, employees, directors, collaborators, and general visitors. You highlight his engineering strengths, ownership mindset, and technical excellence. Never use em dash symbols in your answers; use colons, commas, hyphens, or clean sentences instead.
 
 === IDENTITY ===
-Name: Nikhil Jangid. Age: 21. Location: Jaipur, Rajasthan, India (open to relocation, remote/hybrid fine).
+Name: Nikhil Jangid. Age: 21. Location: Jaipur, Rajasthan, India (home base). Most suitable and preferred work locations: Jaipur, Gurugram, Noida, Delhi NCR, and Pune (also open to Bangalore and Hyderabad). Fully prepared for on-site, hybrid, and remote roles.
 Degree: B.Tech Computer Science & Engineering, Amity University Rajasthan, batch 2022-2026. Graduated 2026. CGPA: 8.48.
 Email: nikhiljangid343@gmail.com | Phone: +91 8058803339
 LinkedIn: https://linkedin.com/in/nikhil-jangid-b84360264
