@@ -519,24 +519,167 @@ export const KNOWLEDGE: KnowledgeTopic[] = [
     ],
   },
   {
-    id: 'why-leave-wisflux',
+    id: 'ppo',
     keywords: [
-      'why did he leave wisflux',
-      'why leave wisflux',
-      'why not continue at wisflux',
-      'ppo',
+      'why not ppo in wisflux',
+      'why not ppo',
+      'why no ppo',
       'did he get a ppo',
-      'why looking for a job',
-      'why is he job hunting',
-      'why switch',
-      'left wisflux',
+      'did he get ppo',
+      'ppo in wisflux',
+      'wisflux ppo',
+      'ppo offer',
+      'return offer',
+      'pre placement offer',
+      'full time at wisflux',
+      'why not join wisflux',
+      'why didn\'t wisflux hire',
+      'why didn\'t he get ppo',
+      'why didn\'t wisflux give ppo',
+      'why leave wisflux',
+      'why left wisflux',
+      'why switch from wisflux',
+      'why not continue at wisflux',
+      'why did he leave wisflux',
+      'why looking for a job after wisflux',
+      'ppo',
     ],
     responses: [
-      `Nikhil's tenure at Wisflux was a scheduled 3-month Summer SDE Internship (Jun-Aug 2026) completed during his degree. Having wrapped up his deliverables (the transactional booking backend and pgvector RAG pipeline) and graduated B.Tech CSE in 2026, he is now actively interviewing for full-time Software Engineer / Backend Developer opportunities.`,
+      `Nikhil completed his tenure at Wisflux Tech Labs as a planned 3-month Summer SDE Internship (Jun-Aug 2026) during his final year of B.Tech CSE. He fulfilled all core milestones: shipping their transactional hotel-booking engine with pessimistic row locking and a production pgvector RAG pipeline. Having successfully completed his degree in 2026, he is now actively exploring high-growth engineering teams, scalable product companies, and fast-paced startups where he can take full ownership of backend microservices, distributed systems, and modern AI pipelines. He wrapped up his internship on great terms, has zero notice period, and is available to join immediately.`,
+      `The Wisflux role was a structured 3-month Summer SDE Internship (Jun-Aug 2026) aligned with his university schedule. Nikhil delivered his project commitments, including concurrency-safe transactional APIs and Dockerized RAG pipelines with pgvector. With his B.Tech CSE completed in 2026, he is deliberately interviewing across the broader tech ecosystem for high-impact Software Engineer and Backend Developer positions.`,
     ],
     followUps: [
-      `Want his internship breakdown or live project demos?`,
-      `Want his immediate availability date?`,
+      `Want to inspect his Wisflux backend architecture or live RAG pipeline?`,
+      `Want his immediate availability date or contact info?`,
+    ],
+  },
+  {
+    id: 'fresher-vs-experienced',
+    keywords: [
+      'why hire a fresher',
+      'fresher vs experienced',
+      'lack of experience',
+      'no full time experience',
+      'only intern experience',
+      'risk of hiring fresher',
+      'junior engineer',
+      'just graduated fresher',
+      'why fresher',
+      'hire fresher',
+    ],
+    responses: [
+      `Valid question. Many early-career applicants have only built tutorial projects, but Nikhil has already delivered production systems: at Wisflux Tech Labs, he resolved concurrency race conditions with PostgreSQL row-level locking (SELECT ... FOR UPDATE) and built an end-to-end pgvector RAG pipeline in Docker. Add to that 5 live deployed applications, 400+ DSA problems solved in C++, and an 8.48 CGPA. You get an engineer with high execution velocity, strong computer science fundamentals, and the hunger to make an immediate impact from week one.`,
+    ],
+    followUps: [
+      `Want to inspect his Wisflux backend implementation or live projects?`,
+    ],
+  },
+  {
+    id: 'celebal-tenure',
+    keywords: [
+      'why leave celebal',
+      'celebal duration',
+      'why only 2 months at celebal',
+      'why 2 months',
+      'celebal ppo',
+      'why short at celebal',
+      'celebal return offer',
+    ],
+    responses: [
+      `Celebal Technologies was a planned 2-month summer internship (May-Jul 2025) between academic semesters. Nikhil delivered a responsive shipment tracking web application with React and Tailwind CSS, worked in an Agile sprint team with Git workflows, and returned to complete his university coursework before earning his backend SDE internship at Wisflux Tech Labs.`,
+    ],
+    followUps: [
+      `Want to hear about his transition into backend systems at Wisflux?`,
+    ],
+  },
+  {
+    id: 'failure-learnings',
+    keywords: [
+      'biggest mistake',
+      'failure in code',
+      'failed project',
+      'what did he learn from failure',
+      'bug in production',
+      'biggest failure',
+      'technical failure',
+    ],
+    responses: [
+      `Early in his booking service implementation, he initially relied on naive optimistic status checks. Under simulated high-concurrency loads, double-booking race conditions slipped through. Instead of patching with band-aid retries, he dug deep into database transaction isolation and ACID guarantees, refactoring the service to use atomic TypeORM transactions with PostgreSQL row-level locks (SELECT ... FOR UPDATE). It taught him to design around data invariants and failure modes from day one.`,
+    ],
+    followUps: [
+      `Want to hear more about how he tested concurrency edge cases?`,
+    ],
+  },
+  {
+    id: 'nestjs-vs-express',
+    keywords: [
+      'why nestjs',
+      'nestjs vs express',
+      'why use nestjs',
+      'express vs nestjs',
+      'why choose nestjs',
+      'difference between nestjs and express',
+    ],
+    responses: [
+      `Express is minimal and great for tiny scripts, but lacks architectural structure, often leading to unmaintainable code as systems grow. NestJS provides an enterprise-ready modular architecture out of the box: dependency injection, TypeScript-first types, declarative DTO validation with class-validator, guard-based authentication, and automated Swagger OpenAPI documentation. Nikhil chose NestJS at Wisflux because it enforces clean separation of concerns and team-wide consistency.`,
+    ],
+    followUps: [
+      `Want to see his NestJS architectural design patterns?`,
+    ],
+  },
+  {
+    id: 'postgres-vs-mongo',
+    keywords: [
+      'postgres vs mongo',
+      'postgresql vs mongodb',
+      'why postgres',
+      'why postgresql',
+      'sql vs nosql',
+      'why relational',
+      'why not mongodb',
+    ],
+    responses: [
+      `For transactional systems like booking or finance, PostgreSQL provides rock-solid ACID guarantees, relational integrity with foreign keys, and row-level pessimistic locking (SELECT ... FOR UPDATE) to prevent concurrency anomalies. Furthermore, with the pgvector extension, PostgreSQL can also store and query 384-dimensional vector embeddings, eliminating the need to maintain a separate vector database for RAG pipelines.`,
+    ],
+    followUps: [
+      `Want to explore how he uses pgvector in his live RAG project?`,
+    ],
+  },
+  {
+    id: 'rag-hallucinations',
+    keywords: [
+      'prevent hallucination',
+      'hallucinations',
+      'hallucinate',
+      'rag accuracy',
+      'grounded answers',
+      'how to stop hallucinations',
+      'hallucination prevention',
+    ],
+    responses: [
+      `Nikhil's production RAG pipeline (https://nikhil-rag-chatbot.onrender.com/) prevents hallucinations through four defensive layers: 1) SHA-256 deduplication on document upload, 2) sliding-window text chunking to preserve contextual boundaries, 3) 384-dimensional MiniLM vector embeddings stored in pgvector for top-5 cosine similarity search, and 4) system prompts that enforce strict context grounding: instructing the LLM to reply only using retrieved context and explicitly declare when the answer is not present in the document.`,
+    ],
+    followUps: [
+      `Want to test his live RAG chatbot deployment on Render?`,
+    ],
+  },
+  {
+    id: 'communication-culture',
+    keywords: [
+      'communication skills',
+      'english proficiency',
+      'culture fit',
+      'team player',
+      'work ethic',
+      'self starter',
+      'cross functional',
+      'collaborate',
+    ],
+    responses: [
+      `Nikhil communicates with clarity, precision, and technical rigor. Across his internships at Wisflux and Celebal, he actively collaborated in cross-functional Agile teams with daily standups, clear PR descriptions, and collaborative design docs. He approaches feedback with an open growth mindset and enjoys pairing with teammates to solve difficult architectural bottlenecks.`,
+    ],
+    followUps: [
+      `Want his contact details or to schedule an introductory call?`,
     ],
   },
   {
@@ -734,10 +877,25 @@ export const isFollowUp = (query: string): boolean => FOLLOW_UP_RE.test(query.tr
 export const findBestTopic = (query: string): KnowledgeTopic | null => {
   let best: KnowledgeTopic | null = null;
   let bestScore = 0;
+  const q = query.trim().toLowerCase();
+
   for (const topic of KNOWLEDGE) {
     let score = 0;
     for (const keyword of topic.keywords) {
-      if (containsKeyword(query, keyword)) score += keyword.includes(' ') ? 3 : 2;
+      const kw = keyword.toLowerCase();
+      if (q.includes(kw)) {
+        // Multi-word exact phrase match gets high priority
+        const wordCount = kw.split(/\s+/).length;
+        if (wordCount >= 3) {
+          score += 15;
+        } else if (wordCount === 2) {
+          score += 7;
+        } else if (containsKeyword(q, kw)) {
+          score += 3;
+        }
+      } else if (containsKeyword(q, kw)) {
+        score += kw.includes(' ') ? 5 : 2;
+      }
     }
     if (score > bestScore) {
       bestScore = score;
@@ -842,7 +1000,13 @@ export const getLocalResponse = (query: string, lastTopic: KnowledgeTopic | null
       { label: 'Production RAG', query: 'Explain his production RAG chatbot pipeline' },
     ];
 
-    if (topic.id === 'why-not-hire' || topic.id === 'weakness' || topic.id === 'roast') {
+    if (
+      topic.id === 'why-not-hire' ||
+      topic.id === 'weakness' ||
+      topic.id === 'roast' ||
+      topic.id === 'ppo' ||
+      topic.id === 'fresher-vs-experienced'
+    ) {
       suggestedPrompts = [
         { label: 'Why hire Nikhil?', query: 'Why should I hire Nikhil?' },
         { label: 'Wisflux SDE role', query: 'Tell me about his Wisflux internship' },
