@@ -1,25 +1,5 @@
 import { useEffect, useRef } from 'react';
 
-interface WaveConfig {
-  baseYPercent: number;
-  amplitude: number;
-  frequency: number;
-  speed: number;
-  phase: number;
-  colorStart: string;
-  colorEnd: string;
-  strokeAlpha: number;
-  lineWidth: number;
-}
-
-interface PulsePacket {
-  waveIndex: number;
-  progress: number;
-  speed: number;
-  size: number;
-  color: string;
-}
-
 export const InteractiveHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({
@@ -28,7 +8,7 @@ export const InteractiveHeroBackground = () => {
     targetX: -1000,
     targetY: -1000,
     active: false,
-    radius: 180,
+    radius: 160,
   });
 
   useEffect(() => {
@@ -42,62 +22,6 @@ export const InteractiveHeroBackground = () => {
     let width = 0;
     let height = 0;
     let time = 0;
-
-    // Fluid Aurora waves with multi-harmonic curves
-    const waves: WaveConfig[] = [
-      {
-        baseYPercent: 0.35,
-        amplitude: 45,
-        frequency: 0.0018,
-        speed: 0.009,
-        phase: 0,
-        colorStart: 'rgba(38, 235, 218, ',
-        colorEnd: 'rgba(168, 85, 247, ',
-        strokeAlpha: 0.45,
-        lineWidth: 2.0,
-      },
-      {
-        baseYPercent: 0.48,
-        amplitude: 55,
-        frequency: 0.0014,
-        speed: 0.007,
-        phase: 1.8,
-        colorStart: 'rgba(56, 189, 248, ',
-        colorEnd: 'rgba(38, 235, 218, ',
-        strokeAlpha: 0.4,
-        lineWidth: 1.8,
-      },
-      {
-        baseYPercent: 0.62,
-        amplitude: 50,
-        frequency: 0.002,
-        speed: 0.011,
-        phase: 3.4,
-        colorStart: 'rgba(168, 85, 247, ',
-        colorEnd: 'rgba(56, 189, 248, ',
-        strokeAlpha: 0.42,
-        lineWidth: 2.2,
-      },
-      {
-        baseYPercent: 0.74,
-        amplitude: 40,
-        frequency: 0.0024,
-        speed: 0.008,
-        phase: 4.8,
-        colorStart: 'rgba(38, 235, 218, ',
-        colorEnd: 'rgba(99, 102, 241, ',
-        strokeAlpha: 0.35,
-        lineWidth: 1.5,
-      },
-    ];
-
-    // Luminous data pulses travelling along the fluid energy waves
-    const pulses: PulsePacket[] = [
-      { waveIndex: 0, progress: 0.1, speed: 0.0028, size: 3.5, color: '#26ebda' },
-      { waveIndex: 1, progress: 0.45, speed: 0.0022, size: 4.0, color: '#38bdf8' },
-      { waveIndex: 2, progress: 0.75, speed: 0.0031, size: 3.8, color: '#c084fc' },
-      { waveIndex: 3, progress: 0.25, speed: 0.0025, size: 3.2, color: '#26ebda' },
-    ];
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -121,43 +45,15 @@ export const InteractiveHeroBackground = () => {
       mouseRef.current.active = false;
     };
 
-    // Calculate Y for a wave at given X, applying harmonic oscillation and cursor magnetic displacement
-    const getWaveY = (x: number, wave: WaveConfig, t: number): number => {
-      const baseY = height * wave.baseYPercent;
-      // Multi-harmonic natural undulating curve
-      const harmonic1 = Math.sin(x * wave.frequency + t * wave.speed + wave.phase) * wave.amplitude;
-      const harmonic2 = Math.cos(x * wave.frequency * 1.8 - t * wave.speed * 0.7) * (wave.amplitude * 0.38);
-      const harmonic3 = Math.sin(x * 0.0006 + t * wave.speed * 0.4) * (wave.amplitude * 0.25);
-
-      let y = baseY + harmonic1 + harmonic2 + harmonic3;
-
-      // Cursor magnetic displacement: smoothly warp wave around the mouse
-      if (mouseRef.current.active) {
-        const dx = x - mouseRef.current.x;
-        const dy = y - mouseRef.current.y;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < mouseRef.current.radius) {
-          const factor = 1 - dist / mouseRef.current.radius;
-          // Smooth bell-curve displacement
-          const smoothFactor = factor * factor * (3 - 2 * factor);
-          const pushDirection = dy >= 0 ? 1 : -1;
-          y += pushDirection * smoothFactor * 38;
-        }
-      }
-
-      return y;
-    };
-
     const render = () => {
       if (!isVisible) {
         animationFrameId = requestAnimationFrame(render);
         return;
       }
 
-      time += 1;
+      time += 0.015;
 
-      // Smooth mouse lerping for fluid kinetic response
+      // Smooth mouse position damping (lerp)
       if (mouseRef.current.active) {
         mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.08;
         mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.08;
@@ -165,9 +61,30 @@ export const InteractiveHeroBackground = () => {
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Ambient chromatic cursor glow
+      // 1. Soft Breathing Ambient Aurora Blobs in negative space (luxurious depth)
+      // Top-right ambient aura (drifting gently behind the code terminal)
+      const blob1X = width * 0.78 + Math.cos(time * 0.6) * 35;
+      const blob1Y = height * 0.32 + Math.sin(time * 0.7) * 25;
+      const grad1 = ctx.createRadialGradient(blob1X, blob1Y, 0, blob1X, blob1Y, Math.min(width, height) * 0.45);
+      grad1.addColorStop(0, 'rgba(38, 235, 218, 0.065)');
+      grad1.addColorStop(0.5, 'rgba(168, 85, 247, 0.025)');
+      grad1.addColorStop(1, 'rgba(11, 15, 25, 0)');
+      ctx.fillStyle = grad1;
+      ctx.fillRect(0, 0, width, height);
+
+      // Bottom-left ambient aura (gentle warmth below stats)
+      const blob2X = width * 0.22 + Math.sin(time * 0.5) * 30;
+      const blob2Y = height * 0.75 + Math.cos(time * 0.6) * 20;
+      const grad2 = ctx.createRadialGradient(blob2X, blob2Y, 0, blob2X, blob2Y, Math.min(width, height) * 0.4);
+      grad2.addColorStop(0, 'rgba(56, 189, 248, 0.05)');
+      grad2.addColorStop(0.5, 'rgba(99, 102, 241, 0.02)');
+      grad2.addColorStop(1, 'rgba(11, 15, 25, 0)');
+      ctx.fillStyle = grad2;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Interactive Cursor Caustic Bloom (follows mouse seamlessly)
       if (mouseRef.current.active && mouseRef.current.x > 0 && mouseRef.current.x < width) {
-        const glowRadius = mouseRef.current.radius * 1.5;
+        const glowRadius = mouseRef.current.radius * 1.6;
         const radial = ctx.createRadialGradient(
           mouseRef.current.x,
           mouseRef.current.y,
@@ -176,97 +93,75 @@ export const InteractiveHeroBackground = () => {
           mouseRef.current.y,
           glowRadius
         );
-        radial.addColorStop(0, 'rgba(38, 235, 218, 0.085)');
-        radial.addColorStop(0.4, 'rgba(168, 85, 247, 0.035)');
-        radial.addColorStop(0.7, 'rgba(56, 189, 248, 0.015)');
+        radial.addColorStop(0, 'rgba(38, 235, 218, 0.09)');
+        radial.addColorStop(0.35, 'rgba(168, 85, 247, 0.035)');
+        radial.addColorStop(0.7, 'rgba(56, 189, 248, 0.012)');
         radial.addColorStop(1, 'rgba(11, 15, 25, 0)');
 
         ctx.fillStyle = radial;
         ctx.fillRect(0, 0, width, height);
       }
 
-      // Step interval for smooth curve rendering
-      const step = Math.max(12, Math.floor(width / 75));
+      // 3. Minimalist Interactive Reactive Dot Grid (Linear/Vercel style)
+      // Subtle micro-dots that smoothly illuminate only when cursor approaches
+      const gridSpacing = 42;
+      const startX = (width % gridSpacing) / 2;
+      const startY = (height % gridSpacing) / 2;
+      const mouseRadius = mouseRef.current.radius;
 
-      // 2. Render each flowing Aurora ribbon
-      waves.forEach((wave, wIdx) => {
-        ctx.beginPath();
+      for (let x = startX; x < width; x += gridSpacing) {
+        for (let y = startY; y < height; y += gridSpacing) {
+          let alpha = 0.06; // ultra-subtle resting state
+          let radius = 0.85;
 
-        // Sample points across width
-        const points: { x: number; y: number }[] = [];
-        for (let x = -20; x <= width + 20; x += step) {
-          const y = getWaveY(x, wave, time);
-          points.push({ x, y });
-        }
+          if (mouseRef.current.active) {
+            const dx = x - mouseRef.current.x;
+            const dy = y - mouseRef.current.y;
+            const dist = Math.hypot(dx, dy);
 
-        // Draw smooth bezier ribbon
-        if (points.length > 0) {
-          ctx.moveTo(points[0].x, points[0].y);
-          for (let i = 1; i < points.length - 1; i++) {
-            const xc = (points[i].x + points[i + 1].x) / 2;
-            const yc = (points[i].y + points[i + 1].y) / 2;
-            ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+            if (dist < mouseRadius) {
+              const proximity = 1 - dist / mouseRadius;
+              // Smooth cubic falloff
+              const intensity = proximity * proximity * (3 - 2 * proximity);
+              alpha = 0.06 + intensity * 0.42;
+              radius = 0.85 + intensity * 1.1;
+
+              ctx.beginPath();
+              ctx.arc(x, y, radius, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(38, 235, 218, ${alpha})`;
+              ctx.fill();
+              continue;
+            }
           }
-          if (points.length > 1) {
-            const last = points[points.length - 1];
-            ctx.lineTo(last.x, last.y);
-          }
+
+          // Ambient resting micro-dot
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+          ctx.fill();
         }
+      }
 
-        // Ribbon gradient stroke
-        const grad = ctx.createLinearGradient(0, 0, width, 0);
-        grad.addColorStop(0, `${wave.colorStart}0)`);
-        grad.addColorStop(0.2, `${wave.colorStart}${wave.strokeAlpha})`);
-        grad.addColorStop(0.6, `${wave.colorEnd}${wave.strokeAlpha * 1.1})`);
-        grad.addColorStop(0.85, `${wave.colorStart}${wave.strokeAlpha * 0.9})`);
-        grad.addColorStop(1, `${wave.colorEnd}0)`);
+      // 4. Single Ethereal Whisper-Thin Horizon Wave at bottom perimeter (anchors layout cleanly)
+      const horizonY = height * 0.86;
+      ctx.beginPath();
+      ctx.moveTo(0, horizonY);
+      for (let x = 0; x <= width; x += 25) {
+        const waveOffset =
+          Math.sin(x * 0.0018 + time * 0.4) * 14 +
+          Math.cos(x * 0.003 - time * 0.3) * 8;
+        ctx.lineTo(x, horizonY + waveOffset);
+      }
 
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = wave.lineWidth;
-        ctx.shadowColor = wIdx % 2 === 0 ? 'rgba(38, 235, 218, 0.45)' : 'rgba(168, 85, 247, 0.45)';
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-        ctx.shadowBlur = 0; // Reset blur for crisp performance
-      });
+      const horizonGrad = ctx.createLinearGradient(0, 0, width, 0);
+      horizonGrad.addColorStop(0, 'rgba(38, 235, 218, 0)');
+      horizonGrad.addColorStop(0.3, 'rgba(38, 235, 218, 0.15)');
+      horizonGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.15)');
+      horizonGrad.addColorStop(1, 'rgba(38, 235, 218, 0)');
 
-      // 3. Render luminous energy pulses traveling along the wave ribbons
-      pulses.forEach((pulse) => {
-        pulse.progress += pulse.speed;
-        if (pulse.progress > 1) pulse.progress = 0;
-
-        const wave = waves[pulse.waveIndex];
-        const px = pulse.progress * width;
-        const py = getWaveY(px, wave, time);
-
-        // Calculate opacity based on position (fade in at edges, bright in center)
-        const edgeFade = Math.sin(pulse.progress * Math.PI);
-        const alpha = edgeFade * 0.85;
-
-        // Pulse head
-        ctx.beginPath();
-        ctx.arc(px, py, pulse.size, 0, Math.PI * 2);
-        ctx.fillStyle = pulse.color;
-        ctx.shadowColor = pulse.color;
-        ctx.shadowBlur = 14;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-
-        // Subtle kinetic tail
-        const tailLength = 28;
-        const tailX = px - tailLength;
-        const tailY = getWaveY(tailX, wave, time);
-
-        const tailGrad = ctx.createLinearGradient(tailX, tailY, px, py);
-        tailGrad.addColorStop(0, `${pulse.color}00`);
-        tailGrad.addColorStop(1, `${pulse.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`);
-
-        ctx.beginPath();
-        ctx.moveTo(tailX, tailY);
-        ctx.lineTo(px, py);
-        ctx.strokeStyle = tailGrad;
-        ctx.lineWidth = pulse.size * 0.75;
-        ctx.stroke();
-      });
+      ctx.strokeStyle = horizonGrad;
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -299,7 +194,7 @@ export const InteractiveHeroBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-0 opacity-80"
+      className="absolute inset-0 pointer-events-none z-0"
       style={{ width: '100%', height: '100%' }}
     />
   );
