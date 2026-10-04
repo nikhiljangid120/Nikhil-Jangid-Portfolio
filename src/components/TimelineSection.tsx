@@ -1,5 +1,5 @@
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Briefcase, Award, Calendar, ChevronRight, ChevronLeft, X, Clock, MapPin, ExternalLink } from 'lucide-react';
 
